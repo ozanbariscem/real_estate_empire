@@ -1,0 +1,19 @@
+{
+    "interval":[
+        {
+            "day_in_seconds":1.0
+        },
+        {
+            "day_in_seconds":0.8
+        },
+        {
+            "day_in_seconds":0.6
+        },
+        {
+            "day_in_seconds":0.4
+        },
+        {
+            "day_in_seconds":0.2
+        }
+    ]
+}
