@@ -1,0 +1,45 @@
+ManifestFileVersion: 0
+CRC: 3160809727
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: d8f3321a402797a21f00e0e23cfc4a13
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 37cdc2564ca5f57602a6371fa5a6e74b
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 212
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/Sprites/Map/Chunks/chunk_3.png
+- Assets/Sprites/Map/Chunks/chunk_4.png
+- Assets/Sprites/Map/Chunks/chunk_9.png
+- Assets/Sprites/Map/Chunks/chunk_7.png
+- Assets/Sprites/Map/Chunks/chunk_16.png
+- Assets/Sprites/Map/Chunks/chunk_13.png
+- Assets/Sprites/Map/Chunks/chunk_15.png
+- Assets/Prefabs/Map.prefab
+- Assets/Sprites/Map/Chunks/chunk_2.png
+- Assets/Sprites/Map/Chunks/chunk_14.png
+- Assets/Sprites/Map/Chunks/chunk_5.png
+- Assets/Sprites/Map/Chunks/chunk_1.png
+- Assets/Sprites/Map/Chunks/chunk_6.png
+- Assets/Sprites/Map/Chunks/chunk_8.png
+- Assets/Sprites/Map/Chunks/chunk_11.png
+- Assets/Sprites/Map/Chunks/chunk_12.png
+- Assets/Sprites/Map/Chunks/chunk_10.png
+Dependencies: []

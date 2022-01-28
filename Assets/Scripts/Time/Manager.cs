@@ -30,7 +30,14 @@ namespace Time
         private void Start()
         {
             Subscribe();
+        }
 
+        /// <summary>
+        /// Handled by the Game.Manager
+        /// </summary>
+        [MoonSharpHidden]
+        public void Initialize()
+        {
             LoadScript();
             LoadCalendar();
             LoadIntervals();
