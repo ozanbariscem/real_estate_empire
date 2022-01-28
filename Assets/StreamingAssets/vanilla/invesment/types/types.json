@@ -1,0 +1,29 @@
+{
+    "property": {
+        "type": "property",
+        "script": "scripts/property.lua",
+        "subTypes": {
+            "land": {
+                "traits":{
+                    "ageable":"false",
+                    "buyable":"true",
+                    "partially_ownable":"true"
+                }
+            },
+            "house": {
+                "traits":{
+                    "ageable":"true",
+                    "buyable":"true",
+                    "partially_ownable":"false"
+                }
+            },
+            "building": {
+                "traits":{
+                    "ageable":"true",
+                    "buyable":"true",
+                    "partially_ownable":"true"
+                }
+            }
+        }
+    }
+}

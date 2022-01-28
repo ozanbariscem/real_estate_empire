@@ -6,6 +6,9 @@ namespace Time
 {
     public class Manager : MonoBehaviour
     {
+        private static Manager instance;
+        public static Manager Instance => instance;
+
         public event Action<int> OnIntervalChanged;
 
         public event Action<ushort> OnDayPass;
@@ -26,6 +29,13 @@ namespace Time
         private float lastCheckTime;
 
         private Script script;
+
+        private void Awake()
+        {
+            if (!instance)
+                instance = this;
+            else return;
+        }
 
         private void Start()
         {

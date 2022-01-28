@@ -1,0 +1,12 @@
+-- holds every vanilla trait
+-- keep in mind you could add new traits to invesment types without the need to add the same trait here aswell but it would be nice to keep them all here
+-- for new traits you obviously need to implement their behaviour on invesment scripts
+-- check invemesnt scripts for examples
+{
+    "script":"[script-name].lua",
+    "traits":{
+        "ageable":"true",
+        "buyable":"true",
+        "partially_ownable":"true"
+    }
+}

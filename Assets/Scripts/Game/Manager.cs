@@ -7,12 +7,16 @@ namespace Game
     public class Manager : MonoBehaviour
     {
         public event Action OnScriptLoaded;
-        public event Action<Game.Manager, Time.Manager, Map.Manager> OnManagersInitialized;
+        public event Action<
+            Game.Manager, Time.Manager, 
+            Map.Manager, Invesment.Manager> OnManagersInitialized;
 
         [SerializeField] 
         private Time.Manager timeManager;
         [SerializeField]
         private Map.Manager mapManager;
+        [SerializeField]
+        private Invesment.Manager invesmentManager;
 
         private Script script;
         public float ScriptUpdateInterval = -1f;
@@ -34,10 +38,17 @@ namespace Game
                 mapManager.Initialize();
             else
                 Debug.LogError("Map manager is not referenced. This will cause major problems.");
+            if (invesmentManager)
+                invesmentManager.Initialize();
+            else
+                Debug.LogError("Invesment manager is not referenced. This will cause major problems.");
 
 
-            OnManagersInitialized?.Invoke(this, timeManager, mapManager);
-            script.Call(script.Globals[nameof(OnManagersInitialized)], this, timeManager, mapManager);
+            OnManagersInitialized?.Invoke(
+                this, timeManager, mapManager, invesmentManager);
+            script.Call(
+                script.Globals[nameof(OnManagersInitialized)], this, 
+                timeManager, mapManager, invesmentManager);
         }
 
         private void Update()
@@ -60,6 +71,7 @@ namespace Game
             UserData.RegisterType<Game.Manager>();
             UserData.RegisterType<Time.Manager>();
             UserData.RegisterType<Map.Manager>();
+            UserData.RegisterType<Invesment.Manager>();
 
             script = new Script();
             script.Globals["Log"] = (Action<string>)Debug.Log;

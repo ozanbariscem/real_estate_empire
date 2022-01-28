@@ -21,6 +21,21 @@ namespace Utils
 
             return json;
         }
+
+        public static void SafeSetString(string path, string content)
+        {
+            string file = Path.Combine(Application.streamingAssetsPath, path);
+
+            if (!File.Exists(file))
+            {
+                Debug.LogError($"Hey make sure {file} exists!");
+                return;
+            }
+
+            StreamWriter sw = new StreamWriter(file);
+            sw.Write(content);
+            sw.Close();
+        }
     }
 }
 
