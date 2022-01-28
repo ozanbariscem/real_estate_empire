@@ -7,6 +7,7 @@ end
 -- But since a day pass might be frequent, I don't advise to
 -- do heavy calculations in this function
 function HandleDayPass(day, invesments)
+    Log("Test code, REMOVE!")
     for i = 1, #invesments do
         if invesments[i].Data.Is("ageable") then
             invesments[i].age = invesments[i].age + 1
