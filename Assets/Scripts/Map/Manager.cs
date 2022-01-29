@@ -106,9 +106,10 @@ namespace Map
             if (scriptString == null) return;
 
             UserData.RegisterType<Transform>();
+            UserData.RegisterType<Console.Console>();
 
             script = new Script();
-            script.Globals["Log"] = (Action<string>)Debug.Log;
+            script.Globals["ConsoleRunCommand"] = (Action<string>)Console.Console.Run;
             script.DoString(scriptString);
 
             OnScriptLoaded?.Invoke();

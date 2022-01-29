@@ -37,7 +37,7 @@ end
 
 -- Given as an example for modder
 function OnDayPass(new_day)
-    -- Log(date.ToNumberString())
+    -- ConsoleRunCommand("log "..date.ToNumberString())
 end
 
 function OnMonthPass(new_month)

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using Newtonsoft.Json;
 using MoonSharp.Interpreter;
@@ -7,8 +8,14 @@ namespace Invesment
 {
     public class Manager : MonoBehaviour
     {
+        public event Action OnScriptLoaded;
+        public event Action<Dictionary<string, Type>> OnTypesLoaded;
+        public event Action<Dictionary<string, List<Invesment>>> OnInvesmentsLoaded;
+        public event Action OnReady;
 
         private Dictionary<string, List<Invesment>> invesments;
+
+        private Script script;
 
         private void Start()
         {
@@ -23,8 +30,12 @@ namespace Invesment
         [MoonSharpHidden]
         public void Initialize()
         {
+            LoadScript();
             LoadTypes();
             LoadInvesments();
+
+            OnReady?.Invoke();
+            script.Call(script.Globals[nameof(OnReady)]);
         }
 
         #region HANDLERS
@@ -73,12 +84,35 @@ namespace Invesment
         #endregion
 
         #region CONTENT LOADER
+        private void LoadScript()
+        {
+            string scriptString = Utils.StreamingAssetsHandler.SafeGetString("vanilla/invesment/manager.lua");
+            if (scriptString == null) return;
+
+            UserData.RegisterType<Data>();
+            UserData.RegisterType<Type>();
+            UserData.RegisterType<Invesment>();
+
+            UserData.RegisterType<Console.Console>();
+
+            script = new Script();
+            script.Globals["GetInvesment"] = (Func<string, int, Invesment>)InvesmentDictionary.SafeGetInvesment;
+            script.Globals["ConsoleRunCommand"] = (Action<string>)Console.Console.Run;
+            script.DoString(scriptString);
+
+            OnScriptLoaded?.Invoke();
+            script.Call(script.Globals[nameof(OnScriptLoaded)]);
+        }
+
         private void LoadTypes()
         {
             string json = Utils.StreamingAssetsHandler.SafeGetString("vanilla/invesment/types/types.json");
             if (json == null) return;
 
             Types.LoadJson(json);
+
+            OnTypesLoaded?.Invoke(Types.Dictionary);
+            script.Call(script.Globals[nameof(OnTypesLoaded)], Types.Dictionary);
         }
 
         private void LoadInvesments()
@@ -97,6 +131,9 @@ namespace Invesment
             }
 
             InvesmentDictionary invesmentList = new InvesmentDictionary(invesments);
+
+            OnInvesmentsLoaded?.Invoke(invesments);
+            script.Call(script.Globals[nameof(OnInvesmentsLoaded)], invesments);
         }
         #endregion
 

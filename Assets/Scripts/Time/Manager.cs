@@ -155,10 +155,12 @@ namespace Time
             UserData.RegisterType<Date>();
             UserData.RegisterType<Interval>();
             UserData.RegisterType<Intervals>();
+            UserData.RegisterType<Console.Console>();
+
 
             this.script = new Script();
-            this.script.Globals["Log"] = (Action<string>)Debug.Log;
             this.script.Globals["ChangeInterval"] = (Action<int>)ChangeInterval;
+            this.script.Globals["ConsoleRunCommand"] = (Action<string>)Console.Console.Run;
 
             this.script.DoString(script);
 
