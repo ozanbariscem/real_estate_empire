@@ -11,6 +11,7 @@ namespace Invesment
         {
             { "ageable", "true" },
             { "buyable", "true" },
+            { "physical", "true" },
             { "partially_ownable", "true" },
         };
 

@@ -7,12 +7,12 @@ namespace Invesment
 {
     public class Manager : MonoBehaviour
     {
+
         private Dictionary<string, List<Invesment>> invesments;
 
         private void Start()
         {
             Subscribe();
-            IDProperties();
         }
 
         private void OnDestroy()
@@ -50,9 +50,7 @@ namespace Invesment
                 Script script = Types.Dictionary[type].script;
                 if (script.Globals[eventName] != null)
                 {
-                    Debug.Log($"Lua start time {UnityEngine.Time.time}");
                     script.Call(script.Globals[eventName], timePass, invesments[type]);
-                    Debug.Log($"Lua end time {UnityEngine.Time.time}");
                 }
             }
         }
@@ -97,6 +95,8 @@ namespace Invesment
                 List<Invesment> _invesments = JsonConvert.DeserializeObject<List<Invesment>>(json);
                 invesments[type.type].AddRange(_invesments);
             }
+
+            InvesmentDictionary invesmentList = new InvesmentDictionary(invesments);
         }
         #endregion
 
@@ -109,7 +109,7 @@ namespace Invesment
             if (json == null) return;
 
             List<Invesment> _invesments = JsonConvert.DeserializeObject<List<Invesment>>(json);
-            ulong i = 0;
+            int i = 0;
             foreach (Invesment invesment in _invesments)
             {
                 invesment.id = i;

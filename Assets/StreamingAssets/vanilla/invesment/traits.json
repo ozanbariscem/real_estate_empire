@@ -5,6 +5,7 @@
 {
     "script":"[script-name].lua",
     "traits":{
+        "physical":"true",
         "ageable":"true",
         "buyable":"true",
         "partially_ownable":"true"

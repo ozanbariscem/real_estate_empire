@@ -1,23 +1,21 @@
 -- I exposed the Log function on DeveloperConsole.cs LoadScript function
-function add(...)
-    local numbers = {...}
+function log_error(...)
+    local string = params_to_string(...)
+    Log("<color=#FF0000>"..string.."</color>")
+end
 
-    local total = 0
-    local log = ""
-    for i = 1, #numbers do
-        local num = tonumber(numbers[i])
-        if num then
-            total = total + num
-            log = log..num
-            if i != #numbers then
-                log = log.." + "
-            end
-        end
+function log(...)
+    local string = params_to_string(...)
+    Log(string)
+end
+
+function params_to_string(...)
+    local params = {...}
+    local string = ""
+    for i=1, #params do 
+        string = string..params[i].." "
     end
-
-    log = log.."\n= "..total
-    Log(log)
-    return total
+    return string
 end
 
 -- I exposed the UI class on DeveloperConsole.cs LoadScript function

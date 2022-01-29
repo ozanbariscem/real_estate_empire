@@ -5,6 +5,7 @@
         "subTypes": {
             "land": {
                 "traits":{
+                    "physical":"true",
                     "ageable":"false",
                     "buyable":"true",
                     "partially_ownable":"true"
@@ -12,6 +13,7 @@
             },
             "house": {
                 "traits":{
+                    "physical":"true",
                     "ageable":"true",
                     "buyable":"true",
                     "partially_ownable":"false"
@@ -19,6 +21,7 @@
             },
             "building": {
                 "traits":{
+                    "physical":"true",
                     "ageable":"true",
                     "buyable":"true",
                     "partially_ownable":"true"

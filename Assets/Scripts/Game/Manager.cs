@@ -31,15 +31,22 @@ namespace Game
             LoadScript();
 
             if (timeManager)
+            {
                 timeManager.Initialize();
+            }
             else
                 Debug.LogError("Time manager is not referenced. This will cause major problems.");
             if (mapManager)
+            {
                 mapManager.Initialize();
+                mapManager.OnInvesmentClicked += HandleOnInvesmentClicked;
+            }
             else
                 Debug.LogError("Map manager is not referenced. This will cause major problems.");
             if (invesmentManager)
+            {
                 invesmentManager.Initialize();
+            }
             else
                 Debug.LogError("Invesment manager is not referenced. This will cause major problems.");
 
@@ -61,6 +68,22 @@ namespace Game
                 scirptUpdateDelta = 0;
             }
         }
+
+        #region HANDLERS
+        public void HandleOnInvesmentClicked(string tag, int id)
+        {
+            Invesment.Invesment invesment = Invesment.InvesmentDictionary.SafeGetInvesment(tag, id);
+            if (invesment != null)
+            {
+                Console.Console.Run($"log " +
+                    $"Invesment: [{tag} {id}] -> [{invesment.type} {invesment.id}], {invesment}");
+            }
+            else
+            {
+                Console.Console.Run($"log_error Can't find invesment with tag-id: {tag}-{id}. Please report this with id to us or the modders if you use any mods.");
+            }
+        }
+        #endregion
 
         #region CONTENT LOADER
         private void LoadScript()

@@ -7,6 +7,8 @@ namespace Console
 {
     public class Console : MonoBehaviour
     {
+        private static Console instance;
+
         public event Action<string> OnHistoryIndexChanged;
 
         public string scriptPath = "vanilla/console/console.lua";
@@ -15,6 +17,13 @@ namespace Console
         private History history;
 
         Script lua;
+
+        private void Awake()
+        {
+            if (!instance)
+                instance = this;
+            else return;
+        }
 
         private void Start()
         {
@@ -39,6 +48,11 @@ namespace Console
 
         // InputField on console prefab calls this
         public void HandleInputSubmit(string text)
+        {
+            RunCommand(text);
+        }
+
+        private void RunCommand(string text)
         {
             // We split the given text to 2 pieces
             // First piece is the command itself
@@ -65,6 +79,11 @@ namespace Console
             {
                 history.AddLog(text);
             }
+        }
+
+        public static void Run(string text)
+        {
+            instance.RunCommand(text);
         }
 
         private void LoadScript()

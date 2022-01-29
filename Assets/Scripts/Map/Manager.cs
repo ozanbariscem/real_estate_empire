@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using MoonSharp.Interpreter;
@@ -9,11 +10,14 @@ namespace Map
     {
         public event Action OnScriptLoaded;
         public event Action<Transform> OnMapLoaded;
-        public event Action<Transform[]> OnBuildingsLoaded;
+        public event Action<Dictionary<string, Transform[]>> OnInvesmentsLoaded;
 
-        private Transform[] buildings;
+        public event Action<string, int> OnInvesmentClicked;
+
+        private Dictionary<string, Transform[]> invesments;
 
         private GameObject mapObject;
+        private Transform invesmentsObject;
         private Script script;
 
         // Only use for event subscriptions
@@ -27,21 +31,52 @@ namespace Map
         {
             LoadScript();
             LoadMap();
-            SetBuildings();
+            LoadInvesments();
+        }
+
+        public void HandleInvesmentClicked(string tag, int id)
+        {
+            OnInvesmentClicked?.Invoke(tag, id);
+            script.Call(script.Globals[nameof(OnInvesmentClicked)], tag, id);
         }
 
         #region SETUP
-        private void SetBuildings()
+        private void LoadInvesments()
         {
-            int childCount = mapObject.transform.childCount;
+            int childCount = invesmentsObject.childCount;
 
-            buildings = new Transform[childCount];
+            invesments = new Dictionary<string, Transform[]>();
             for (int i = 0; i < childCount; i++)
             {
-                buildings[i] = mapObject.transform.GetChild(i);
+                string name = invesmentsObject.GetChild(i).name;
+
+                if (!invesments.ContainsKey(name))
+                {
+                    int invesmentCount = invesmentsObject.GetChild(i).childCount;
+
+                    invesments.Add(name, new Transform[invesmentCount]);
+
+                    for (int j = 0; j < invesmentCount; j++)
+                    {
+                        invesments[name][j] = invesmentsObject.GetChild(i).GetChild(j);
+                        SetInvesment(invesments[name][j], name, j);
+                    }
+                }
             }
-            OnBuildingsLoaded?.Invoke(buildings);
-            script.Call(script.Globals[nameof(OnBuildingsLoaded)], buildings);
+
+            OnInvesmentsLoaded?.Invoke(invesments);
+            script.Call(script.Globals[nameof(OnInvesmentsLoaded)], invesments);
+        }
+
+        private void SetInvesment(Transform transform, string tag, int id)
+        {
+            // Add collider
+            // Add building script
+            // That's it
+            transform.gameObject.AddComponent<PolygonCollider2D>();
+            Invesment invesment = transform.gameObject.AddComponent<Invesment>();
+            invesment.Set(tag, id);
+            invesment.OnInvesmentClicked += HandleInvesmentClicked;
         }
         #endregion
 
@@ -58,6 +93,8 @@ namespace Map
             }
             var prefab = myLoadedAssetBundle.LoadAsset<GameObject>("Map");
             mapObject = Instantiate(prefab);
+
+            invesmentsObject = mapObject.transform.GetChild(1);
 
             OnMapLoaded?.Invoke(mapObject.transform);
             script.Call(script.Globals[nameof(OnMapLoaded)], mapObject.transform);

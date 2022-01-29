@@ -9,16 +9,21 @@ namespace Invesment
         [JsonIgnore]
         public Data Data => Types.Dictionary[type].subTypes[sub_type];
 
-        public ulong id;
+        public int id;
       
         public string type;
         public string sub_type;
 
-        public short age;
         public string name;
+        public short age;
 
         public ushort shares;
         public uint baseValue;
+
+        public override string ToString()
+        {
+            return $"{type}-{sub_type} {name} {age} {shares} {baseValue}";
+        }
 
         public static Invesment FromJson(string json)
         {
