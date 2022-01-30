@@ -9,7 +9,8 @@ namespace Game
         public event Action OnScriptLoaded;
         public event Action<
             Game.Manager, Time.Manager, 
-            Map.Manager, Invesment.Manager> OnManagersInitialized;
+            Map.Manager, Invesment.Manager,
+            Investor.Manager, Ownership.Manager> OnManagersInitialized;
 
         [SerializeField] 
         private Time.Manager timeManager;
@@ -17,6 +18,10 @@ namespace Game
         private Map.Manager mapManager;
         [SerializeField]
         private Invesment.Manager invesmentManager;
+        [SerializeField]
+        private Investor.Manager investorManager;
+        [SerializeField]
+        private Ownership.Manager ownershipManager;
 
         private Script script;
         public float ScriptUpdateInterval = -1f;
@@ -49,13 +54,25 @@ namespace Game
             }
             else
                 Debug.LogError("Invesment manager is not referenced. This will cause major problems.");
+            if (investorManager)
+            {
+                investorManager.Initialize();
+            }
+            else
+                Debug.LogError("Investor manager is not referenced. This will cause major problems.");
+            if (ownershipManager)
+            {
+                ownershipManager.Initialize();
+            }
+            else
+                Debug.LogError("Ownership manager is not referenced. This will cause major problems.");
 
 
             OnManagersInitialized?.Invoke(
-                this, timeManager, mapManager, invesmentManager);
+                this, timeManager, mapManager, invesmentManager, investorManager, ownershipManager);
             script.Call(
                 script.Globals[nameof(OnManagersInitialized)], this, 
-                timeManager, mapManager, invesmentManager);
+                timeManager, mapManager, invesmentManager, investorManager, ownershipManager);
         }
 
         private void Update()
@@ -95,6 +112,8 @@ namespace Game
             UserData.RegisterType<Time.Manager>();
             UserData.RegisterType<Map.Manager>();
             UserData.RegisterType<Invesment.Manager>();
+            UserData.RegisterType<Investor.Manager>();
+            UserData.RegisterType<Ownership.Manager>();
             UserData.RegisterType<Console.Console>();
 
             script = new Script();

@@ -3,15 +3,19 @@ local gameManager
 local timeManager
 local mapManager
 local invesmentManager
+local investorManager
+local ownershipManager
 
 function OnScriptLoaded()
 end
 
-function OnManagersInitialized(game, time, map, invesment)
+function OnManagersInitialized(game, time, map, invesment, investor, ownership)
     gameManager = game
     timeManager = time
     mapManager = map
     invesmentManager = invesment
+    investorManager = investor
+    ownershipManager = ownership
 end
 
 -- Gets called every gameManager.ScriptUpdateInterval if it's not set to -1
