@@ -1,4 +1,6 @@
 {
+    "hours": 24,
+    "midday": 12,
     "months":[
         {
             "days":31,

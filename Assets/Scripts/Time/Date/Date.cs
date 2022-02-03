@@ -6,38 +6,46 @@ namespace Time
     [Serializable]
     public class Date
     {
+        public ushort hour;
         public ushort day;
         public ushort month;
         public ushort year;
 
         public string ToNumberString()
         {
-            return $"{day}.{month}.{year}";
+            return $"{hour}:00/{day}.{month}.{year}";
         }
 
         /// <summary>
-        /// Passes day according to given calendar
+        /// Passes time according to given calendar
         /// </summary>
         /// <param name="calendar"></param>
-        /// <returns>Represents the pass states of day ([0]), month ([1]) and year ([2])</returns>
-        public bool[] PassDay(Calendar.Calendar calendar)
+        /// <returns>Represents the pass states of hour ([0]), day ([1]), month ([2) and year ([3])</returns>
+        public bool[] PassTime(Calendar.Calendar calendar)
         {
-            bool[] hasPassed = new bool[3];
+            bool[] hasPassed = new bool[4];
 
             hasPassed[0] = true;
-            if (day + 1 <= calendar.months[month-1].days)
-                day++;
+            if (hour + 1 < calendar.hours)
+                hour++;
             else
             {
-                day = 1;
+                hour = 0;
                 hasPassed[1] = true;
-                if (month + 1 <= calendar.months.Length)
-                    month++;
+                if (day + 1 <= calendar.months[month - 1].days)
+                    day++;
                 else
                 {
-                    month = 1;
-                    year++;
+                    day = 1;
                     hasPassed[2] = true;
+                    if (month + 1 <= calendar.months.Length)
+                        month++;
+                    else
+                    {
+                        month = 1;
+                        year++;
+                        hasPassed[3] = true;
+                    }
                 }
             }
 

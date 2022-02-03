@@ -11,6 +11,8 @@ namespace Time
 
         public event Action<int> OnIntervalChanged;
 
+        public event Action<ushort> OnTickPass;
+        public event Action<ushort> OnHourPass;
         public event Action<ushort> OnDayPass;
         public event Action<ushort> OnMonthPass;
         public event Action<ushort> OnYearPass;
@@ -67,7 +69,7 @@ namespace Time
 
         private void CheckForIntervalLoop()
         {
-            if (UnityEngine.Time.time > lastCheckTime + intervals.Interval.day_in_seconds)
+            if (UnityEngine.Time.time > lastCheckTime + intervals.Interval.tick_in_seconds)
             {
                 lastCheckTime = UnityEngine.Time.time;
                 OnIntervalLooped?.Invoke();
@@ -97,22 +99,27 @@ namespace Time
 
         private void HandleIntervalLooped()
         {
-            bool[] passState = date.PassDay(calendar);
-
+            bool[] passState = date.PassTime(calendar);
+            
             if (passState[0])
+            {
+                OnHourPass?.Invoke(date.hour);
+                script.Call(script.Globals[nameof(OnHourPass)], date.hour);
+            }
+            if (passState[1])
             {
                 OnDayPass?.Invoke(date.day);
                 script.Call(script.Globals[nameof(OnDayPass)], date.day);
             }
-            if (passState[1]) 
+            if (passState[2])
             {
                 OnMonthPass?.Invoke(date.month);
                 script.Call(script.Globals[nameof(OnMonthPass)], date.month);
             }
-            if (passState[2])
+            if (passState[3])
             {
                 OnYearPass?.Invoke(date.year);
-                script.Call(script.Globals[nameof(OnYearPass)], date.month);
+                script.Call(script.Globals[nameof(OnYearPass)], date.year);
             }
         }
 
@@ -123,8 +130,9 @@ namespace Time
 
         private void HandleStartDateLoaded(Date date)
         {
-            date.month = (ushort)Mathf.Clamp(date.month, 1, calendar.months.Length);
+            date.hour = (ushort)Mathf.Clamp(date.hour, 0, calendar.hours - 1);
             date.day = (ushort)Mathf.Clamp(date.day, 1, calendar.months[date.month].days);
+            date.month = (ushort)Mathf.Clamp(date.month, 1, calendar.months.Length);
         }
         #endregion
 

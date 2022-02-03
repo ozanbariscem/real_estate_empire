@@ -28,11 +28,14 @@ function OnStartDateLoaded(_date)
     date = _date
 end
 
-
 function OnIntervalChanged(to_index)
 end
 
 function OnIntervalLooped()
+    ConsoleRunCommand("log "..date.ToNumberString())
+end
+
+function OnHourPass(new_hour)
 end
 
 -- Given as an example for modder

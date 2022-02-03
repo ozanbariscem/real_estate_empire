@@ -5,7 +5,7 @@ namespace Time
     [Serializable]
     public class Interval
     {
-        public float day_in_seconds = 1f;
+        public float tick_in_seconds = 1f;
     }
 }
 
