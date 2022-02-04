@@ -8,11 +8,12 @@ namespace Game
     {
         public event Action OnScriptLoaded;
         public event Action<
-            Game.Manager, Time.Manager, 
-            Map.Manager, Invesment.Manager,
-            Investor.Manager, Ownership.Manager> OnManagersInitialized;
+            Game.Manager,
+            Time.Manager, Map.Manager,
+            Invesment.Manager, Investor.Manager,
+            Ownership.Manager, UI.Manager> OnManagersInitialized;
 
-        [SerializeField] 
+        [SerializeField]
         private Time.Manager timeManager;
         [SerializeField]
         private Map.Manager mapManager;
@@ -22,6 +23,8 @@ namespace Game
         private Investor.Manager investorManager;
         [SerializeField]
         private Ownership.Manager ownershipManager;
+        [SerializeField]
+        private UI.Manager uiManager;
 
         private Script script;
         public float ScriptUpdateInterval = -1f;
@@ -65,14 +68,20 @@ namespace Game
                 ownershipManager.Initialize();
             }
             else
-                Debug.LogError("Ownership manager is not referenced. This will cause major problems.");
+                Debug.LogError("Ownership manager is not referenced. This will cause major problems."); 
+            if (uiManager)
+            {
+                uiManager.Initialize(this);
+            }
+            else
+                Debug.LogError("UI manager is not referenced. This will cause major problems.");
 
 
             OnManagersInitialized?.Invoke(
-                this, timeManager, mapManager, invesmentManager, investorManager, ownershipManager);
+                this, timeManager, mapManager, invesmentManager, investorManager, ownershipManager, uiManager);
             script.Call(
-                script.Globals[nameof(OnManagersInitialized)], this, 
-                timeManager, mapManager, invesmentManager, investorManager, ownershipManager);
+                script.Globals[nameof(OnManagersInitialized)], this,
+                timeManager, mapManager, invesmentManager, investorManager, ownershipManager, uiManager);
         }
 
         private void Update()
@@ -85,6 +94,15 @@ namespace Game
                 scirptUpdateDelta = 0;
             }
         }
+
+        #region GETTERS
+        public Time.Manager GetTimeManager() => timeManager;
+        public Map.Manager GetMapManager() => mapManager;
+        public Invesment.Manager GetInvesmentManager() => invesmentManager;
+        public Investor.Manager GetInvestorManager() => investorManager;
+        public Ownership.Manager GetOwnershipManager() => ownershipManager;
+        public UI.Manager GetUIManager() => uiManager;
+        #endregion
 
         #region HANDLERS
         public void HandleOnInvesmentClicked(string tag, int id)
@@ -114,6 +132,7 @@ namespace Game
             UserData.RegisterType<Invesment.Manager>();
             UserData.RegisterType<Investor.Manager>();
             UserData.RegisterType<Ownership.Manager>();
+            UserData.RegisterType<UI.Manager>();
             UserData.RegisterType<Console.Console>();
 
             script = new Script();

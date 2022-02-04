@@ -14,7 +14,7 @@ end
     -- It's better to remove empty function bodies entirely for performance reasons
 --end
 
-function HandleYearPass(year, invesment)
+function HandleYearPass(year, invesments)
     for i = 1, #invesments do
         if invesments[i].Data.Is("ageable") then
             invesments[i].age = invesments[i].age + 1

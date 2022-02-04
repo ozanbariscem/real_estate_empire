@@ -28,11 +28,18 @@ function OnStartDateLoaded(_date)
     date = _date
 end
 
+function OnPaused()
+end
+
+function OnResumed()
+end
+
 function OnIntervalChanged(to_index)
 end
 
+-- OnTick
 function OnIntervalLooped()
-    ConsoleRunCommand("log "..date.ToNumberString())
+    -- ConsoleRunCommand("log "..date.ToNumberString())
 end
 
 function OnHourPass(new_hour)

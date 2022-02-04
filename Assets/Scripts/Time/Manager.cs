@@ -6,28 +6,34 @@ namespace Time
 {
     public class Manager : MonoBehaviour
     {
+        public enum STATE { PAUSED, PLAYING }
+
         private static Manager instance;
         public static Manager Instance => instance;
 
-        public event Action<int> OnIntervalChanged;
+        public event EventHandler OnPaused;
+        public event EventHandler OnResumed;
 
-        public event Action<ushort> OnTickPass;
-        public event Action<ushort> OnHourPass;
-        public event Action<ushort> OnDayPass;
-        public event Action<ushort> OnMonthPass;
-        public event Action<ushort> OnYearPass;
+        public event EventHandler<Intervals> OnIntervalChanged;
 
-        public event Action<Calendar.Calendar> OnCalendarLoaded;
-        public event Action<Intervals> OnIntervalsLoaded;
-        public event Action<Date> OnStartDateLoaded;
-        public event Action OnScriptLoaded;
+        public event EventHandler<Date> OnHourPass;
+        public event EventHandler<Date> OnDayPass;
+        public event EventHandler<Date> OnMonthPass;
+        public event EventHandler<Date> OnYearPass;
 
-        public event Action OnIntervalLooped;
+        public event EventHandler<Calendar.Calendar> OnCalendarLoaded;
+        public event EventHandler<Intervals> OnIntervalsLoaded;
+        public event EventHandler<Date> OnStartDateLoaded;
+        public event EventHandler OnScriptLoaded;
+        public event EventHandler OnIntervalLooped;
 
         private Calendar.Calendar calendar;
-        private Intervals intervals;
+        public Intervals Intervals { get; private set; }
         private Date date;
 
+        public bool IsPaused { get; private set; }
+
+        private float lastDifference;
         private float lastCheckTime;
 
         private Script script;
@@ -54,6 +60,8 @@ namespace Time
             LoadCalendar();
             LoadIntervals();
             LoadStartDate();
+
+            Pause();
         }
 
         private void OnDestroy()
@@ -69,19 +77,42 @@ namespace Time
 
         private void CheckForIntervalLoop()
         {
-            if (UnityEngine.Time.time > lastCheckTime + intervals.Interval.tick_in_seconds)
+            if (IsPaused)
             {
                 lastCheckTime = UnityEngine.Time.time;
-                OnIntervalLooped?.Invoke();
+                return;
+            }
+            else if (UnityEngine.Time.time > lastCheckTime + Intervals.Interval.tick_in_seconds)
+            {
+                lastCheckTime = UnityEngine.Time.time;
+                OnIntervalLooped?.Invoke(this, EventArgs.Empty);
                 script.Call(script.Globals[nameof(OnIntervalLooped)]);
             }
         }
 
+        public void Play() 
+        {
+            IsPaused = false;
+            lastCheckTime = UnityEngine.Time.time - lastDifference;
+
+            OnResumed?.Invoke(this, EventArgs.Empty);
+            script.Call(script.Globals[nameof(OnResumed)]);
+        }
+
+        public void Pause()
+        {
+            IsPaused = true;
+            lastDifference = UnityEngine.Time.time - lastCheckTime;
+
+            OnPaused?.Invoke(this, EventArgs.Empty);
+            script.Call(script.Globals[nameof(OnPaused)]);
+        }
+
         public void ChangeInterval(int to)
         {
-            intervals.SelectInterval(to);
-            OnIntervalChanged?.Invoke(intervals.SelectedInterval);
-            script.Call(script.Globals[nameof(OnIntervalChanged)], to);
+            Intervals.SelectInterval(to);
+            OnIntervalChanged?.Invoke(this, Intervals);
+            script.Call(script.Globals[nameof(OnIntervalChanged)], Intervals);
         }
 
         #region HANDLERS
@@ -89,46 +120,53 @@ namespace Time
         {
             if (Input.GetKeyDown(KeyCode.Equals) || Input.GetKeyDown(KeyCode.KeypadPlus))
             {
-                ChangeInterval(intervals.SelectedInterval + 1);
+                ChangeInterval(Intervals.SelectedInterval + 1);
             }
             if (Input.GetKeyDown(KeyCode.Minus) || Input.GetKeyDown(KeyCode.KeypadMinus))
             {
-                ChangeInterval(intervals.SelectedInterval - 1);
+                ChangeInterval(Intervals.SelectedInterval - 1);
+            }
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                if (IsPaused) 
+                    Play();
+                else 
+                    Pause();
             }
         }
 
-        private void HandleIntervalLooped()
+        private void HandleIntervalLooped(object sender, EventArgs e)
         {
             bool[] passState = date.PassTime(calendar);
             
             if (passState[0])
             {
-                OnHourPass?.Invoke(date.hour);
+                OnHourPass?.Invoke(this, date);
                 script.Call(script.Globals[nameof(OnHourPass)], date.hour);
             }
             if (passState[1])
             {
-                OnDayPass?.Invoke(date.day);
+                OnDayPass?.Invoke(this, date);
                 script.Call(script.Globals[nameof(OnDayPass)], date.day);
             }
             if (passState[2])
             {
-                OnMonthPass?.Invoke(date.month);
+                OnMonthPass?.Invoke(this, date);
                 script.Call(script.Globals[nameof(OnMonthPass)], date.month);
             }
             if (passState[3])
             {
-                OnYearPass?.Invoke(date.year);
+                OnYearPass?.Invoke(this, date);
                 script.Call(script.Globals[nameof(OnYearPass)], date.year);
             }
         }
 
-        private void HandleIntervalsLoaded(Intervals intervals)
+        private void HandleIntervalsLoaded(object sender, Intervals intervals)
         {
             intervals.SelectInterval(0);
         }
 
-        private void HandleStartDateLoaded(Date date)
+        private void HandleStartDateLoaded(object sender, Date date)
         {
             date.hour = (ushort)Mathf.Clamp(date.hour, 0, calendar.hours - 1);
             date.day = (ushort)Mathf.Clamp(date.day, 1, calendar.months[date.month].days);
@@ -172,7 +210,7 @@ namespace Time
 
             this.script.DoString(script);
 
-            OnScriptLoaded?.Invoke();
+            OnScriptLoaded?.Invoke(this, EventArgs.Empty);
             this.script.Call(this.script.Globals[nameof(OnScriptLoaded)]);
         }
 
@@ -182,7 +220,7 @@ namespace Time
             if (json == null) return;
 
             calendar = Calendar.Calendar.FromJson(json);
-            OnCalendarLoaded?.Invoke(calendar);
+            OnCalendarLoaded?.Invoke(this, calendar);
             script.Call(script.Globals[nameof(OnCalendarLoaded)], calendar);
         }
 
@@ -191,9 +229,9 @@ namespace Time
             string json = Utils.StreamingAssetsHandler.SafeGetString("vanilla/time/intervals.txt");
             if (json == null) return;
 
-            intervals = Intervals.FromJson(json);
-            OnIntervalsLoaded?.Invoke(intervals);
-            script.Call(script.Globals[nameof(OnIntervalsLoaded)], intervals);
+            Intervals = Intervals.FromJson(json);
+            OnIntervalsLoaded?.Invoke(this, Intervals);
+            script.Call(script.Globals[nameof(OnIntervalsLoaded)], Intervals);
         }
 
         private void LoadStartDate()
@@ -202,7 +240,7 @@ namespace Time
             if (json == null) return;
 
             date = Date.FromJson(json);
-            OnStartDateLoaded?.Invoke(date);
+            OnStartDateLoaded?.Invoke(this, date);
             script.Call(script.Globals[nameof(OnStartDateLoaded)], date);
         }
         #endregion

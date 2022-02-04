@@ -39,29 +39,34 @@ namespace Invesment
         }
 
         #region HANDLERS
-        private void HandleDayPass(ushort day)
+        private void HandleHourPass(object sender, Time.Date date)
         {
-            HandleTimePass("HandleDayPass", day);
+            HandleTimePass("HandleHourPass", date);
         }
 
-        private void HandleMonthPass(ushort month)
+        private void HandleDayPass(object sender, Time.Date date)
         {
-            HandleTimePass("HandleMonthPass", month);
+            HandleTimePass("HandleDayPass", date);
         }
 
-        private void HandleYearPass(ushort year)
+        private void HandleMonthPass(object sender, Time.Date date)
         {
-            HandleTimePass("HandleYearPass", year);
+            HandleTimePass("HandleMonthPass", date);
         }
 
-        private void HandleTimePass(string eventName, ushort timePass)
+        private void HandleYearPass(object sender, Time.Date date)
+        {
+            HandleTimePass("HandleYearPass", date);
+        }
+
+        private void HandleTimePass(string eventName, Time.Date date)
         {
             foreach (var type in invesments.Keys)
             {
                 Script script = Types.Dictionary[type].script;
                 if (script.Globals[eventName] != null)
                 {
-                    script.Call(script.Globals[eventName], timePass, invesments[type]);
+                    script.Call(script.Globals[eventName], date, invesments[type]);
                 }
             }
         }

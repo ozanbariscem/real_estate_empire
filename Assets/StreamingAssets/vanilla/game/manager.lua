@@ -1,5 +1,6 @@
 -- Managers are private on GameManager class so it's important to catch these at OnManagersInitialized
 local gameManager
+local uiManager
 local timeManager
 local mapManager
 local invesmentManager
@@ -9,8 +10,9 @@ local ownershipManager
 function OnScriptLoaded()
 end
 
-function OnManagersInitialized(game, time, map, invesment, investor, ownership)
+function OnManagersInitialized(game, ui, time, map, invesment, investor, ownership)
     gameManager = game
+    uiManager = ui
     timeManager = time
     mapManager = map
     invesmentManager = invesment
