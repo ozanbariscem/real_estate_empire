@@ -6,12 +6,14 @@ namespace Investor
     {
         private static List<Investor> list;
 
+        public InvestorList() { }
+
         public InvestorList(List<Investor> list)
         {
             InvestorList.list = list;
         }
 
-        public static Investor SafeGetInvestor(int id)
+        public static Investor GetInvestor(int id)
         {
             if (id < list.Count)
             {

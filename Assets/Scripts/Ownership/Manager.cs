@@ -32,7 +32,7 @@ namespace Ownership
             UserData.RegisterType<Console.Console>();
 
             script = new Script();
-            script.Globals["GetOwnership"] = (Func<int, Ownership>)OwnershipList.SafeGetOwnership;
+            script.Globals["GetOwnership"] = (Func<int, Ownership>)OwnershipList.GetOwnership;
             script.Globals["ConsoleRunCommand"] = (Action<string>)Console.Console.Run;
             script.DoString(scriptString);
 

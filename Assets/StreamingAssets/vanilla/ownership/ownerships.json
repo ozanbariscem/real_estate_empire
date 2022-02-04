@@ -8,7 +8,7 @@
     },
     {
         "id": 1,
-        "investor_id": 0,
+        "investor_id": 1,
         "invesment_type": "property",
         "invesment_id": 0,
         "shares": 1

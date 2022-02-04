@@ -11,7 +11,7 @@ namespace Map
     /// </summary>
     public class Invesment : MonoBehaviour
     {
-        public event Action<string, int> OnInvesmentClicked;
+        public event EventHandler<Invesment> OnInvesmentClicked;
 
         private int _id;
         public int Id => _id;
@@ -27,7 +27,7 @@ namespace Map
 
         public void OnMouseDown()
         {
-            OnInvesmentClicked?.Invoke(_tag, _id);
+            OnInvesmentClicked?.Invoke(this, this);
         }
     }
 }

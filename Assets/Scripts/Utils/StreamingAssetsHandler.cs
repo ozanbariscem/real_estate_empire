@@ -5,6 +5,22 @@ namespace Utils
 {
     public static class StreamingAssetsHandler
     {
+        public static Texture2D SafeGetTexture(string target)
+        {
+            string path = Path.Combine(Application.streamingAssetsPath, target);
+            if (!File.Exists(path))
+            {
+                Debug.LogError($"Hey make sure {path} exists!");
+                return null;
+            }
+            
+            byte[] bytes = File.ReadAllBytes(path);
+            Texture2D texture = new Texture2D(2, 2);
+            texture.LoadImage(bytes);
+            
+            return texture;
+        }
+
         public static string SafeGetString(string target)
         {
             string path = Path.Combine(Application.streamingAssetsPath, target);

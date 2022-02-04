@@ -84,7 +84,6 @@ namespace Game
             else
                 Debug.LogError("UI manager is not referenced. This will cause major problems.");
 
-
             OnManagersInitialized?.Invoke(
                 this, languageManager, timeManager, mapManager, invesmentManager, investorManager, ownershipManager, uiManager);
             script.Call(
@@ -114,17 +113,17 @@ namespace Game
         #endregion
 
         #region HANDLERS
-        public void HandleOnInvesmentClicked(string tag, int id)
+        public void HandleOnInvesmentClicked(object sender, Map.Invesment physicalInvesment)
         {
-            Invesment.Invesment invesment = Invesment.InvesmentDictionary.SafeGetInvesment(tag, id);
+            Invesment.Invesment invesment = Invesment.InvesmentDictionary.GetInvesment(physicalInvesment.Tag, physicalInvesment.Id);
             if (invesment != null)
             {
                 Console.Console.Run($"log " +
-                    $"Invesment: [{tag} {id}] -> [{invesment.type} {invesment.id}], {invesment}");
+                    $"Invesment: [{physicalInvesment.Tag} {physicalInvesment.Id}] -> [{invesment.type} {invesment.id}], {invesment}");
             }
             else
             {
-                Console.Console.Run($"log_error Can't find invesment with tag-id: {tag}-{id}. Please report this with id to us or the modders if you use any mods.");
+                Console.Console.Run($"log_error Can't find invesment with tag-id: {physicalInvesment.Tag}-{physicalInvesment.Id}. Please report this with id to us or the modders if you use any mods.");
             }
         }
         #endregion

@@ -3,7 +3,6 @@
 -- for new traits you obviously need to implement their behaviour on invesment scripts
 -- check invemesnt scripts for examples
 {
-    "script":"[script-name].lua",
     "traits":{
         "physical":"true",
         "ageable":"true",

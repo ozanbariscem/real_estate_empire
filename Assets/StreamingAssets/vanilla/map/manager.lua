@@ -13,7 +13,6 @@ function OnInvesmentsLoaded(invesments)
 end
 
 -- only phsyical invesments can be clicked
--- tag - invesment type
--- id - invesment id of invesments with tag^
-function OnInvesmentClicked(tag, id)
+-- invesment - Map.Invesment type has { Tag:string, Id:int }
+function OnInvesmentClicked(invesment)
 end

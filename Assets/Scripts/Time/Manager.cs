@@ -29,7 +29,7 @@ namespace Time
 
         private Calendar.Calendar calendar;
         public Intervals Intervals { get; private set; }
-        private Date date;
+        public Date date { get; private set; }
 
         public bool IsPaused { get; private set; }
 

@@ -82,26 +82,47 @@ namespace UI
             string scriptString = Utils.StreamingAssetsHandler.SafeGetString($"vanilla/ui/elements/{name}/{name}.lua");
             if (scriptString == null) return null;
 
+            UserData.RegisterType<TMPro.TextMeshProUGUI>();
             UserData.RegisterType<Transform>();
             UserData.RegisterType<GameObject>();
+            UserData.RegisterType<Image>();
+            UserData.RegisterType<RawImage>();
+            UserData.RegisterType<Color>();
+            UserData.RegisterType<Texture2D>();
 
             UserData.RegisterType<EventArgs>();
+
             UserData.RegisterType<Game.Manager>();
             UserData.RegisterType<Time.Manager>();
             UserData.RegisterType<Map.Manager>();
             UserData.RegisterType<Invesment.Manager>();
             UserData.RegisterType<Investor.Manager>();
             UserData.RegisterType<Ownership.Manager>();
+            UserData.RegisterType<Language.Manager>();
             UserData.RegisterType<UI.Manager>();
             UserData.RegisterType<Console.Console>();
 
-            UserData.RegisterType<TMPro.TextMeshProUGUI>();
-
             UserData.RegisterType<Time.Date>();
+            UserData.RegisterType<Map.Invesment>();
+            UserData.RegisterType<Investor.Investor>();
+            UserData.RegisterType<Invesment.Invesment>();
+            UserData.RegisterType<Ownership.Ownership>();
+
+            UserData.RegisterType<Investor.InvestorList>();
+            UserData.RegisterType<Invesment.InvesmentDictionary>();
+            UserData.RegisterType<Ownership.OwnershipList>();
 
             Script script = new Script();
             script.Globals["ConsoleRunCommand"] = (Action<string>)Console.Console.Run;
+            script.Globals["Instantiate"] = (Func<UnityEngine.Object, Transform, UnityEngine.Object>)Instantiate;
             script.Globals["GameManager"] = gameManager;
+
+            script.Globals["Color"] = (Func<float, float, float, float, Color>)((r, g, b, a) => { return new Color(r, g, b, a); });
+
+            script.Globals["InvesmentDictionary"] = new Invesment.InvesmentDictionary();
+            script.Globals["OwnershipList"] = new Ownership.OwnershipList();
+            script.Globals["InvestorList"] = new Investor.InvestorList();
+
             script.DoString(scriptString);
 
             script.Call(script.Globals[nameof(OnScriptLoaded)]);

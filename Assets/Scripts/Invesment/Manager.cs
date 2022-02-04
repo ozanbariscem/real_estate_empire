@@ -20,6 +20,7 @@ namespace Invesment
         private void Start()
         {
             Subscribe();
+            IDProperties();
         }
 
         private void OnDestroy()
@@ -101,7 +102,7 @@ namespace Invesment
             UserData.RegisterType<Console.Console>();
 
             script = new Script();
-            script.Globals["GetInvesment"] = (Func<string, int, Invesment>)InvesmentDictionary.SafeGetInvesment;
+            script.Globals["GetInvesment"] = (Func<string, int, Invesment>)InvesmentDictionary.GetInvesment;
             script.Globals["ConsoleRunCommand"] = (Action<string>)Console.Console.Run;
             script.DoString(scriptString);
 

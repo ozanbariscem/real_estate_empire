@@ -1,3 +1,12 @@
 {
-    "PAUSED": "paused"
+    "PAUSED": "paused",
+
+    "BUILDING": "building",
+    "HOUSE": "house",
+    "LAND": "land",
+
+    "CONSTRUCTION": "construction",
+    "YEAR": "year",
+    "APARTMENT": "apartment",
+    "PRICE": "price"
 }

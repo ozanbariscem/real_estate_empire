@@ -12,7 +12,7 @@ namespace Map
         public event Action<Transform> OnMapLoaded;
         public event Action<Dictionary<string, Transform[]>> OnInvesmentsLoaded;
 
-        public event Action<string, int> OnInvesmentClicked;
+        public event EventHandler<Invesment> OnInvesmentClicked;
 
         private Dictionary<string, Transform[]> invesments;
 
@@ -34,10 +34,10 @@ namespace Map
             LoadInvesments();
         }
 
-        public void HandleInvesmentClicked(string tag, int id)
+        public void HandleInvesmentClicked(object sender, Invesment invesment)
         {
-            OnInvesmentClicked?.Invoke(tag, id);
-            script.Call(script.Globals[nameof(OnInvesmentClicked)], tag, id);
+            OnInvesmentClicked?.Invoke(this, invesment);
+            script.Call(script.Globals[nameof(OnInvesmentClicked)], invesment);
         }
 
         #region SETUP
@@ -107,6 +107,7 @@ namespace Map
 
             UserData.RegisterType<Transform>();
             UserData.RegisterType<Console.Console>();
+            UserData.RegisterType<Invesment>();
 
             script = new Script();
             script.Globals["ConsoleRunCommand"] = (Action<string>)Console.Console.Run;

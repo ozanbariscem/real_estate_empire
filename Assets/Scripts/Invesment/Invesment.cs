@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 using Newtonsoft.Json;
 
 namespace Invesment
@@ -13,6 +14,12 @@ namespace Invesment
       
         public string type;
         public string sub_type;
+
+        [JsonProperty("photo")]
+        public string photo;
+
+        [JsonIgnore]
+        public Texture2D texture;
 
         public string name;
         public short age;

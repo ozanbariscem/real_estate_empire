@@ -51,7 +51,7 @@ namespace Investor
             UserData.RegisterType<Console.Console>();
 
             script = new Script();
-            script.Globals["GetInvestor"] = (Func<int, Investor>)InvestorList.SafeGetInvestor;
+            script.Globals["GetInvestor"] = (Func<int, Investor>)InvestorList.GetInvestor;
             script.Globals["ConsoleRunCommand"] = (Action<string>)Console.Console.Run;
             script.DoString(scriptString);
 
