@@ -30,6 +30,7 @@ function OnScriptSet(_transform)
 
     text = transform.Find("Text").GetComponent("TextMeshProUGUI")
     pauseText = transform.Find("PauseText").GetComponent("TextMeshProUGUI")
+    pauseText.text = GameManager.GetLanguageManager().Translate("PAUSED"):upper()
 
     GetSpeedIndicators()
     GetTimeStateImages()

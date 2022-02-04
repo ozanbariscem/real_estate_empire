@@ -1,23 +1,25 @@
 -- Managers are private on GameManager class so it's important to catch these at OnManagersInitialized
 local gameManager
-local uiManager
+local languageManager
 local timeManager
 local mapManager
 local invesmentManager
 local investorManager
 local ownershipManager
+local uiManager
 
 function OnScriptLoaded()
 end
 
-function OnManagersInitialized(game, ui, time, map, invesment, investor, ownership)
+function OnManagersInitialized(game, language, time, map, invesment, investor, ownership, ui)
     gameManager = game
-    uiManager = ui
+    languageManager = language
     timeManager = time
     mapManager = map
     invesmentManager = invesment
     investorManager = investor
     ownershipManager = ownership
+    uiManager = ui
 end
 
 -- Gets called every gameManager.ScriptUpdateInterval if it's not set to -1
@@ -32,7 +34,7 @@ end
 
 -- default value is -1 = Don't update 
 function ChangeScriptUpdateInterval(interval)
-    if interval != -1 and interval < 0 then
+    if (not interval == -1) and (interval < 0) then
         return
     end
     gameManager.ScriptUpdateInterval = interval

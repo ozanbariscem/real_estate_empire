@@ -8,11 +8,13 @@ namespace Game
     {
         public event Action OnScriptLoaded;
         public event Action<
-            Game.Manager,
+            Game.Manager, Language.Manager,
             Time.Manager, Map.Manager,
             Invesment.Manager, Investor.Manager,
             Ownership.Manager, UI.Manager> OnManagersInitialized;
 
+        [SerializeField]
+        private Language.Manager languageManager;
         [SerializeField]
         private Time.Manager timeManager;
         [SerializeField]
@@ -38,6 +40,12 @@ namespace Game
 
             LoadScript();
 
+            if (languageManager)
+            {
+                languageManager.Initialize();
+            }
+            else
+                Debug.LogError("Language manager is not referenced. This will cause major problems.");
             if (timeManager)
             {
                 timeManager.Initialize();
@@ -78,10 +86,10 @@ namespace Game
 
 
             OnManagersInitialized?.Invoke(
-                this, timeManager, mapManager, invesmentManager, investorManager, ownershipManager, uiManager);
+                this, languageManager, timeManager, mapManager, invesmentManager, investorManager, ownershipManager, uiManager);
             script.Call(
                 script.Globals[nameof(OnManagersInitialized)], this,
-                timeManager, mapManager, invesmentManager, investorManager, ownershipManager, uiManager);
+                languageManager, timeManager, mapManager, invesmentManager, investorManager, ownershipManager, uiManager, languageManager);
         }
 
         private void Update()
@@ -102,6 +110,7 @@ namespace Game
         public Investor.Manager GetInvestorManager() => investorManager;
         public Ownership.Manager GetOwnershipManager() => ownershipManager;
         public UI.Manager GetUIManager() => uiManager;
+        public Language.Manager GetLanguageManager() => languageManager;
         #endregion
 
         #region HANDLERS
@@ -133,6 +142,7 @@ namespace Game
             UserData.RegisterType<Investor.Manager>();
             UserData.RegisterType<Ownership.Manager>();
             UserData.RegisterType<UI.Manager>();
+            UserData.RegisterType<Language.Manager>();
             UserData.RegisterType<Console.Console>();
 
             script = new Script();
