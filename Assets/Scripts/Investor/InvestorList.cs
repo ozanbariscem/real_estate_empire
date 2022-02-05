@@ -1,7 +1,9 @@
 using System.Collections.Generic;
+using MoonSharp.Interpreter;
 
 namespace Investor
 {
+    [MoonSharpUserData]
     public class InvestorList
     {
         private static List<Investor> list;

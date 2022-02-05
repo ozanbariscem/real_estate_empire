@@ -1,3 +1,8 @@
 function OnScriptLoaded()
-    -- ConsoleRunCommand("log "..GameManager.name)
+end
+
+function OnRulesLoaded()
+end
+
+function OnContentLoaded()
 end

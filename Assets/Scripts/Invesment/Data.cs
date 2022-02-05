@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using MoonSharp.Interpreter;
 
 namespace Invesment
 {
-    [Serializable]
+    [Serializable][MoonSharpUserData]
     public class Data
     {
         public Dictionary<string, string> traits = new Dictionary<string, string>()

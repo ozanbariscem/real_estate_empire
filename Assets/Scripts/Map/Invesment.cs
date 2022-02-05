@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using MoonSharp.Interpreter;
 
 namespace Map
 {
@@ -9,6 +10,7 @@ namespace Map
     /// It only knows it's ID
     /// It only handles mouse clicks
     /// </summary>
+    [MoonSharpUserData]
     public class Invesment : MonoBehaviour
     {
         public event EventHandler<Invesment> OnInvesmentClicked;

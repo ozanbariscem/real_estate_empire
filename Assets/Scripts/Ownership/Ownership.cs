@@ -1,5 +1,8 @@
+using MoonSharp.Interpreter;
+
 namespace Ownership
 {
+    [MoonSharpUserData]
     public class Ownership
     {
         public int id;

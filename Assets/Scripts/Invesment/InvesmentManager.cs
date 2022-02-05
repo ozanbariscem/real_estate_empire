@@ -1,41 +1,42 @@
 using System;
-using UnityEngine;
 using Newtonsoft.Json;
 using MoonSharp.Interpreter;
 using System.Collections.Generic;
 
 namespace Invesment
 {
-    public class Manager : MonoBehaviour
+    [MoonSharpUserData]
+    public class InvesmentManager : Manager.Manager
     {
-        public event Action OnScriptLoaded;
-        public event Action<Dictionary<string, Type>> OnTypesLoaded;
-        public event Action<Dictionary<string, List<Invesment>>> OnInvesmentsLoaded;
-        public event Action OnReady;
+        public static InvesmentManager Instance { get; private set; }
+
+        public event EventHandler<Dictionary<string, Type>> OnTypesLoaded;
+        public event EventHandler<Dictionary<string, List<Invesment>>> OnInvesmentsLoaded;
 
         private Dictionary<string, List<Invesment>> invesments;
 
-        private Script script;
-
-        private void Start()
+        private void Awake()
         {
-            Subscribe();
-        }
-
-        private void OnDestroy()
-        {
-            Unsubscribe();
+            if (!Instance)
+                Instance = this;
         }
 
         [MoonSharpHidden]
-        public void Initialize()
+        public override void LoadRules()
         {
+            scriptPath = "invesment/manager.lua";
+
             LoadScript();
             LoadTypes();
-            LoadInvesments();
 
-            OnReady?.Invoke();
-            script.Call(script.Globals[nameof(OnReady)]);
+            RaiseOnRulesLoaded();
+        }
+
+        [MoonSharpHidden]
+        public override void LoadContent(string path)
+        {
+            LoadInvesments(path);
+            RaiseOnContentLoaded();
         }
 
         #region HANDLERS
@@ -73,59 +74,39 @@ namespace Invesment
         #endregion
 
         #region SUBSCRIPTIONS
-        private void Subscribe()
+        protected override void Subscribe()
         {
-            Time.Manager.Instance.OnDayPass += HandleDayPass;
-            Time.Manager.Instance.OnMonthPass += HandleMonthPass;
-            Time.Manager.Instance.OnYearPass += HandleYearPass;
+            Time.TimeManager.Instance.OnHourPass += HandleHourPass;
+            Time.TimeManager.Instance.OnDayPass += HandleDayPass;
+            Time.TimeManager.Instance.OnMonthPass += HandleMonthPass;
+            Time.TimeManager.Instance.OnYearPass += HandleYearPass;
         }
 
-        private void Unsubscribe()
+        protected override void Unsubscribe()
         {
-            Time.Manager.Instance.OnDayPass -= HandleDayPass;
-            Time.Manager.Instance.OnMonthPass -= HandleMonthPass;
-            Time.Manager.Instance.OnYearPass -= HandleYearPass;
+            Time.TimeManager.Instance.OnHourPass -= HandleHourPass;
+            Time.TimeManager.Instance.OnDayPass -= HandleDayPass;
+            Time.TimeManager.Instance.OnMonthPass -= HandleMonthPass;
+            Time.TimeManager.Instance.OnYearPass -= HandleYearPass;
         }
         #endregion
 
         #region CONTENT LOADER
-        private void LoadScript()
-        {
-            string scriptString = Utils.StreamingAssetsHandler.SafeGetString("vanilla/invesment/manager.lua");
-            if (scriptString == null) return;
-
-            UserData.RegisterType<Data>();
-            UserData.RegisterType<Type>();
-            UserData.RegisterType<Invesment>();
-
-            UserData.RegisterType<Console.Console>();
-
-            script = new Script();
-            script.Globals["GetInvesment"] = (Func<string, int, Invesment>)InvesmentDictionary.GetInvesment;
-            script.Globals["ConsoleRunCommand"] = (Action<string>)Console.Console.Run;
-            script.DoString(scriptString);
-
-            OnScriptLoaded?.Invoke();
-            script.Call(script.Globals[nameof(OnScriptLoaded)]);
-        }
-
         private void LoadTypes()
         {
             string json = Utils.StreamingAssetsHandler.SafeGetString("vanilla/invesment/types/types.json");
             if (json == null) return;
-
+            
             Types.LoadJson(json);
-
-            OnTypesLoaded?.Invoke(Types.Dictionary);
-            script.Call(script.Globals[nameof(OnTypesLoaded)], Types.Dictionary);
+            OnTypesLoaded?.Invoke(this, Types.Dictionary);
         }
 
-        private void LoadInvesments()
+        private void LoadInvesments(string path)
         {
             invesments = new Dictionary<string, List<Invesment>>();
             foreach (Type type in Types.Dictionary.Values)
             {
-                string json = Utils.StreamingAssetsHandler.SafeGetString($"vanilla/invesment/{type.type}/invesments.json");
+                string json = Utils.ContentHandler.SafeGetString($"{path}/invesment/{type.type}/invesments.json");
                 if (json == null) continue;
 
                 if (!invesments.ContainsKey(type.type))
@@ -136,9 +117,7 @@ namespace Invesment
             }
 
             InvesmentDictionary invesmentList = new InvesmentDictionary(invesments);
-
-            OnInvesmentsLoaded?.Invoke(invesments);
-            script.Call(script.Globals[nameof(OnInvesmentsLoaded)], invesments);
+            OnInvesmentsLoaded?.Invoke(this, invesments);
         }
         #endregion
 

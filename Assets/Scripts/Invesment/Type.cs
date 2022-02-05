@@ -7,6 +7,7 @@ using UnityEngine;
 namespace Invesment
 {
     [Serializable]
+    [MoonSharpUserData]
     public class Type
     {
         public string type;

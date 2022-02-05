@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using UnityEngine;
+using MoonSharp.Interpreter;
 
 namespace Invesment
 {
+    [MoonSharpUserData]
     public static class Types
     {
         private static Dictionary<string, Type> types;

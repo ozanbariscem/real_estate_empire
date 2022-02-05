@@ -1,7 +1,9 @@
 using System.Collections.Generic;
+using MoonSharp.Interpreter;
 
 namespace Ownership
 {
+    [MoonSharpUserData]
     public class OwnershipList
     {
         private static Dictionary<string, Dictionary<int, List<Ownership>>> categorizedToInvesments;

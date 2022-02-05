@@ -9,8 +9,6 @@ local pauseText -- TextMeshProUGUI
 local pauseImage -- Transform
 local playImage  -- Transform
 
-local timeManager
-
 onClicks = {
     { "TextButton", "ToggleTime" },
     { "Buttons/Content/Increase", "IncreaseSpeed" },
@@ -20,7 +18,6 @@ onClicks = {
 
 -- When script is loaded from disk
 function OnScriptLoaded()
-    timeManager = GameManager.GetTimeManager()
 end
 
 -- When script is assigned to gameobject
@@ -30,7 +27,7 @@ function OnScriptSet(_transform)
 
     text = transform.Find("Text").GetComponent("TextMeshProUGUI")
     pauseText = transform.Find("PauseText").GetComponent("TextMeshProUGUI")
-    pauseText.text = GameManager.GetLanguageManager().Translate("PAUSED"):upper()
+    pauseText.text = LanguageManager.Translate("PAUSED"):upper()
 
     GetSpeedIndicators()
     GetTimeStateImages()
@@ -54,10 +51,10 @@ function GetTimeStateImages()
 end
 
 function SetHandlers()
-    timeManager.onHourPass.add(HandleHourPass)
-    timeManager.OnIntervalChanged.add(HandleIntervalChange)
-    timeManager.OnPaused.add(HandlePause)
-    timeManager.OnResumed.add(HandleResume)
+    TimeManager.onHourPass.add(HandleHourPass)
+    TimeManager.OnIntervalChanged.add(HandleIntervalChange)
+    TimeManager.OnPaused.add(HandlePause)
+    TimeManager.OnResumed.add(HandleResume)
 end
 
 -- sender : Not exposed don't use
@@ -93,17 +90,17 @@ function HandleTimeStateChanged(paused)
 end
 
 function ToggleTime()
-    if timeManager.IsPaused then
-        timeManager.Play()
+    if TimeManager.IsPaused then
+        TimeManager.Play()
     else
-        timeManager.Pause()
+        TimeManager.Pause()
     end
 end
 
 function IncreaseSpeed()
-    timeManager.ChangeInterval(timeManager.Intervals.SelectedInterval + 1)
+    TimeManager.ChangeInterval(TimeManager.Intervals.SelectedInterval + 1)
 end
 
 function DecreaseSpeed()
-    timeManager.ChangeInterval(timeManager.Intervals.SelectedInterval - 1)
+    TimeManager.ChangeInterval(TimeManager.Intervals.SelectedInterval - 1)
 end

@@ -6,29 +6,34 @@ using MoonSharp.Interpreter;
 
 namespace Map
 {
-    public class Manager : MonoBehaviour
+    [MoonSharpUserData]
+    public class MapManager : Manager.Manager
     {
-        public event Action OnScriptLoaded;
-        public event Action<Transform> OnMapLoaded;
-        public event Action<Dictionary<string, Transform[]>> OnInvesmentsLoaded;
+        public static MapManager Instance { get; private set; }
 
+        public event EventHandler<Transform> OnMapLoaded;
+        public event EventHandler<Dictionary<string, Transform[]>> OnInvesmentsLoaded;
         public event EventHandler<Invesment> OnInvesmentClicked;
 
         private Dictionary<string, Transform[]> invesments;
 
         private GameObject mapObject;
         private Transform invesmentsObject;
-        private Script script;
 
-        // Only use for event subscriptions
-        private void Start() {}
+        private void Awake()
+        {
+            if (!Instance)
+                Instance = this;
+        }
 
         /// <summary>
         /// Handled by the Game.Manager
         /// </summary>
         [MoonSharpHidden]
-        public void Initialize()
+        public override void LoadRules()
         {
+            scriptPath = "map/manager.lua";
+
             LoadScript();
             LoadMap();
             LoadInvesments();
@@ -37,7 +42,6 @@ namespace Map
         public void HandleInvesmentClicked(object sender, Invesment invesment)
         {
             OnInvesmentClicked?.Invoke(this, invesment);
-            script.Call(script.Globals[nameof(OnInvesmentClicked)], invesment);
         }
 
         #region SETUP
@@ -63,9 +67,7 @@ namespace Map
                     }
                 }
             }
-
-            OnInvesmentsLoaded?.Invoke(invesments);
-            script.Call(script.Globals[nameof(OnInvesmentsLoaded)], invesments);
+            OnInvesmentsLoaded?.Invoke(this, invesments);
         }
 
         private void SetInvesment(Transform transform, string tag, int id)
@@ -73,7 +75,6 @@ namespace Map
             // Add collider
             // Add building script
             // That's it
-            transform.gameObject.AddComponent<PolygonCollider2D>();
             Invesment invesment = transform.gameObject.AddComponent<Invesment>();
             invesment.Set(tag, id);
             invesment.OnInvesmentClicked += HandleInvesmentClicked;
@@ -93,28 +94,9 @@ namespace Map
             }
             var prefab = myLoadedAssetBundle.LoadAsset<GameObject>("Map");
             mapObject = Instantiate(prefab);
-
             invesmentsObject = mapObject.transform.GetChild(1);
 
-            OnMapLoaded?.Invoke(mapObject.transform);
-            script.Call(script.Globals[nameof(OnMapLoaded)], mapObject.transform);
-        }
-
-        private void LoadScript()
-        {
-            string scriptString = Utils.StreamingAssetsHandler.SafeGetString("vanilla/map/manager.lua");
-            if (scriptString == null) return;
-
-            UserData.RegisterType<Transform>();
-            UserData.RegisterType<Console.Console>();
-            UserData.RegisterType<Invesment>();
-
-            script = new Script();
-            script.Globals["ConsoleRunCommand"] = (Action<string>)Console.Console.Run;
-            script.DoString(scriptString);
-
-            OnScriptLoaded?.Invoke();
-            script.Call(script.Globals[nameof(OnScriptLoaded)]);
+            OnMapLoaded?.Invoke(this, mapObject.transform);
         }
         #endregion
     }

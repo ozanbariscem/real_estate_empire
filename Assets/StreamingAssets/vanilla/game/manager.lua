@@ -1,25 +1,10 @@
--- Managers are private on GameManager class so it's important to catch these at OnManagersInitialized
-local gameManager
-local languageManager
-local timeManager
-local mapManager
-local invesmentManager
-local investorManager
-local ownershipManager
-local uiManager
-
 function OnScriptLoaded()
 end
 
-function OnManagersInitialized(game, language, time, map, invesment, investor, ownership, ui)
-    gameManager = game
-    languageManager = language
-    timeManager = time
-    mapManager = map
-    invesmentManager = invesment
-    investorManager = investor
-    ownershipManager = ownership
-    uiManager = ui
+function OnRulesLoaded()
+end
+
+function OnContentLoaded()
 end
 
 -- Gets called every gameManager.ScriptUpdateInterval if it's not set to -1

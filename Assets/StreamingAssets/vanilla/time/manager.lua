@@ -1,57 +1,55 @@
--- IMPORTANT NOTICE: Log function can't be seen by the modder since it's using Debug.Log of Unity, change that to custom console logging
-
--- Has access to ChangeInterval, Log functions and 
--- Calendar.Month, Calendar.Calendar, Date, Interval, Intervals classes with their functions
--- But remember, with great power comes what? Finish it.
-
--- These events are called after their c# counterpart
-
--- Also a little self note for the future this whole class could be handled with this Lua script
--- Since it's not a heavy class and doesn't require the speed of c#
-
-local date
-
--- First ever streaming asset loaded by the c# Time.Manager classes
--- Pretty much nothing is loaded at this point
 function OnScriptLoaded()
+    TimeManager.OnCalendarLoaded.add(HandleCalendarLoaded)
+    TimeManager.OnIntervalsLoaded.add(HandleIntervalsLoaded)
+    TimeManager.OnStartDateLoaded.add(HandleStartDateLoaded)
+    
+    TimeManager.OnPaused.add(HandlePaused)
+    TimeManager.OnResumed.add(HandleResumed)
+    
+    TimeManager.OnIntervalChanged.add(HandleIntervalChanged)
+    
+    TimeManager.OnIntervalLooped.add(HandleIntervalLooped)
+    TimeManager.OnHourPass.add(HandleHourPass)
+    TimeManager.OnDayPass.add(HandleDayPass)
+    TimeManager.OnMonthPass.add(HandleMonthPass)
+    TimeManager.OnYearPass.add(HandleYearPass)
 end
 
-function OnCalendarLoaded(calendar)
+function OnRulesLoaded()
 end
 
-function OnIntervalsLoaded(intervals)
+function OnContentLoaded()
 end
 
--- If I don't change it in the future this is the last loaded asset
--- So at this point whole class is ready
-function OnStartDateLoaded(_date)
-    date = _date
+function HandleCalendarLoaded(sender, calendar)
 end
 
-function OnPaused()
+function HandleIntervalsLoaded(sender, intervals)
 end
 
-function OnResumed()
+function HandleStartDateLoaded(sender, date)
 end
 
-function OnIntervalChanged(to_index)
+function HandlePaused()
 end
 
--- OnTick
-function OnIntervalLooped()
-    -- ConsoleRunCommand("log "..date.ToNumberString())
+function HandleResumed()
 end
 
-function OnHourPass(new_hour)
+function HandleIntervalChanged(sender, intervals)
 end
 
--- Given as an example for modder
-function OnDayPass(new_day)
-    -- ConsoleRunCommand("log "..date.ToNumberString())
+function HandleIntervalLooped()
 end
 
-function OnMonthPass(new_month)
+function HandleHourPass(sender, date)
 end
 
-function OnYearPass(new_year)
+function HandleDayPass(sender, date)
+end
+
+function HandleMonthPass(sender, date)
+end
+
+function HandleYearPass(sender, date)
 end

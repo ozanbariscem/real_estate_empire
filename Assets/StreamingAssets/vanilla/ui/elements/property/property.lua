@@ -23,7 +23,6 @@ onClicks =
 
 -- When script is loaded from disk
 function OnScriptLoaded()
-    -- GameManager.GetTimeManager()
 end
 
 -- When script is assigned to gameobject
@@ -54,7 +53,7 @@ function OnClickEventsSet()
 end
 
 function SetHandlers()
-    GameManager.GetMapManager().OnInvesmentClicked.add(HandleInvesmentClicked)
+    MapManager.OnInvesmentClicked.add(HandleInvesmentClicked)
 end
 
 function CreateChartElements(count)
@@ -113,8 +112,8 @@ function UpdateTexture(invesment)
 end
 
 function UpdateTexts(invesment)
-    local time = GameManager.GetTimeManager()
-    local language = GameManager.GetLanguageManager()
+    local time = TimeManager
+    local language = LanguageManager
 
     nameText.text = invesment.name
     typeText.text = language.Translate(invesment.sub_type:upper()):gsub("^%l", string.upper)

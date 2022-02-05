@@ -1,9 +1,13 @@
--- ConsoleRunCommand(command:string)
--- GetInvestor(id:int)
-
 function OnScriptLoaded()
+    InvestorManager.OnInvestorsLoaded.add(HandleInvestorsLoaded)
+end
+
+function OnRulesLoaded()
+end
+
+function OnContentLoaded()
 end
 
 -- investors : List<Investor>
-function OnInvestorsLoaded(investors)
+function HandleInvestorsLoaded(sender, investors)
 end

@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 using UnityEngine;
 using MoonSharp.Interpreter;
@@ -7,21 +6,29 @@ using Newtonsoft.Json;
 
 namespace Language
 {
-    public class Manager : MonoBehaviour
+    [MoonSharpUserData]
+    public class LanguageManager : Manager.Manager
     {
-        public event EventHandler OnScriptLoaded;
+        public static LanguageManager Instance { get; private set; }
 
         private Dictionary<string, Dictionary> languages;
         private string selectedLanguage;
 
-        private Script script;
+        private void Awake()
+        {
+            if (!Instance)
+                Instance = this;
+        }
 
         [MoonSharpHidden]
-        public void Initialize()
+        public override void LoadRules()
         {
+            scriptPath = "language/manager.lua";
             LoadScript();
             LoadLanguages();
             ChangeLanguage("en");
+
+            RaiseOnRulesLoaded();
         }
 
         public string Translate(string tag)
@@ -36,21 +43,6 @@ namespace Language
         }
 
         #region CONTENT LOADER
-        private void LoadScript()
-        {
-            string scriptString = Utils.StreamingAssetsHandler.SafeGetString("vanilla/language/manager.lua");
-            if (scriptString == null) return;
-
-            UserData.RegisterType<Console.Console>();
-
-            script = new Script();
-            script.Globals["ConsoleRunCommand"] = (Action<string>)Console.Console.Run;
-            script.DoString(scriptString);
-
-            OnScriptLoaded?.Invoke(this, EventArgs.Empty);
-            script.Call(script.Globals[nameof(OnScriptLoaded)]);
-        }
-
         private void LoadLanguages()
         {
             languages = new Dictionary<string, Dictionary>();

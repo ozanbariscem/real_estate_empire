@@ -3,7 +3,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 namespace UI
-{ 
+{
+    [MoonSharpUserData]
     public class Element : MonoBehaviour
     {
         private Script script;

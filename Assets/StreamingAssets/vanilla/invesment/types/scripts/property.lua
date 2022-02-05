@@ -6,6 +6,10 @@ end
 -- I could seamlessly(~0.000001 runtime) loop through and Log 3K invesments on my machine
 -- But since a day pass might be frequent, I don't advise to
 -- do heavy calculations in this function
+--function HandleHourPass(hour, invesments)
+    -- It's better to remove empty function bodies entirely for performance reasons
+--end
+
 --function HandleDayPass(day, invesments)
     -- It's better to remove empty function bodies entirely for performance reasons
 --end

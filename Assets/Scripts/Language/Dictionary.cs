@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using MoonSharp.Interpreter;
 
 namespace Language
 {
     [Serializable]
+    [MoonSharpUserData]
     public class Dictionary
     {
         private Dictionary<string, string> translations;

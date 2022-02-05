@@ -1,10 +1,12 @@
 using System;
 using UnityEngine;
 using Newtonsoft.Json;
+using MoonSharp.Interpreter;
 
 namespace Invesment
 {
     [Serializable]
+    [MoonSharpUserData]
     public class Invesment
     {
         [JsonIgnore]

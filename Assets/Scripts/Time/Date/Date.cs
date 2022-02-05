@@ -1,9 +1,11 @@
 using System;
 using UnityEngine;
+using MoonSharp.Interpreter;
 
 namespace Time
 {
     [Serializable]
+    [MoonSharpUserData]
     public class Date
     {
         public ushort hour;

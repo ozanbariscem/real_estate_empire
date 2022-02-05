@@ -5,13 +5,16 @@ using MoonSharp.Interpreter;
 
 namespace Console
 {
+    [MoonSharpUserData]
     public class Console : MonoBehaviour
     {
         private static Console instance;
 
         public event Action<string> OnHistoryIndexChanged;
 
+        [MoonSharpHidden]
         public string scriptPath = "vanilla/console/console.lua";
+        [MoonSharpHidden]
         public UI ui;
 
         private History history;
@@ -47,6 +50,7 @@ namespace Console
         }
 
         // InputField on console prefab calls this
+        [MoonSharpHidden]
         public void HandleInputSubmit(string text)
         {
             RunCommand(text);

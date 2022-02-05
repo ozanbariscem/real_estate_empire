@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
+using MoonSharp.Interpreter;
 
 namespace Invesment
 {
+    [MoonSharpUserData]
     public class InvesmentDictionary
     {
         private static Dictionary<string, Texture2D> photos;

@@ -4,12 +4,11 @@ using MoonSharp.Interpreter;
 
 namespace Time
 {
-    public class Manager : MonoBehaviour
+    [MoonSharpUserData]
+    public class TimeManager : Manager.Manager
     {
-        public enum STATE { PAUSED, PLAYING }
-
-        private static Manager instance;
-        public static Manager Instance => instance;
+        private static TimeManager instance;
+        public static TimeManager Instance => instance;
 
         public event EventHandler OnPaused;
         public event EventHandler OnResumed;
@@ -24,19 +23,19 @@ namespace Time
         public event EventHandler<Calendar.Calendar> OnCalendarLoaded;
         public event EventHandler<Intervals> OnIntervalsLoaded;
         public event EventHandler<Date> OnStartDateLoaded;
-        public event EventHandler OnScriptLoaded;
         public event EventHandler OnIntervalLooped;
 
         private Calendar.Calendar calendar;
         public Intervals Intervals { get; private set; }
-        public Date date { get; private set; }
+        public Date Date { get; private set; }
 
         public bool IsPaused { get; private set; }
 
+        public bool IsReady { get; private set; }
+
+
         private float lastDifference;
         private float lastCheckTime;
-
-        private Script script;
 
         private void Awake()
         {
@@ -45,34 +44,37 @@ namespace Time
             else return;
         }
 
-        private void Start()
-        {
-            Subscribe();
-        }
-
         /// <summary>
         /// Handled by the Game.Manager
         /// </summary>
         [MoonSharpHidden]
-        public void Initialize()
+        public override void LoadRules()
         {
+            scriptPath = "time/manager.lua";
+
             LoadScript();
             LoadCalendar();
             LoadIntervals();
-            LoadStartDate();
 
             Pause();
         }
 
-        private void OnDestroy()
+        [MoonSharpHidden]
+        public override void LoadContent(string path)
         {
-            Unsubscribe();
+            LoadDate(path);
+            IsReady = true;
+
+            RaiseOnContentLoaded();
         }
 
         private void Update()
         {
-            HandleInput();
-            CheckForIntervalLoop();
+            if (IsReady)
+            {
+                HandleInput();
+                CheckForIntervalLoop();
+            }
         }
 
         private void CheckForIntervalLoop()
@@ -86,7 +88,6 @@ namespace Time
             {
                 lastCheckTime = UnityEngine.Time.time;
                 OnIntervalLooped?.Invoke(this, EventArgs.Empty);
-                script.Call(script.Globals[nameof(OnIntervalLooped)]);
             }
         }
 
@@ -96,7 +97,6 @@ namespace Time
             lastCheckTime = UnityEngine.Time.time - lastDifference;
 
             OnResumed?.Invoke(this, EventArgs.Empty);
-            script.Call(script.Globals[nameof(OnResumed)]);
         }
 
         public void Pause()
@@ -105,14 +105,12 @@ namespace Time
             lastDifference = UnityEngine.Time.time - lastCheckTime;
 
             OnPaused?.Invoke(this, EventArgs.Empty);
-            script.Call(script.Globals[nameof(OnPaused)]);
         }
 
         public void ChangeInterval(int to)
         {
             Intervals.SelectInterval(to);
             OnIntervalChanged?.Invoke(this, Intervals);
-            script.Call(script.Globals[nameof(OnIntervalChanged)], Intervals);
         }
 
         #region HANDLERS
@@ -137,27 +135,23 @@ namespace Time
 
         private void HandleIntervalLooped(object sender, EventArgs e)
         {
-            bool[] passState = date.PassTime(calendar);
+            bool[] passState = Date.PassTime(calendar);
             
             if (passState[0])
             {
-                OnHourPass?.Invoke(this, date);
-                script.Call(script.Globals[nameof(OnHourPass)], date.hour);
+                OnHourPass?.Invoke(this, Date);
             }
             if (passState[1])
             {
-                OnDayPass?.Invoke(this, date);
-                script.Call(script.Globals[nameof(OnDayPass)], date.day);
+                OnDayPass?.Invoke(this, Date);
             }
             if (passState[2])
             {
-                OnMonthPass?.Invoke(this, date);
-                script.Call(script.Globals[nameof(OnMonthPass)], date.month);
+                OnMonthPass?.Invoke(this, Date);
             }
             if (passState[3])
             {
-                OnYearPass?.Invoke(this, date);
-                script.Call(script.Globals[nameof(OnYearPass)], date.year);
+                OnYearPass?.Invoke(this, Date);
             }
         }
 
@@ -175,14 +169,14 @@ namespace Time
         #endregion
 
         #region SUBSCRIPTIONS
-        private void Subscribe()
+        protected override void Subscribe()
         {
             OnIntervalsLoaded += HandleIntervalsLoaded;
             OnStartDateLoaded += HandleStartDateLoaded;
             OnIntervalLooped += HandleIntervalLooped;
         }
 
-        private void Unsubscribe()
+        protected override void Unsubscribe()
         {
             OnIntervalsLoaded -= HandleIntervalsLoaded;
             OnStartDateLoaded -= HandleStartDateLoaded;
@@ -191,29 +185,6 @@ namespace Time
         #endregion
 
         #region CONTENT LOADERS
-        private void LoadScript()
-        {
-            string script = Utils.StreamingAssetsHandler.SafeGetString("vanilla/time/manager.lua");
-            if (script == null) return;
-
-            UserData.RegisterType<Calendar.Month>();
-            UserData.RegisterType<Calendar.Calendar>();
-            UserData.RegisterType<Date>();
-            UserData.RegisterType<Interval>();
-            UserData.RegisterType<Intervals>();
-            UserData.RegisterType<Console.Console>();
-
-
-            this.script = new Script();
-            this.script.Globals["ChangeInterval"] = (Action<int>)ChangeInterval;
-            this.script.Globals["ConsoleRunCommand"] = (Action<string>)Console.Console.Run;
-
-            this.script.DoString(script);
-
-            OnScriptLoaded?.Invoke(this, EventArgs.Empty);
-            this.script.Call(this.script.Globals[nameof(OnScriptLoaded)]);
-        }
-
         private void LoadCalendar()
         {
             string json = Utils.StreamingAssetsHandler.SafeGetString("vanilla/calendar/calendar.txt");
@@ -221,7 +192,6 @@ namespace Time
 
             calendar = Calendar.Calendar.FromJson(json);
             OnCalendarLoaded?.Invoke(this, calendar);
-            script.Call(script.Globals[nameof(OnCalendarLoaded)], calendar);
         }
 
         private void LoadIntervals()
@@ -231,17 +201,15 @@ namespace Time
 
             Intervals = Intervals.FromJson(json);
             OnIntervalsLoaded?.Invoke(this, Intervals);
-            script.Call(script.Globals[nameof(OnIntervalsLoaded)], Intervals);
         }
 
-        private void LoadStartDate()
+        private void LoadDate(string path)
         {
-            string json = Utils.StreamingAssetsHandler.SafeGetString("vanilla/calendar/start_date.txt");
+            string json = Utils.ContentHandler.SafeGetString($"{path}/calendar/start_date.txt");
             if (json == null) return;
 
-            date = Date.FromJson(json);
-            OnStartDateLoaded?.Invoke(this, date);
-            script.Call(script.Globals[nameof(OnStartDateLoaded)], date);
+            Date = Date.FromJson(json);
+            OnStartDateLoaded?.Invoke(this, Date);
         }
         #endregion
     }
