@@ -20,7 +20,6 @@ namespace Invesment
         private void Start()
         {
             Subscribe();
-            IDProperties();
         }
 
         private void OnDestroy()
