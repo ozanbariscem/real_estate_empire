@@ -3,6 +3,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 using MoonSharp.Interpreter;
+using Load;
 using Invesment;
 using Time;
 using Game;
@@ -23,6 +24,7 @@ namespace Utils
             if (json == null) return null;
 
             UserData.RegisterType<TMPro.TextMeshProUGUI>();
+            UserData.RegisterType<TMPro.TMP_InputField>();
             UserData.RegisterType<Transform>();
             UserData.RegisterType<GameObject>();
             UserData.RegisterType<Image>();
@@ -34,6 +36,7 @@ namespace Utils
             
             UserData.RegisterAssembly();
             Script script = new Script();
+            script.Globals["LoadManager"] = LoadManager.Instance;
             script.Globals["GameManager"] = GameManager.Instance;
             script.Globals["TimeManager"] = TimeManager.Instance;
             script.Globals["InvesmentManager"] = InvesmentManager.Instance;
@@ -42,6 +45,7 @@ namespace Utils
             script.Globals["LanguageManager"] = LanguageManager.Instance;
             script.Globals["MapManager"] = MapManager.Instance;
             script.Globals["OwnershipManager"] = OwnershipManager.Instance;
+
             script.Globals["InvesmentDictionary"] = new InvesmentDictionary();
             script.Globals["OwnershipList"] = new OwnershipList();
             script.Globals["InvestorList"] = new InvestorList();
