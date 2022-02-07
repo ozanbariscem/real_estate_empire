@@ -8,6 +8,7 @@ namespace Ownership
     {
         private static Dictionary<string, Dictionary<int, List<Ownership>>> categorizedToInvesments;
         private static List<Ownership> list;
+        public static List<Ownership> List => list;
 
         public OwnershipList() { }
 

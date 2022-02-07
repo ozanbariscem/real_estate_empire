@@ -1,7 +1,9 @@
 using System;
+using System.IO;
 using Newtonsoft.Json;
 using MoonSharp.Interpreter;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Invesment
 {
@@ -11,9 +13,7 @@ namespace Invesment
         public static InvesmentManager Instance { get; private set; }
 
         public event EventHandler<Dictionary<string, Type>> OnTypesLoaded;
-        public event EventHandler<Dictionary<string, List<Invesment>>> OnInvesmentsLoaded;
-
-        private Dictionary<string, List<Invesment>> invesments;
+        public event EventHandler<Dictionary<string, Dictionary<int, Invesment>>> OnInvesmentsLoaded;
 
         private void Awake()
         {
@@ -28,6 +28,7 @@ namespace Invesment
 
             LoadScript();
             LoadTypes();
+            LoadPhotos();
 
             RaiseOnRulesLoaded();
         }
@@ -62,12 +63,12 @@ namespace Invesment
 
         private void HandleTimePass(string eventName, Time.Date date)
         {
-            foreach (var type in invesments.Keys)
+            foreach (var type in InvesmentDictionary.Invesments.Keys)
             {
                 Script script = Types.Dictionary[type].script;
                 if (script.Globals[eventName] != null)
                 {
-                    script.Call(script.Globals[eventName], date, invesments[type]);
+                    script.Call(script.Globals[eventName], date, InvesmentDictionary.Invesments[type]);
                 }
             }
         }
@@ -101,22 +102,44 @@ namespace Invesment
             OnTypesLoaded?.Invoke(this, Types.Dictionary);
         }
 
+        private void LoadPhotos()
+        {
+            string path = Path.Combine(Application.streamingAssetsPath, "vanilla/invesment/photos");
+
+            string[] files = Directory.GetFiles(path);
+
+            Dictionary<string, Texture2D> photos = new Dictionary<string, Texture2D>();
+            foreach (string file in files)
+            {
+                FileInfo info = new FileInfo(file);
+                if (info.Extension != ".png" && info.Extension != ".jpeg" && info.Extension != ".jpg") continue;
+
+                Texture2D texture = Utils.ContentHandler.SafeGetTexture($"{file}");
+                photos.Add(Path.GetFileNameWithoutExtension(info.Name), texture);
+            }
+            InvesmentDictionary.SetPhotos(photos);
+        }
+
         private void LoadInvesments(string path)
         {
-            invesments = new Dictionary<string, List<Invesment>>();
+            Dictionary<string, Dictionary<int, Invesment>>  invesments = new Dictionary<string, Dictionary<int, Invesment>>();
             foreach (Type type in Types.Dictionary.Values)
             {
                 string json = Utils.ContentHandler.SafeGetString($"{path}/invesment/{type.type}/invesments.json");
                 if (json == null) continue;
 
                 if (!invesments.ContainsKey(type.type))
-                    invesments.Add(type.type, new List<Invesment>());
+                    invesments.Add(type.type, new Dictionary<int, Invesment>());
 
                 List<Invesment> _invesments = JsonConvert.DeserializeObject<List<Invesment>>(json);
-                invesments[type.type].AddRange(_invesments);
+                foreach (var invesment in _invesments)
+                {
+                    invesment.texture = InvesmentDictionary.Photos[invesment.photo];
+                }
+                invesments[type.type] = InvesmentDictionary.ConvertListOfInvesmentsToDictioanry(_invesments);
             }
 
-            InvesmentDictionary invesmentList = new InvesmentDictionary(invesments);
+            InvesmentDictionary.SetInvesments(invesments);
             OnInvesmentsLoaded?.Invoke(this, invesments);
         }
         #endregion

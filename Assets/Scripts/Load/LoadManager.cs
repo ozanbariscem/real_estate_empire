@@ -26,10 +26,15 @@ namespace Load
         protected override void Start()
         {
             base.Start();
-            StartCoroutine(Load());
+            LoadManagerRules();
         }
 
-        private IEnumerator Load()
+        private void LoadManagerRules()
+        {
+            StartCoroutine(LoadManagerRulesCoroutine());
+        }
+
+        private IEnumerator LoadManagerRulesCoroutine()
         {
             OnProgressStart?.Invoke(this, EventArgs.Empty);
             yield return RaiseLoadProgressed("Loading game logic...");
@@ -41,17 +46,34 @@ namespace Load
                 manager.LoadRules();
             }
 
+            OnProgressFinish?.Invoke(this, EventArgs.Empty);
+            yield return RaiseLoadProgressed("Game ready, enjoy!");
+        }
+
+        private void LoadManagerContent(string path)
+        {
+            StartCoroutine(LoadManagerContentCoroutine(path));
+        }
+
+        private IEnumerator LoadManagerContentCoroutine(string path)
+        {
+            OnProgressStart?.Invoke(this, EventArgs.Empty);
             yield return RaiseLoadProgressed("Loading game content...");
 
             foreach (var manager in managers)
             {
                 yield return RaiseLoadProgressed($"Loading content of {manager.GetType()}");
                 // yield return new WaitForSeconds(0.1f);
-                manager.LoadContent(System.IO.Path.Combine(Application.streamingAssetsPath, "vanilla"));
+                manager.LoadContent(path);
             }
 
             OnProgressFinish?.Invoke(this, EventArgs.Empty);
             yield return RaiseLoadProgressed("Game ready, enjoy!");
+        }
+
+        private void HandleSaveFileLoadRequest(object sender, SaveFile.Data data)
+        {
+            LoadManagerContent(data.path);
         }
 
         [MoonSharpHidden]
@@ -61,6 +83,18 @@ namespace Load
         {
             OnLoadProgressed?.Invoke(this, new Progress(msg));
             return true;
+        }
+
+        protected override void Subscribe()
+        {
+            base.Subscribe();
+            SaveFile.SaveFileManager.Instance.OnDataFileLoadRequested += HandleSaveFileLoadRequest;
+        }
+
+        protected override void Unsubscribe()
+        {
+            base.Subscribe();
+            SaveFile.SaveFileManager.Instance.OnDataFileLoadRequested -= HandleSaveFileLoadRequest;
         }
     }
 }

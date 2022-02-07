@@ -15,6 +15,7 @@ local fileNameInput -- InputField
 
 local fileExistsPrompt -- Transform
 
+local saveFilePrefab -- GameObject 
 
 onClicks = {
     { "MainMenu/Buttons/SinglePlayer", "HandleSinglePlayerButtonPressed"},
@@ -33,12 +34,22 @@ onClicks = {
 
 }
 
+local a_file_is_selected = false;
+local scenario_file_selected = false;
+
 function OnScriptLoaded()
 end
 
 function OnScriptSet(_transform)
     transform = _transform
+    SetObjectReferences()
+    SetEventHandlers()
+end
 
+function OnClickEventsSet()
+end
+
+function SetObjectReferences()
     mainMenu = transform.Find("MainMenu")
     singlePlayerMenu = transform.Find("SinglePlayerMenu")
     
@@ -52,9 +63,13 @@ function OnScriptSet(_transform)
     fileExistsPrompt = newGamePrompt.Find("FileExistsPrompt")
 
     fileNameInput = newGamePrompt.Find("NewGame/FileNameInput").GetComponent("TMP_InputField")
+
+    saveFilePrefab = singlePlayerMenu.Find("SavesMenu/SaveFilePrefab").gameObject
 end
 
-function OnClickEventsSet()
+function SetEventHandlers()
+    SaveFileManager.OnScenarioDatasLoaded.add(HandleScenarioDatasLoaded)
+    SaveFileManager.OnSaveFileDatasLoaded.add(HandleSaveFileDatasLoaded)
 end
 
 function HandleSinglePlayerButtonPressed()
@@ -80,7 +95,12 @@ end
 function HandlePlayButtonPressed()
     ConsoleRunCommand("log_error YOU FORGOT TO HANDLE SAVE LOADING CASE ON MAIN_MENU.LUA YOU DUMMY")
 
-    newGamePrompt.gameObject.SetActive(true)
+    if a_file_is_selected and not scenario_file_selected then
+        UIManager.gameMenu.gameObject.SetActive(true)
+        UIManager.mainMenu.gameObject.SetActive(false)
+    else
+        newGamePrompt.gameObject.SetActive(true)
+    end
 end
 
 function HandleBackToSinglePlayerMenuButtonPressed()
@@ -90,14 +110,67 @@ end
 function HandleNewGameStartButtonPressed()
     ConsoleRunCommand("log_error YOU FORGOT TO HANDLE FILE EXISTS CASE ON MAIN_MENU.LUA YOU DUMMY")
 
-    fileExistsPrompt.gameObject.SetActive(true)
+    if SaveFileManager.SaveFileAlreadyExists(fileNameInput.text) then
+        fileExistsPrompt.gameObject.SetActive(true)
+    else
+        SaveFileManager.SetCurrentSaveFileName(fileNameInput.text)
+
+        UIManager.gameMenu.gameObject.SetActive(true)
+        UIManager.mainMenu.gameObject.SetActive(false)
+    end
 end
 
 function HandleFileExistsYesButtonPressed()
+    SaveFileManager.SetCurrentSaveFileName(fileNameInput.text)
+    UIManager.gameMenu.gameObject.SetActive(true)
+    UIManager.mainMenu.gameObject.SetActive(false)
 end
 
 function HandleFileExistsNoButtonPressed()
     fileExistsPrompt.gameObject.SetActive(false)
+end
+
+function HandleScenarioDatasLoaded(sender, scenarios)
+    for i=1, #scenarios do
+        local object = Instantiate(saveFilePrefab, newGameContent)
+        SetSaveFile(object.transform, scenarios[i], true)
+    end
+end
+
+function HandleSaveFileDatasLoaded(sender, saveFiles)
+    for i=1, #saveFiles do
+        local object = Instantiate(saveFilePrefab, loadGameContent)
+        SetSaveFile(object.transform, saveFiles[i], false)
+    end
+end
+
+function SetSaveFile(transform, data, is_scenario)
+    transform.Find("FileNameText").GetComponent("TextMeshProUGUI").text = data.name
+    transform.Find("DescriptionText").GetComponent("TextMeshProUGUI").text = data.path
+    transform.Find("DateText").GetComponent("TextMeshProUGUI").text = data.date
+    transform.gameObject.SetActive(true)
+
+    AddFunctionality(transform.Find("Button"), "HandleSaveFileButtonClick", data)
+    if is_scenario then
+        AddFunctionality(transform.Find("Button"), "HandleScenarioFileSelected", nil)
+    else
+        AddFunctionality(transform.Find("Button"), "HandleSaveFileSelected", nil)
+    end
+end
+
+function HandleSaveFileButtonClick(data)
+    SaveFileManager.SetCurrentSaveFileName(data.name)
+    SaveFileManager.LoadSaveFile(data)
+end
+
+function HandleSaveFileSelected()
+    a_file_is_selected = true
+    scenario_file_selected = false
+end
+
+function HandleScenarioFileSelected()
+    a_file_is_selected = true
+    scenario_file_selected = true
 end
 
 function HandleExitButtonPressed()

@@ -12,6 +12,7 @@ using UI;
 using Language;
 using Map;
 using Ownership;
+using SaveFile;
 
 namespace Utils
 {
@@ -45,6 +46,7 @@ namespace Utils
             script.Globals["LanguageManager"] = LanguageManager.Instance;
             script.Globals["MapManager"] = MapManager.Instance;
             script.Globals["OwnershipManager"] = OwnershipManager.Instance;
+            script.Globals["SaveFileManager"] = SaveFileManager.Instance;
 
             script.Globals["InvesmentDictionary"] = new InvesmentDictionary();
             script.Globals["OwnershipList"] = new OwnershipList();
@@ -88,12 +90,6 @@ namespace Utils
 
         public static void SafeSetString(string path, string content)
         {
-            if (!File.Exists(path))
-            {
-                Debug.LogError($"Hey make sure {path} exists!");
-                return;
-            }
-
             StreamWriter sw = new StreamWriter(path);
             sw.Write(content);
             sw.Close();

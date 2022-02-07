@@ -122,6 +122,13 @@ namespace UI
             Script script = Utils.StreamingAssetsHandler.SafeGetScript($"vanilla/ui/{path}.lua");
             if (script == null) return null;
 
+            script.Globals["AddFunctionality"] = (Action<Transform, string, object>)((transform, function, args) =>
+            {
+                transform.GetComponent<Button>().onClick.AddListener(() =>
+                {
+                    script.Call(script.Globals[function], args);
+                });
+            });
             script.Globals["Instantiate"] = (Func<UnityEngine.Object, Transform, UnityEngine.Object>)Instantiate;
             script.Globals["Color"] = (Func<float, float, float, float, Color>)((r, g, b, a) => { return new Color(r, g, b, a); });
 
