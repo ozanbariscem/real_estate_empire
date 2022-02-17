@@ -53,7 +53,7 @@ function OnClickEventsSet()
 end
 
 function SetHandlers()
-    MapManager.OnInvesmentClicked.add(HandleInvesmentClicked)
+    -- MapManager.OnInvesmentClicked.add(HandleInvesmentClicked)
 end
 
 function CreateChartElements(count)

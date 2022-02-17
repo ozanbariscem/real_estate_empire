@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using System.Linq;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using MoonSharp.Interpreter;
@@ -14,6 +13,8 @@ namespace SaveFile
     {
         public static SaveFileManager Instance { get; private set; }
 
+        public event EventHandler OnSaveFileDirectoryCreated;
+        public event EventHandler OnCurrentGameSaved;
         public event EventHandler<List<Data>> OnScenarioDatasLoaded;
         public event EventHandler<List<Data>> OnSaveFileDatasLoaded;
 
@@ -57,6 +58,7 @@ namespace SaveFile
             if (!File.Exists(saveDirectoryPath))
             {
                 Directory.CreateDirectory(saveDirectoryPath);
+                OnSaveFileDirectoryCreated?.Invoke(this, EventArgs.Empty);
             }
         }
 
@@ -89,6 +91,7 @@ namespace SaveFile
         {
             if (!File.Exists(Path.Combine(path, "calendar/start_date.txt"))) return "CORRUPTED";
             if (!File.Exists(Path.Combine(path, "ownership/ownerships.json"))) return "CORRUPTED";
+            if (!File.Exists(Path.Combine(path, "loan/loans.json"))) return "CORRUPTED";
             if (!Directory.Exists(Path.Combine(path, "invesment"))) return "CORRUPTED";
 
             foreach (var type in Invesment.Types.Dictionary.Keys)
@@ -113,6 +116,7 @@ namespace SaveFile
                 Directory.CreateDirectory(path + "/calendar");
                 Directory.CreateDirectory(path + "/ownership");
                 Directory.CreateDirectory(path + "/invesment");
+                Directory.CreateDirectory(path + "/loan");
                 foreach (var type in Invesment.Types.Dictionary.Keys)
                 {
                     Directory.CreateDirectory($"{path}/invesment/{type}");
@@ -122,6 +126,8 @@ namespace SaveFile
             Utils.ContentHandler.SafeSetString($"{path}/calendar/start_date.txt", JsonConvert.SerializeObject(date));
             // Save ownerships
             Utils.ContentHandler.SafeSetString($"{path}/ownership/ownerships.json", JsonConvert.SerializeObject(Ownership.OwnershipList.List));
+            // Save loans
+            Utils.ContentHandler.SafeSetString($"{path}/loan/loans.json", JsonConvert.SerializeObject(Loan.LoanList.Loans.Values.ToList()));
             // Save invesments
             foreach (var type in Invesment.Types.Dictionary.Keys)
             {
@@ -129,6 +135,8 @@ namespace SaveFile
                 $"{path}/invesment/{type}/invesments.json",
                 JsonConvert.SerializeObject(Invesment.InvesmentDictionary.Invesments[type].Values.ToList()));
             }
+
+            OnCurrentGameSaved?.Invoke(this, EventArgs.Empty);
         }
 
         public void LoadSaveFile(Data data)

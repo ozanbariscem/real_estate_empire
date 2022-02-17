@@ -13,6 +13,7 @@ using Language;
 using Map;
 using Ownership;
 using SaveFile;
+using Loan;
 
 namespace Utils
 {
@@ -47,6 +48,7 @@ namespace Utils
             script.Globals["MapManager"] = MapManager.Instance;
             script.Globals["OwnershipManager"] = OwnershipManager.Instance;
             script.Globals["SaveFileManager"] = SaveFileManager.Instance;
+            script.Globals["LoanManager"] = LoanManager.Instance;
 
             script.Globals["InvesmentDictionary"] = new InvesmentDictionary();
             script.Globals["OwnershipList"] = new OwnershipList();

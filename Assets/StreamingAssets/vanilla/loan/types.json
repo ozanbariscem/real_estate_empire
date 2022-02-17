@@ -1,0 +1,34 @@
+[
+    {
+        "id": 0,
+        "type": "fixed_amount",
+        "name": "A small loan",
+        "amount": 1000000,
+        "interest": 0,
+        "payment_length": 120
+    },
+    {
+        "id": 1,
+        "type": "networth_percentage",
+        "name": "Beginner loan",
+        "amount": 5,
+        "interest": 5,
+        "payment_length": 36
+    },
+    {
+        "id": 2,
+        "type": "networth_percentage",
+        "name": "Corporate loan",
+        "amount": 20,
+        "interest": 5,
+        "payment_length": 36
+    },
+    {
+        "id": 3,
+        "type": "networth_percentage",
+        "name": "Shark loan",
+        "amount": 40,
+        "interest": 5,
+        "payment_length": 36
+    }
+]

@@ -1,7 +1,9 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.UI;
 using MoonSharp.Interpreter;
 
 namespace Map
@@ -12,13 +14,19 @@ namespace Map
         public static MapManager Instance { get; private set; }
 
         public event EventHandler<Transform> OnMapLoaded;
-        public event EventHandler<Dictionary<string, Transform[]>> OnInvesmentsLoaded;
-        public event EventHandler<Invesment> OnInvesmentClicked;
+        public event EventHandler<Dictionary<string, Transform>> OnDistrictsLoaded;
 
-        private Dictionary<string, Transform[]> invesments;
+        public event EventHandler<District> OnDistrictClicked;
+        public event EventHandler<District> OnDistrictDoubleClicked;
+
+
+        private Dictionary<string, Transform> districts;
 
         private GameObject mapObject;
-        private Transform invesmentsObject;
+        private Transform districtsTransform;
+
+
+        private District lastOpenDistrict;
 
         private void Awake()
         {
@@ -36,48 +44,25 @@ namespace Map
 
             LoadScript();
             LoadMap();
-            LoadInvesments();
+            LoadDistricts();
         }
 
-        public void HandleInvesmentClicked(object sender, Invesment invesment)
+        #region HANDLERS
+        private void HandleDistrictClick(object sender, District district)
         {
-            OnInvesmentClicked?.Invoke(this, invesment);
-        }
+            OnDistrictClicked?.Invoke(this, district);
 
-        #region SETUP
-        private void LoadInvesments()
-        {
-            int childCount = invesmentsObject.childCount;
-
-            invesments = new Dictionary<string, Transform[]>();
-            for (int i = 0; i < childCount; i++)
+            if (lastOpenDistrict != null && lastOpenDistrict != district)
             {
-                string name = invesmentsObject.GetChild(i).name;
-
-                if (!invesments.ContainsKey(name))
-                {
-                    int invesmentCount = invesmentsObject.GetChild(i).childCount;
-
-                    invesments.Add(name, new Transform[invesmentCount]);
-
-                    for (int j = 0; j < invesmentCount; j++)
-                    {
-                        invesments[name][j] = invesmentsObject.GetChild(i).GetChild(j);
-                        SetInvesment(invesments[name][j], name, j);
-                    }
-                }
+                lastOpenDistrict.Hide();
             }
-            OnInvesmentsLoaded?.Invoke(this, invesments);
+            lastOpenDistrict = district;
         }
 
-        private void SetInvesment(Transform transform, string tag, int id)
+        private void HandleDistrictDoubleClick(object sender, District district)
         {
-            // Add collider
-            // Add building script
-            // That's it
-            Invesment invesment = transform.gameObject.AddComponent<Invesment>();
-            invesment.Set(tag, id);
-            invesment.OnInvesmentClicked += HandleInvesmentClicked;
+            OnDistrictDoubleClicked?.Invoke(this, district);
+
         }
         #endregion
 
@@ -94,9 +79,56 @@ namespace Map
             }
             var prefab = myLoadedAssetBundle.LoadAsset<GameObject>("Map");
             mapObject = Instantiate(prefab);
-            invesmentsObject = mapObject.transform.GetChild(1);
+            districtsTransform = mapObject.transform.Find("Districts");
 
             OnMapLoaded?.Invoke(this, mapObject.transform);
+        }
+
+        private void LoadDistricts()
+        {
+            var myLoadedAssetBundle
+                = AssetBundle.LoadFromFile(
+                    Path.Combine(Application.streamingAssetsPath, "vanilla/map/ui/district"));
+            if (myLoadedAssetBundle == null)
+            {
+                Debug.Log("Failed to load AssetBundle!");
+                return;
+            }
+            var prefab = myLoadedAssetBundle.LoadAsset<GameObject>("DistrictUI");
+            districts = new Dictionary<string, Transform>();
+            foreach (Transform district in districtsTransform)
+            {
+                if (!districts.ContainsKey(district.name))
+                {
+                    CreateDistrictUI(prefab, district);
+
+                    districts.Add(district.name, district);
+                    District districtClass = district.gameObject.AddComponent<District>();
+                    districtClass.OnClicked += HandleDistrictClick;
+                    districtClass.OnDoubleClicked += HandleDistrictDoubleClick;
+                }
+            }
+
+            OnDistrictsLoaded?.Invoke(this, districts);
+        }
+
+        private void CreateDistrictUI(GameObject prefab, Transform district)
+        {
+            Transform model = district.Find("Model");
+            model.localScale = new Vector3(model.localScale.x, 0.001f, model.localScale.z);
+
+            GameObject districtUI = Instantiate(prefab, district);
+            districtUI.layer = LayerMask.NameToLayer("WorldCanvas");
+            districtUI.GetComponent<Canvas>().sortingOrder = 99;
+            districtUI.transform.localPosition = model.localPosition + new Vector3(0, .5f, 0);
+            districtUI.transform.localRotation = Quaternion.Euler(90, 0, -120);
+            districtUI.name = "Canvas";
+
+            float width = districtUI.GetComponent<RectTransform>().sizeDelta.x;
+            Vector3 size = model.GetComponent<Renderer>().bounds.size;
+            size = new Vector3(size.z / 2f, size.x / 10f, size.y);
+            float scale = size.x / width * 1.5f;
+            districtUI.transform.localScale = new Vector3(scale, scale, 1);
         }
         #endregion
     }
