@@ -5,6 +5,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 using MoonSharp.Interpreter;
+using _District = District;
 
 namespace Map
 {
@@ -14,13 +15,13 @@ namespace Map
         public static MapManager Instance { get; private set; }
 
         public event EventHandler<Transform> OnMapLoaded;
-        public event EventHandler<Dictionary<string, Transform>> OnDistrictsLoaded;
+        public event EventHandler<Dictionary<string, District>> OnDistrictsLoaded;
 
         public event EventHandler<District> OnDistrictClicked;
         public event EventHandler<District> OnDistrictDoubleClicked;
 
 
-        private Dictionary<string, Transform> districts;
+        private Dictionary<string, District> districts;
 
         private GameObject mapObject;
         private Transform districtsTransform;
@@ -64,6 +65,14 @@ namespace Map
             OnDistrictDoubleClicked?.Invoke(this, district);
 
         }
+        
+        private void HandleDistrictDataLoaded(object sender, Dictionary<string, _District.Data> datas)
+        {
+            foreach (var key in districts.Keys)
+            {
+                districts[key].UpdateName(datas[key].name);
+            }
+        }
         #endregion
 
         #region CONTENT LOADER
@@ -88,24 +97,25 @@ namespace Map
         {
             var myLoadedAssetBundle
                 = AssetBundle.LoadFromFile(
-                    Path.Combine(Application.streamingAssetsPath, "vanilla/map/ui/district"));
+                    Path.Combine(Application.streamingAssetsPath, "vanilla/map/ui/districtui"));
             if (myLoadedAssetBundle == null)
             {
                 Debug.Log("Failed to load AssetBundle!");
                 return;
             }
             var prefab = myLoadedAssetBundle.LoadAsset<GameObject>("DistrictUI");
-            districts = new Dictionary<string, Transform>();
+            districts = new Dictionary<string, District>();
+
             foreach (Transform district in districtsTransform)
             {
                 if (!districts.ContainsKey(district.name))
                 {
                     CreateDistrictUI(prefab, district);
 
-                    districts.Add(district.name, district);
                     District districtClass = district.gameObject.AddComponent<District>();
                     districtClass.OnClicked += HandleDistrictClick;
                     districtClass.OnDoubleClicked += HandleDistrictDoubleClick;
+                    districts.Add(district.name, districtClass);
                 }
             }
 
@@ -129,6 +139,22 @@ namespace Map
             size = new Vector3(size.z / 2f, size.x / 10f, size.y);
             float scale = size.x / width * 1.5f;
             districtUI.transform.localScale = new Vector3(scale, scale, 1);
+        }
+        #endregion
+
+        #region SUBSCRIPTIONS
+        protected override void Subscribe()
+        {
+            base.Subscribe();
+
+            _District.DistrictManager.Instance.OnDistrictDataLoaded += HandleDistrictDataLoaded;
+        }
+
+        protected override void Unsubscribe()
+        {
+            base.Unsubscribe();
+
+            _District.DistrictManager.Instance.OnDistrictDataLoaded -= HandleDistrictDataLoaded;
         }
         #endregion
     }

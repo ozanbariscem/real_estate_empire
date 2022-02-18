@@ -100,11 +100,13 @@ namespace Chess.Camera
             verticalAngel = transform.localRotation.eulerAngles.x;
 
             Map.MapManager.Instance.OnMapLoaded += HandleMapLoaded;
+            Map.MapManager.Instance.OnDistrictDoubleClicked += HandleDistrictDoubleClicked;
         }
 
         private void OnDestroy()
         {
             Map.MapManager.Instance.OnMapLoaded -= HandleMapLoaded;
+            Map.MapManager.Instance.OnDistrictDoubleClicked -= HandleDistrictDoubleClicked;
         }
 
         void Update()
@@ -298,6 +300,11 @@ namespace Chess.Camera
 
             minPosition.y = size.x/10f;
             maxPosition.y = size.x/2;
+        }
+
+        private void HandleDistrictDoubleClicked(object sender, Map.District district)
+        {
+            MoveInput(district.transform.position - newPos);
         }
     }
 }

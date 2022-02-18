@@ -14,6 +14,7 @@ using Map;
 using Ownership;
 using SaveFile;
 using Loan;
+using District;
 
 namespace Utils
 {
@@ -49,10 +50,12 @@ namespace Utils
             script.Globals["OwnershipManager"] = OwnershipManager.Instance;
             script.Globals["SaveFileManager"] = SaveFileManager.Instance;
             script.Globals["LoanManager"] = LoanManager.Instance;
+            script.Globals["DistrictManager"] = DistrictManager.Instance;
 
             script.Globals["InvesmentDictionary"] = new InvesmentDictionary();
             script.Globals["OwnershipList"] = new OwnershipList();
             script.Globals["InvestorList"] = new InvestorList();
+            script.Globals["DistrictDictionary"] = new DistrictDictionary();
 
             script.Globals["ConsoleRunCommand"] = (Action<string>)Console.Console.Run;
             script.DoString(json);

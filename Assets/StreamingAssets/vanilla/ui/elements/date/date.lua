@@ -1,20 +1,18 @@
 -- GameManager GameManager
 local transform -- Transform
-local text -- TextMeshProUGUI
+
+local dateText
+local hourText
 
 local speedIndicators = {} -- Transform[]
 local speedParent -- Transform
 local pauseText -- TextMeshProUGUI
 
-local pauseImage -- Transform
-local playImage  -- Transform
-
 onClicks = {
-    { "TextButton", "ToggleTime" },
-    { "Buttons/Content/Increase", "IncreaseSpeed" },
-    { "Buttons/Content/Decrease", "DecreaseSpeed" }
+    { "PauseButton", "ToggleTime" },
+    { "GameSpeedButtons/Content/Increase", "IncreaseSpeed" },
+    { "GameSpeedButtons/Content/Decrease", "DecreaseSpeed" }
 }
-   
 
 -- When script is loaded from disk
 function OnScriptLoaded()
@@ -25,13 +23,13 @@ end
 function OnScriptSet(_transform)
     transform = _transform
 
-    text = transform.Find("Text").GetComponent("TextMeshProUGUI")
-    pauseText = transform.Find("PauseText").GetComponent("TextMeshProUGUI")
+    dateText = transform.Find("DateMenu/Date/Date").GetComponent("TextMeshProUGUI")
+    hourText = transform.Find("DateMenu/Hour/Date").GetComponent("TextMeshProUGUI")
+
+    pauseText = transform.Find("GameSpeedMenu/PauseText").GetComponent("TextMeshProUGUI")
     pauseText.text = LanguageManager.Translate("PAUSED"):upper()
 
     GetSpeedIndicators()
-    GetTimeStateImages()
-
     SetHandlers()
 end
 
@@ -39,15 +37,10 @@ function OnClickEventsSet()
 end
 
 function GetSpeedIndicators()
-    speedParent = transform.Find("Speed")
+    speedParent = transform.Find("GameSpeedMenu/Speed")
     for i=1, speedParent.childCount do
         speedIndicators[i] = speedParent.GetChild(i-1)
     end
-end
-
-function GetTimeStateImages()
-    pauseImage = transform.Find("PauseState")
-    playImage = transform.Find("PlayState")
 end
 
 function SetHandlers()
@@ -60,7 +53,8 @@ end
 -- sender : Not exposed don't use
 -- date : Date
 function HandleHourPass(sender, date)
-    text.text = ""..date.ToNumberString()
+    dateText.text = date.day.."."..date.month.."."..date.year
+    hourText.text = date.hour..":00"
 end
 
 -- sender : Not exposed don't use
@@ -83,10 +77,8 @@ function HandleResume()
 end
 
 function HandleTimeStateChanged(paused)
-    speedParent.gameObject.SetActive(not paused);
-    pauseText.gameObject.SetActive(paused);
-    pauseImage.gameObject.SetActive(paused);
-    playImage.gameObject.SetActive(not paused);
+    speedParent.gameObject.SetActive(not paused)
+    pauseText.gameObject.SetActive(paused)
 end
 
 function ToggleTime()

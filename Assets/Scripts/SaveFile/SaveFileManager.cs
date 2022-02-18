@@ -92,6 +92,7 @@ namespace SaveFile
             if (!File.Exists(Path.Combine(path, "calendar/start_date.txt"))) return "CORRUPTED";
             if (!File.Exists(Path.Combine(path, "ownership/ownerships.json"))) return "CORRUPTED";
             if (!File.Exists(Path.Combine(path, "loan/loans.json"))) return "CORRUPTED";
+            if (!File.Exists(Path.Combine(path, "district/districts.json"))) return "CORRUPTED";
             if (!Directory.Exists(Path.Combine(path, "invesment"))) return "CORRUPTED";
 
             foreach (var type in Invesment.Types.Dictionary.Keys)
@@ -117,6 +118,7 @@ namespace SaveFile
                 Directory.CreateDirectory(path + "/ownership");
                 Directory.CreateDirectory(path + "/invesment");
                 Directory.CreateDirectory(path + "/loan");
+                Directory.CreateDirectory(path + "/district");
                 foreach (var type in Invesment.Types.Dictionary.Keys)
                 {
                     Directory.CreateDirectory($"{path}/invesment/{type}");
@@ -128,6 +130,8 @@ namespace SaveFile
             Utils.ContentHandler.SafeSetString($"{path}/ownership/ownerships.json", JsonConvert.SerializeObject(Ownership.OwnershipList.List));
             // Save loans
             Utils.ContentHandler.SafeSetString($"{path}/loan/loans.json", JsonConvert.SerializeObject(Loan.LoanList.Loans.Values.ToList()));
+            // Save districts
+            Utils.ContentHandler.SafeSetString($"{path}/district/districts.json", JsonConvert.SerializeObject(District.DistrictDictionary.Dictionary.Values.ToList()));
             // Save invesments
             foreach (var type in Invesment.Types.Dictionary.Keys)
             {

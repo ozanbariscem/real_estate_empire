@@ -16,7 +16,7 @@ end
 function HandleMapLoaded(sender, map)
 end
 
--- districts : Dictionary<string, Transform>
+-- districts : Dictionary<string, Map.District>
 function HandleDistrictsLoaded(sender, districts)
 end
 

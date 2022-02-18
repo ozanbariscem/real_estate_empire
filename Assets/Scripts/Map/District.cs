@@ -15,7 +15,9 @@ namespace Map
 
         public event EventHandler<District> OnClicked;
         public event EventHandler<District> OnDoubleClicked;
-        
+
+        public string district_tag;
+
         private Texture2D meshTexture;
 
         private Transform mesh;
@@ -39,9 +41,10 @@ namespace Map
             doubleClickRegisterTime = 0.2f;
             transitionSpeed = 4f;
 
+            district_tag = name;
+
             Subscribe();
             GetComponents();
-            UpdateCanvas();
         }
 
         private void OnDestroy()
@@ -110,9 +113,14 @@ namespace Map
             meshTexture = mesh.GetComponent<MeshRenderer>().sharedMaterial.mainTexture as Texture2D;
         }
 
-        private void UpdateCanvas()
+        public void UpdateName(string name)
         {
             nameText.text = name;
+        }
+
+        private void UpdateCanvas()
+        {
+            
         }
 
         private void Transition(int direction)
