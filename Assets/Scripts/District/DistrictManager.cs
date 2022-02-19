@@ -55,5 +55,30 @@ namespace District
 
             DistrictDictionary.LoadJson(json);
         }
+
+        #region MISC
+        [ContextMenu("PopulateDistricts")]
+        public void PopulateDistricts()
+        {
+            int id = 0;
+            foreach (District district in DistrictDictionary.Dictionary.Values)
+            {
+                district.properties = new List<int>();
+                for (int i = 0; i < district.Size; i++)
+                {
+                    Investment.Investment invesment = Investment.InvestmentDictionary.GetInvestment("property", id);
+                    if (invesment != null)
+                    {
+                        district.properties.Add(invesment.id);
+                        id++;
+                    }
+                    else break;
+                }
+            }
+
+            string json = Newtonsoft.Json.JsonConvert.SerializeObject(DistrictDictionary.Dictionary.Values, Newtonsoft.Json.Formatting.Indented);
+            Utils.StreamingAssetsHandler.SafeSetString($"vanilla/scenarios/New Game/district/districts.json", json);
+        }
+        #endregion
     }
 }

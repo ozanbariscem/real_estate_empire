@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using MoonSharp.Interpreter;
 using Load;
-using Invesment;
+using Investment;
 using Time;
 using Game;
 using Investor;
@@ -42,7 +42,7 @@ namespace Utils
             script.Globals["LoadManager"] = LoadManager.Instance;
             script.Globals["GameManager"] = GameManager.Instance;
             script.Globals["TimeManager"] = TimeManager.Instance;
-            script.Globals["InvesmentManager"] = InvesmentManager.Instance;
+            script.Globals["InvestmentManager"] = InvestmentManager.Instance;
             script.Globals["InvestorManager"] = InvestorManager.Instance;
             script.Globals["UIManager"] = UIManager.Instance;
             script.Globals["LanguageManager"] = LanguageManager.Instance;
@@ -52,7 +52,7 @@ namespace Utils
             script.Globals["LoanManager"] = LoanManager.Instance;
             script.Globals["DistrictManager"] = DistrictManager.Instance;
 
-            script.Globals["InvesmentDictionary"] = new InvesmentDictionary();
+            script.Globals["InvestmentDictionary"] = new InvestmentDictionary();
             script.Globals["OwnershipList"] = new OwnershipList();
             script.Globals["InvestorList"] = new InvestorList();
             script.Globals["DistrictDictionary"] = new DistrictDictionary();

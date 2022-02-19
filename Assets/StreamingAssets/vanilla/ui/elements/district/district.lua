@@ -50,6 +50,8 @@ function OnScriptSet(_transform)
     GetPropertiesElements(transform)
 
     SetHandlers()
+
+    transform.gameObject.SetActive(false)
 end
 
 function OnClickEventsSet()

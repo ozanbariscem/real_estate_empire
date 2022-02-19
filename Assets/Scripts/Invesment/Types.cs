@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using MoonSharp.Interpreter;
 
-namespace Invesment
+namespace Investment
 {
     [MoonSharpUserData]
     public static class Types

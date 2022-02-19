@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 using MoonSharp.Interpreter;
-using Invesment;
+using Investment;
 using Time;
 using Game;
 using Investor;

@@ -2,68 +2,68 @@ using System.Collections.Generic;
 using UnityEngine;
 using MoonSharp.Interpreter;
 
-namespace Invesment
+namespace Investment
 {
     [MoonSharpUserData]
-    public class InvesmentDictionary
+    public class InvestmentDictionary
     {
         private static Dictionary<string, Texture2D> photos;
         public static Dictionary<string, Texture2D> Photos => photos;
-        private static Dictionary<string, Dictionary<int, Invesment>> invesments;
-        public static Dictionary<string, Dictionary<int, Invesment>> Invesments => invesments;
+        private static Dictionary<string, Dictionary<int, Investment>> investments;
+        public static Dictionary<string, Dictionary<int, Investment>> Investments => investments;
 
-        public static Invesment GetInvesment(string tag, int id)
+        public static Investment GetInvestment(string tag, int id)
         {
-            if (invesments.ContainsKey(tag) && id < invesments[tag].Count) return invesments[tag][id];
+            if (investments.ContainsKey(tag) && id < investments[tag].Count) return investments[tag][id];
             return null;
         }
 
-        public static Dictionary<int, Invesment> ConvertListOfInvesmentsToDictioanry(List<Invesment> invesments)
+        public static Dictionary<int, Investment> ConvertListOfInvestmentsToDictioanry(List<Investment> investments)
         {
-            Dictionary<int, Invesment> dictionary = new Dictionary<int, Invesment>();
+            Dictionary<int, Investment> dictionary = new Dictionary<int, Investment>();
 
-            foreach (Invesment invesment in invesments)
+            foreach (Investment investment in investments)
             {
-                dictionary.Add(invesment.id, invesment);
+                dictionary.Add(investment.id, investment);
             }
 
             return dictionary;
         }
 
-        public static void SetInvesments(Dictionary<string, Dictionary<int, Invesment>> newInvesments)
+        public static void SetInvestments(Dictionary<string, Dictionary<int, Investment>> newInvestments)
         {
-            if (invesments == null)
+            if (investments == null)
             {
-                invesments = newInvesments;
+                investments = newInvestments;
                 return;
             }
 
-            foreach (var key in newInvesments.Keys)
+            foreach (var key in newInvestments.Keys)
             {
-                if (invesments.ContainsKey(key))
+                if (investments.ContainsKey(key))
                 {
-                    // If we already have a invesment type of this
+                    // If we already have a investment type of this
                     // User might be trying to override
                     // So we should override everysingle one of them
-                    foreach (var id in newInvesments[key].Keys)
+                    foreach (var id in newInvestments[key].Keys)
                     {
                         // We are infact trying to override
-                        if (invesments[key].ContainsKey(id))
+                        if (investments[key].ContainsKey(id))
                         {
                             // This should be always returning TRUE
-                            if (invesments[key][id].id == newInvesments[key][id].id)
+                            if (investments[key][id].id == newInvestments[key][id].id)
                             {
-                                invesments[key][id] = newInvesments[key][id];
+                                investments[key][id] = newInvestments[key][id];
                             }
                         }
                         else // We are trying to add new invesments to this type
                         {
-                            invesments[key].Add(id, newInvesments[key][id]);
+                            investments[key].Add(id, newInvestments[key][id]);
                         }
                     }
                 } else
                 {
-                    invesments.Add(key, newInvesments[key]);
+                    investments.Add(key, newInvestments[key]);
                 }
             }
         }

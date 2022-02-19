@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
 using MoonSharp.Interpreter;
+using System.Collections.Generic;
 
 namespace District
 {
@@ -12,5 +13,7 @@ namespace District
 
         public string tag;
         public int population;
+
+        public List<int> properties;
     }
 }

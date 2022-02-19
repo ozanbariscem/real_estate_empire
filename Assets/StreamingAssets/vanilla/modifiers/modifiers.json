@@ -1,0 +1,77 @@
+[
+    {
+        "tag": "great_view",
+        "name": "Great View",
+        "description": "This district has great view.",
+        "effective": {"day":0,"month":0,"year":1},
+        
+        "icon": "icons/icon.png",
+
+        "effects": [
+            { 
+                "tag": "value",
+                "amount": 10
+            }
+        ]
+    },
+    {
+        "tag": "homeless",
+        "name": "Homeless Problem",
+        "description": "Homeless people around this district cause reluctant buyers.",
+        "effective": {"day":0,"month":0,"year":1},
+        
+        "icon": "icons/icon.png",
+
+        "effects": [
+            { 
+                "tag": "value",
+                "amount": -10
+            }
+        ]
+    },
+    {
+        "tag": "transportation",
+        "name": "Great Public Transportation",
+        "description": "This district has access to several different public transportations. Making it a great choice.",
+        "effective": {"day":0,"month":0,"year":1},
+        
+        "icon": "icons/icon.png",
+
+        "effects": [
+            { 
+                "tag": "value",
+                "amount": 10
+            }
+        ]
+    },
+    {
+        "tag": "smell",
+        "name": "Weird Smell",
+        "description": "There is a weird smell around this block.",
+        "effective": {"day":0,"month":0,"year":1},
+        
+        "icon": "icons/icon.png",
+
+        "effects": [
+            { 
+                "tag": "value",
+                "amount": -5
+            }
+        ]
+    },
+    {
+        "tag": "shooting",
+        "name": "Recent Shooting",
+        "description": "A shooting recently happened around here.",
+        "effective": {"day":0,"month":0,"year":1},
+        
+        "icon": "icons/icon.png",
+
+        "effects": [
+            { 
+                "tag": "value",
+                "amount": -20
+            }
+        ]
+    }
+]

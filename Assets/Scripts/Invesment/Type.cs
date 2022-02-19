@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 using MoonSharp.Interpreter;
 using UnityEngine;
 
-namespace Invesment
+namespace Investment
 {
     [Serializable]
     [MoonSharpUserData]
@@ -28,18 +28,11 @@ namespace Invesment
 
         private void LoadScript()
         {
-            string scriptString = Utils.StreamingAssetsHandler.SafeGetString($"vanilla/invesment/types/{scriptPath}");
-            if (scriptString == null) return;
-
-            UserData.RegisterType<Data>();
-            UserData.RegisterType<Type>();
-            UserData.RegisterType<Invesment>();
-
-            script = new Script();
-            script.Globals["Log"] = (Action<string>)Debug.Log;
-            script.DoString(scriptString);
-
-            script.Call(script.Globals["OnReady"]);
+            script = Utils.StreamingAssetsHandler.SafeGetScript($"vanilla/investment/types/{scriptPath}");
+            if (script != null)
+            {
+                script.Call(script.Globals["OnReady"]);
+            }
         }
     }
 }

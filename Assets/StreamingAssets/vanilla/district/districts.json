@@ -2,72 +2,72 @@
     {
         "tag": "BPC",
         "name": "Battery Park City",
-        "size": 10 
+        "size": 30 
     },
     {
         "tag": "FIND",
         "name": "Financial District",
-        "size": 10 
+        "size": 90 
     },
     {
         "tag": "SSS",
         "name": "South Street Seaport",
-        "size": 10 
+        "size": 6
     },
     {
         "tag": "CC",
         "name": "Civic Center",
-        "size": 10 
+        "size": 30 
     },
     {
         "tag": "TBC",
         "name": "TriBeCa",
-        "size": 10 
+        "size": 40 
     },
     {
         "tag": "CHIT",
         "name": "Chinatown",
-        "size": 10 
+        "size": 40 
     },
     {
         "tag": "TWOB",
         "name": "Two Bridges",
-        "size": 10 
+        "size": 40 
     },
     {
         "tag": "LES",
         "name": "Lower East Side",
-        "size": 10 
+        "size": 80
     },
     {
         "tag": "BOW",
         "name": "Bowery",
-        "size": 10 
+        "size": 40 
     },
     {
         "tag": "LI",
         "name": "Little Italy",
-        "size": 10 
+        "size": 30 
     },
     {
         "tag": "SOHO",
         "name": "SoHo",
-        "size": 10 
+        "size": 50 
     },
     {
         "tag": "HUDS",
         "name": "Hudson Square",
-        "size": 10 
+        "size": 30 
     },
     {
         "tag": "WESV",
         "name": "West Village",
-        "size": 10 
+        "size": 60 
     },
     {
         "tag": "GREV",
         "name": "Greenwich VIllage",
-        "size": 10 
+        "size": 40 
     },
     {
         "tag": "NOHO",
@@ -77,201 +77,201 @@
     {
         "tag": "EASV",
         "name": "East Village",
-        "size": 10 
+        "size": 40 
     },
     {
         "tag": "ALPC",
         "name": "Aphabet City",
-        "size": 10 
+        "size": 50 
     },
     {
         "tag": "STUT",
         "name": "Stuyvesant Town",
-        "size": 10 
+        "size": 20 
     },
     {
         "tag": "GRA",
         "name": "Gramercy",
-        "size": 10 
+        "size": 40 
     },
     {
         "tag": "FLA",
         "name": "Flatiron",
-        "size": 10 
+        "size": 30 
     },
     {
         "tag": "MEATD",
         "name": "Meatpacking District",
-        "size": 10 
+        "size": 5 
     },
     {
         "tag": "CHE",
         "name": "Chelsea",
-        "size": 10 
+        "size": 80 
     },
     {
         "tag": "NOMAD",
         "name": "NoMad",
-        "size": 10 
+        "size": 20 
     },
     {
         "tag": "ROSH",
         "name": "Rose Hill",
-        "size": 10 
+        "size": 30 
     },
     {
         "tag": "KIPB",
         "name": "Kips Bay",
-        "size": 10 
+        "size": 40 
     },
     {
         "tag": "MURH",
         "name": "Murray Hill",
-        "size": 10 
+        "size": 50 
     },
     {
         "tag": "GARD",
         "name": "Garment District",
-        "size": 10 
+        "size": 40 
     },
     {
         "tag": "MIDS",
         "name": "Midtown South",
-        "size": 10 
+        "size": 40 
     },
     {
         "tag": "HUDY",
         "name": "Hudson Yards",
-        "size": 10 
+        "size": 20 
     },
     {
         "tag": "HELLK",
         "name": "Hell's Kitchen",
-        "size": 10 
+        "size": 30 
     },
     {
         "tag": "THEAD",
         "name": "Theater District",
-        "size": 10 
+        "size": 20 
     },
     {
         "tag": "MID",
         "name": "Midtown",
-        "size": 10 
+        "size": 30 
     },
     {
         "tag": "MIDE",
         "name": "Midtown East",
-        "size": 10 
+        "size": 30 
     },
     {
         "tag": "TURB",
         "name": "Turtle Bay",
-        "size": 10 
+        "size": 30 
     },
     {
         "tag": "SUTP",
         "name": "Sutton Place",
-        "size": 10 
+        "size": 20 
     },
     {
         "tag": "LENH",
         "name": "Lenox Hill",
-        "size": 10 
+        "size": 30 
     },
     {
         "tag": "UES",
         "name": "Upper East Side",
-        "size": 10 
+        "size": 40 
     },
     {
         "tag": "METH",
         "name": "Metropolitan Hill",
-        "size": 10 
+        "size": 20 
     },
     {
         "tag": "YOR",
         "name": "Yorkville",
-        "size": 10 
+        "size": 40 
     },
     {
         "tag": "CARH",
         "name": "Carnegie Hill",
-        "size": 10 
+        "size": 20 
     },
     {
         "tag": "SPAH",
         "name": "Spanish Harlem",
-        "size": 10 
+        "size": 50 
     },
     {
         "tag": "EASH",
         "name": "East Harlem",
-        "size": 10 
+        "size": 40 
     },
     {
         "tag": "HAR",
         "name": "Harlem",
-        "size": 10 
+        "size": 160 
     },
     {
         "tag": "LINS",
         "name": "Lincoln Square",
-        "size": 10 
+        "size": 40 
     },
     {
         "tag": "UWS",
         "name": "Upper West Side",
-        "size": 10 
+        "size": 60 
     },
     {
         "tag": "BLOD",
         "name": "Bloomingdale District",
-        "size": 10 
+        "size": 20 
     },
     {
         "tag": "MANV",
         "name": "Manhattan Valley",
-        "size": 10 
+        "size": 40 
     },
     {
         "tag": "MORH",
         "name": "Morningside Heights",
-        "size": 10 
+        "size": 40 
     },
     {
         "tag": "MAN",
         "name": "Manhattanville",
-        "size": 10 
+        "size": 40 
     },
     {
         "tag": "HAMH",
         "name": "Hamilton Heights",
-        "size": 10 
+        "size": 50 
     },
     {
         "tag": "SUGH",
         "name": "Sugar Hill",
-        "size": 10 
+        "size": 20 
     },
     {
         "tag": "WASH",
         "name": "Washington Heights",
-        "size": 10 
+        "size": 80 
     },
     {
         "tag": "HUDH",
         "name": "Hudson Heights",
-        "size": 10 
+        "size": 60 
     },
     {
         "tag": "FORG",
         "name": "Fort George",
-        "size": 10 
+        "size": 60 
     },
     {
         "tag": "INW",
         "name": "INWOOD",
-        "size": 10 
+        "size": 60 
     }
 ]

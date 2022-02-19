@@ -3,11 +3,11 @@ using UnityEngine;
 using Newtonsoft.Json;
 using MoonSharp.Interpreter;
 
-namespace Invesment
+namespace Investment
 {
     [Serializable]
     [MoonSharpUserData]
-    public class Invesment
+    public class Investment
     {
         [JsonIgnore]
         public Data Data => Types.Dictionary[type].subTypes[sub_type];
@@ -34,12 +34,12 @@ namespace Invesment
             return $"{type}-{sub_type} {name} {age} {shares} {baseValue}";
         }
 
-        public static Invesment FromJson(string json)
+        public static Investment FromJson(string json)
         {
-            return JsonConvert.DeserializeObject<Invesment>(json);
+            return JsonConvert.DeserializeObject<Investment>(json);
         }
 
-        public static string ToJson(Invesment invesment)
+        public static string ToJson(Investment invesment)
         {
             return JsonConvert.SerializeObject(invesment);
         }
