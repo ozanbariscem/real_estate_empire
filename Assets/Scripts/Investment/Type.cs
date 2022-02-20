@@ -17,11 +17,14 @@ namespace Investment
         public string scriptPath;
         public Dictionary<string, Data> subTypes;
 
-        public Type(string type, string scriptPath, Dictionary<string, Data> subTypes)
+        public List<string> modifier_groups;
+
+        public Type(string type, string scriptPath, Dictionary<string, Data> subTypes, List<string> modifier_groups)
         {
             this.type = type;
             this.subTypes = subTypes;
             this.scriptPath = scriptPath;
+            this.modifier_groups = modifier_groups;
 
             LoadScript();
         }
@@ -31,6 +34,7 @@ namespace Investment
             script = Utils.StreamingAssetsHandler.SafeGetScript($"vanilla/investment/types/{scriptPath}");
             if (script != null)
             {
+                script.Globals["modifier_groups"] = modifier_groups;
                 script.Call(script.Globals["OnReady"]);
             }
         }

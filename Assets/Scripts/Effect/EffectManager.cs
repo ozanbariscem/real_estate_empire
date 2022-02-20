@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using MoonSharp.Interpreter;
 using Newtonsoft.Json;
@@ -11,7 +10,7 @@ namespace Effect
     {
         public static EffectManager Instance { get; private set; }
 
-        public event EventHandler<Dictionary<string, Effect>> OnEffectsLoaded;
+        public event EventHandler<Dictionary<Effect.Tags, Effect>> OnEffectsLoaded;
 
         private void Awake()
         {
@@ -32,7 +31,7 @@ namespace Effect
 
         private void LoadEffects()
         {
-            string json = Utils.StreamingAssetsHandler.SafeGetString("vanilla/modifiers/groups.json");
+            string json = Utils.StreamingAssetsHandler.SafeGetString("vanilla/effects/effects.json");
             if (json == null) return;
 
             Effect.LoadEffects(JsonConvert.DeserializeObject<List<Effect>>(json));

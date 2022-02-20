@@ -6,12 +6,22 @@ namespace Time
 {
     [Serializable]
     [MoonSharpUserData]
-    public class Date
+    public class Date : IComparable
     {
         public ushort hour;
         public ushort day;
         public ushort month;
         public ushort year;
+
+        public Date(ushort h, ushort d, ushort m, ushort y)
+        {
+            hour = h;
+            day = d;
+            month = m;
+            year = y;
+        }
+        
+        public override string ToString() => ToNumberString();
 
         public string ToNumberString()
         {
@@ -52,6 +62,44 @@ namespace Time
             }
 
             return hasPassed;
+        }
+
+        public int CompareTo(object obj)
+        {
+            if (obj == null) return 1;
+
+            if (!(obj is Date other)) throw new ArgumentException("Object is not a Date");
+
+            if (this.year > other.year) return 1;
+            else
+            {
+                if (this.year == other.year)
+                {
+                    if (this.month > other.month) return 1;
+                    else
+                    {
+                        if (this.month == other.month)
+                        {
+                            if (this.day > other.day) return 1;
+                            else
+                            {
+                                if (this.day == other.day)
+                                {
+                                    if (this.hour > other.hour) return 1;
+                                    {
+                                        if (this.hour == other.hour)
+                                            return 0;
+                                        else return -1;
+                                    }
+                                }
+                                else return -1;
+                            }
+                        }
+                        else return -1;
+                    }
+                }
+                else return -1;
+            }
         }
 
         public static Date FromJson(string json)

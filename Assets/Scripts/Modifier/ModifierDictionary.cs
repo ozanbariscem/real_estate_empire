@@ -1,66 +1,120 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using MoonSharp.Interpreter;
+using System.Linq;
 
 namespace Modifier
 {
     [MoonSharpUserData]
     public class ModifierDictionary
     {
-        public static Dictionary<string, 
-            Dictionary<string, Dictionary<string, bool>>> ActiveModifiers { get; private set; }
+        // Modifiers dictionary holds 
+        // Investment.type, Investment.id, Modifier.tag, Modifier
 
-        public static Dictionary<string, Modifier> Modifiers { get;  private set; }
+        // i.e
+        // Modifiers["property"][0] returns the Dictionary of modifiers property 0 has
+        // Modifiers["property"][0]["homeless"] returns the property 0's "homeless" modifier
+        // OR returns null if property 0 doesn't have any "homeless" modifier
 
-        public static Dictionary<string, Modifier> LoadModifiers(List<Modifier> modifiers)
+        public static Dictionary<string,
+            Dictionary<int, Dictionary<string, Modifier>>> Modifiers { get; private set; }
+
+        public static List<Modifier> ModifiersSorted { get; private set; }
+
+        public static Dictionary<string, ModifierData> Dictionary { get;  private set; }
+
+        public static void LoadModifierDatas(List<ModifierData> modifiers)
         {
-            if (Modifiers == null)
-                Modifiers = new Dictionary<string, Modifier>();
+            if (Dictionary == null)
+                Dictionary = new Dictionary<string, ModifierData>();
 
-            foreach (Modifier modifier in modifiers)
+            foreach (ModifierData modifier in modifiers)
             {
-                if (Modifiers.TryGetValue(modifier.tag, out Modifier oldModifier))
+                if (Dictionary.TryGetValue(modifier.tag, out ModifierData oldModifier))
                 {
                     oldModifier = modifier;
                 }
                 else
                 {
-                    Modifiers.Add(modifier.tag, modifier);
+                    Dictionary.Add(modifier.tag, modifier);
                 }
             }
-
-            return Modifiers;
         }
     
-        public static Dictionary<string,
-            Dictionary<string, Dictionary<string, bool>>> LoadActiveModifiers(string group, Dictionary<string, Dictionary<string, bool>> modifiers)
+        public static void AddModifier(string type, int id, Modifier modifier)
         {
-            if (ActiveModifiers == null)
-                ActiveModifiers = new Dictionary<string, Dictionary<string, Dictionary<string, bool>>>();
+            if (Modifiers == null)
+                Modifiers = new Dictionary<string, Dictionary<int, Dictionary<string, Modifier>>>();
 
-            if (!ActiveModifiers.ContainsKey(group))
-                ActiveModifiers.Add(group, new Dictionary<string, Dictionary<string, bool>>());
-
-            foreach (var key in modifiers.Keys)
+            if (Modifiers.TryGetValue(type, out Dictionary<int, Dictionary<string, Modifier>> types))
             {
-                if (ActiveModifiers[group].ContainsKey(key))
+                if (types.TryGetValue(id, out Dictionary<string, Modifier> ids))
                 {
-                    foreach (var modifier_tag in modifiers[key].Keys)
+                    if (ids.TryGetValue(modifier.Data.tag, out Modifier _modifier))
                     {
-                        if (ActiveModifiers[group][key].ContainsKey(modifier_tag))
-                        {
-                            ActiveModifiers[group][key][modifier_tag] = modifiers[key][modifier_tag];
-                        } else
-                        {
-                            ActiveModifiers[group][key].Add(modifier_tag, modifiers[key][modifier_tag]);
-                        }
+                        _modifier = modifier;
+                    } else
+                    {
+                        ids.Add(modifier.Data.tag, modifier);
                     }
                 } else
                 {
-                    ActiveModifiers[group].Add(key, modifiers[key]);
+                    types.Add(id, new Dictionary<string, Modifier>());
+                    types[id].Add(modifier.Data.tag, modifier);
                 }
+            } else
+            {
+                Modifiers.Add(type, new Dictionary<int, Dictionary<string, Modifier>>());
+                Modifiers[type].Add(id, new Dictionary<string, Modifier>());
+                Modifiers[type][id].Add(modifier.Data.tag, modifier);
             }
 
-            return ActiveModifiers;
+            AddSorted(modifier);
+        }
+
+        public static Modifier RemoveModifier(string type, int id, string modifier_tag)
+        {
+            if (Modifiers.TryGetValue(type, out Dictionary<int, Dictionary<string, Modifier>> types))
+            {
+                if (types.TryGetValue(id, out Dictionary<string, Modifier> modifiers))
+                {
+                    if (modifiers.TryGetValue(modifier_tag, out Modifier modifier))
+                    {
+                        modifiers.Remove(modifier_tag);
+                        return modifier;
+                    }
+                }
+            }
+            return null;
+        }
+    
+        public static void AddSorted(Modifier item)
+        {
+            if (ModifiersSorted == null)
+            {
+                ModifiersSorted = new List<Modifier>() { item };
+                return;
+            }
+            if (ModifiersSorted.Count == 0)
+            {
+                ModifiersSorted.Add(item);
+                return;
+            }
+            if (ModifiersSorted[ModifiersSorted.Count - 1].CompareTo(item) <= 0)
+            {
+                ModifiersSorted.Add(item);
+                return;
+            }
+            if (ModifiersSorted[0].CompareTo(item) >= 0)
+            {
+                ModifiersSorted.Insert(0, item);
+                return;
+            }
+            int index = ModifiersSorted.BinarySearch(item);
+            if (index < 0)
+                index = ~index;
+            ModifiersSorted.Insert(index, item);
         }
     }
 }

@@ -1,18 +1,39 @@
-using System.Collections.Generic;
+using Newtonsoft.Json;
 using MoonSharp.Interpreter;
+using System;
+using Time;
 
 namespace Modifier
 {
     [MoonSharpUserData]
-    public class Modifier
+    public class Modifier : IComparable<Modifier>
     {
-        public string tag;
-        public string name;
-        public string description;
-        public Time.Date effective;
+        [JsonIgnore] public int id;
+        
+        [JsonIgnore] public string type;
+        [JsonIgnore] public int investment_id;
 
-        public string icon;
+        public string modifier_data_tag;
+        
+        private ModifierData data;
+        [JsonIgnore] public ModifierData Data => data;
 
-        public List<EffectData> effects;
+        public Date endDate;
+
+        public Modifier(string type, int investment_id, string modifier_data_tag, Date endDate)
+        {
+            this.type = type;
+            this.investment_id = investment_id;
+            this.modifier_data_tag = modifier_data_tag;
+            this.endDate = endDate;
+
+            data = ModifierDictionary.Dictionary[modifier_data_tag];
+        }
+
+        public int CompareTo(Modifier other)
+        {
+            return endDate.CompareTo(other.endDate);
+        }
     }
 }
+

@@ -2,9 +2,6 @@
   {
     "tag": "BPC",
     "population": 1000000,
-    "modifiers": [
-      
-    ],
     "properties": [
       0,
       1,
@@ -41,9 +38,6 @@
   {
     "tag": "FIND",
     "population": 1000000,
-    "modifiers": [
-      
-    ],
     "properties": [
       30,
       31,
@@ -140,9 +134,6 @@
   {
     "tag": "SSS",
     "population": 1000000,
-    "modifiers": [
-      
-    ],
     "properties": [
       120,
       121,
@@ -155,9 +146,6 @@
   {
     "tag": "CC",
     "population": 1000000,
-    "modifiers": [
-      
-    ],
     "properties": [
       126,
       127,
@@ -194,9 +182,6 @@
   {
     "tag": "TBC",
     "population": 1000000,
-    "modifiers": [
-      
-    ],
     "properties": [
       156,
       157,
@@ -243,9 +228,6 @@
   {
     "tag": "CHIT",
     "population": 1000000,
-    "modifiers": [
-      
-    ],
     "properties": [
       196,
       197,
@@ -292,9 +274,6 @@
   {
     "tag": "TWOB",
     "population": 1000000,
-    "modifiers": [
-      
-    ],
     "properties": [
       236,
       237,
@@ -341,9 +320,6 @@
   {
     "tag": "LES",
     "population": 1000000,
-    "modifiers": [
-      
-    ],
     "properties": [
       276,
       277,
@@ -430,9 +406,6 @@
   {
     "tag": "BOW",
     "population": 1000000,
-    "modifiers": [
-      
-    ],
     "properties": [
       356,
       357,
@@ -479,9 +452,6 @@
   {
     "tag": "LI",
     "population": 1000000,
-    "modifiers": [
-      
-    ],
     "properties": [
       396,
       397,
@@ -518,9 +488,6 @@
   {
     "tag": "SOHO",
     "population": 1000000,
-    "modifiers": [
-      
-    ],
     "properties": [
       426,
       427,
@@ -577,9 +544,6 @@
   {
     "tag": "HUDS",
     "population": 1000000,
-    "modifiers": [
-      
-    ],
     "properties": [
       476,
       477,
@@ -616,9 +580,6 @@
   {
     "tag": "WESV",
     "population": 1000000,
-    "modifiers": [
-      
-    ],
     "properties": [
       506,
       507,
@@ -685,9 +646,6 @@
   {
     "tag": "GREV",
     "population": 1000000,
-    "modifiers": [
-      
-    ],
     "properties": [
       566,
       567,
@@ -734,9 +692,6 @@
   {
     "tag": "NOHO",
     "population": 1000000,
-    "modifiers": [
-      
-    ],
     "properties": [
       606,
       607,
@@ -753,9 +708,6 @@
   {
     "tag": "EASV",
     "population": 1000000,
-    "modifiers": [
-      
-    ],
     "properties": [
       616,
       617,
@@ -802,9 +754,6 @@
   {
     "tag": "ALPC",
     "population": 1000000,
-    "modifiers": [
-      
-    ],
     "properties": [
       656,
       657,
@@ -861,9 +810,6 @@
   {
     "tag": "STUT",
     "population": 1000000,
-    "modifiers": [
-      
-    ],
     "properties": [
       706,
       707,
@@ -890,9 +836,6 @@
   {
     "tag": "GRA",
     "population": 1000000,
-    "modifiers": [
-      
-    ],
     "properties": [
       726,
       727,
@@ -939,9 +882,6 @@
   {
     "tag": "FLA",
     "population": 1000000,
-    "modifiers": [
-      
-    ],
     "properties": [
       766,
       767,
@@ -978,9 +918,6 @@
   {
     "tag": "MEATD",
     "population": 1000000,
-    "modifiers": [
-      
-    ],
     "properties": [
       796,
       797,
@@ -992,9 +929,6 @@
   {
     "tag": "CHE",
     "population": 1000000,
-    "modifiers": [
-      
-    ],
     "properties": [
       801,
       802,
@@ -1081,9 +1015,6 @@
   {
     "tag": "NOMAD",
     "population": 1000000,
-    "modifiers": [
-      
-    ],
     "properties": [
       881,
       882,
@@ -1110,9 +1041,6 @@
   {
     "tag": "ROSH",
     "population": 1000000,
-    "modifiers": [
-      
-    ],
     "properties": [
       901,
       902,
@@ -1149,9 +1077,6 @@
   {
     "tag": "KIPB",
     "population": 1000000,
-    "modifiers": [
-      
-    ],
     "properties": [
       931,
       932,
@@ -1198,9 +1123,6 @@
   {
     "tag": "MURH",
     "population": 1000000,
-    "modifiers": [
-      
-    ],
     "properties": [
       971,
       972,
@@ -1257,9 +1179,6 @@
   {
     "tag": "GARD",
     "population": 1000000,
-    "modifiers": [
-      
-    ],
     "properties": [
       1021,
       1022,
@@ -1306,9 +1225,6 @@
   {
     "tag": "MIDS",
     "population": 1000000,
-    "modifiers": [
-      
-    ],
     "properties": [
       1061,
       1062,
@@ -1355,9 +1271,6 @@
   {
     "tag": "HUDY",
     "population": 1000000,
-    "modifiers": [
-      
-    ],
     "properties": [
       1101,
       1102,
@@ -1384,9 +1297,6 @@
   {
     "tag": "HELLK",
     "population": 1000000,
-    "modifiers": [
-      
-    ],
     "properties": [
       1121,
       1122,
@@ -1423,9 +1333,6 @@
   {
     "tag": "THEAD",
     "population": 1000000,
-    "modifiers": [
-      
-    ],
     "properties": [
       1151,
       1152,
@@ -1452,9 +1359,6 @@
   {
     "tag": "MID",
     "population": 1000000,
-    "modifiers": [
-      
-    ],
     "properties": [
       1171,
       1172,
@@ -1491,9 +1395,6 @@
   {
     "tag": "MIDE",
     "population": 1000000,
-    "modifiers": [
-      
-    ],
     "properties": [
       1201,
       1202,
@@ -1530,9 +1431,6 @@
   {
     "tag": "TURB",
     "population": 1000000,
-    "modifiers": [
-      
-    ],
     "properties": [
       1231,
       1232,
@@ -1569,9 +1467,6 @@
   {
     "tag": "SUTP",
     "population": 1000000,
-    "modifiers": [
-      
-    ],
     "properties": [
       1261,
       1262,
@@ -1598,9 +1493,6 @@
   {
     "tag": "LENH",
     "population": 1000000,
-    "modifiers": [
-      
-    ],
     "properties": [
       1281,
       1282,
@@ -1637,9 +1529,6 @@
   {
     "tag": "UES",
     "population": 1000000,
-    "modifiers": [
-      
-    ],
     "properties": [
       1311,
       1312,
@@ -1686,9 +1575,6 @@
   {
     "tag": "METH",
     "population": 1000000,
-    "modifiers": [
-      
-    ],
     "properties": [
       1351,
       1352,
@@ -1715,9 +1601,6 @@
   {
     "tag": "YOR",
     "population": 1000000,
-    "modifiers": [
-      
-    ],
     "properties": [
       1371,
       1372,
@@ -1764,9 +1647,6 @@
   {
     "tag": "CARH",
     "population": 1000000,
-    "modifiers": [
-      
-    ],
     "properties": [
       1411,
       1412,
@@ -1793,9 +1673,6 @@
   {
     "tag": "SPAH",
     "population": 1000000,
-    "modifiers": [
-      
-    ],
     "properties": [
       1431,
       1432,
@@ -1852,9 +1729,6 @@
   {
     "tag": "EASH",
     "population": 1000000,
-    "modifiers": [
-      
-    ],
     "properties": [
       1481,
       1482,
@@ -1901,9 +1775,6 @@
   {
     "tag": "HAR",
     "population": 1000000,
-    "modifiers": [
-      
-    ],
     "properties": [
       1521,
       1522,
@@ -2070,9 +1941,6 @@
   {
     "tag": "LINS",
     "population": 1000000,
-    "modifiers": [
-      
-    ],
     "properties": [
       1681,
       1682,
@@ -2119,9 +1987,6 @@
   {
     "tag": "UWS",
     "population": 1000000,
-    "modifiers": [
-      
-    ],
     "properties": [
       1721,
       1722,
@@ -2188,9 +2053,6 @@
   {
     "tag": "BLOD",
     "population": 1000000,
-    "modifiers": [
-      
-    ],
     "properties": [
       1781,
       1782,
@@ -2217,9 +2079,6 @@
   {
     "tag": "MANV",
     "population": 1000000,
-    "modifiers": [
-      
-    ],
     "properties": [
       1801,
       1802,
@@ -2266,9 +2125,6 @@
   {
     "tag": "MORH",
     "population": 1000000,
-    "modifiers": [
-      
-    ],
     "properties": [
       1841,
       1842,
@@ -2315,9 +2171,6 @@
   {
     "tag": "MAN",
     "population": 1000000,
-    "modifiers": [
-      
-    ],
     "properties": [
       1881,
       1882,
@@ -2364,9 +2217,6 @@
   {
     "tag": "HAMH",
     "population": 1000000,
-    "modifiers": [
-      
-    ],
     "properties": [
       1921,
       1922,
@@ -2423,9 +2273,6 @@
   {
     "tag": "SUGH",
     "population": 1000000,
-    "modifiers": [
-      
-    ],
     "properties": [
       1971,
       1972,
@@ -2452,9 +2299,6 @@
   {
     "tag": "WASH",
     "population": 1000000,
-    "modifiers": [
-      
-    ],
     "properties": [
       1991,
       1992,
@@ -2541,9 +2385,6 @@
   {
     "tag": "HUDH",
     "population": 1000000,
-    "modifiers": [
-      
-    ],
     "properties": [
       2071,
       2072,
@@ -2610,9 +2451,6 @@
   {
     "tag": "FORG",
     "population": 1000000,
-    "modifiers": [
-      
-    ],
     "properties": [
       2131,
       2132,
@@ -2679,9 +2517,6 @@
   {
     "tag": "INW",
     "population": 1000000,
-    "modifiers": [
-      
-    ],
     "properties": [
       2191,
       2192,

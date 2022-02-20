@@ -1,20 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MoonSharp.Interpreter;
 
 namespace Effect
 {
+    [MoonSharpUserData]
     public class Effect
     {
-        public static Dictionary<string, Effect> Effects { get; private set; }
+        public enum Tags { value }
+        public enum Types { percentage, value }
 
-        public string tag;
-        public string type;
+        public static Dictionary<Tags, Effect> Effects { get; private set; }
 
-        public static Dictionary<string, Effect> LoadEffects(List<Effect> effects)
+        public Tags tag;
+        public Types type;
+
+        public static Dictionary<Tags, Effect> LoadEffects(List<Effect> effects)
         {
             if (Effects == null)
-                Effects = new Dictionary<string, Effect>();
+                Effects = new Dictionary<Tags, Effect>();
 
             foreach (Effect effect in effects)
             {

@@ -94,15 +94,10 @@ namespace SaveFile
             if (!File.Exists(Path.Combine(path, "loan/loans.json"))) return "CORRUPTED";
             if (!File.Exists(Path.Combine(path, "district/districts.json"))) return "CORRUPTED";
             if (!Directory.Exists(Path.Combine(path, "investment"))) return "CORRUPTED";
-            if (!Directory.Exists(Path.Combine(path, "modifiers"))) return "CORRUPTED";
 
             foreach (var type in Investment.Types.Dictionary.Keys)
             {
                 if (!Directory.Exists($"{path}/investment/{type}")) return "CORRUPTED";
-            }
-            foreach (var type in Modifier.Group.Groups.Keys)
-            {
-                if (!File.Exists($"{path}/modifiers/active_modifiers/{type}.json")) return "CORRUPTED";
             }
 
             return "OKAY";
@@ -124,7 +119,6 @@ namespace SaveFile
                 Directory.CreateDirectory(path + "/investment");
                 Directory.CreateDirectory(path + "/loan");
                 Directory.CreateDirectory(path + "/district");
-                Directory.CreateDirectory(path + "/modifiers/active_modifiers");
                 foreach (var type in Investment.Types.Dictionary.Keys)
                 {
                     Directory.CreateDirectory($"{path}/investment/{type}");
@@ -138,13 +132,6 @@ namespace SaveFile
             Utils.ContentHandler.SafeSetString($"{path}/loan/loans.json", JsonConvert.SerializeObject(Loan.LoanList.Loans.Values.ToList()));
             // Save districts
             Utils.ContentHandler.SafeSetString($"{path}/district/districts.json", JsonConvert.SerializeObject(District.DistrictDictionary.Dictionary.Values.ToList()));
-            // Save modifiers
-            foreach (var key in Modifier.ModifierDictionary.ActiveModifiers.Keys)
-            {
-                Utils.ContentHandler.SafeSetString(
-                $"{path}/modifiers/active_modifiers/{key}.json",
-                JsonConvert.SerializeObject(Modifier.ModifierDictionary.ActiveModifiers.Values));
-            }
             // Save invesments
             foreach (var type in Investment.Types.Dictionary.Keys)
             {

@@ -6,6 +6,6 @@ namespace Modifier
     public class EffectData
     {
         public string tag;
-        public int value;
+        public int amount;
     }
 }

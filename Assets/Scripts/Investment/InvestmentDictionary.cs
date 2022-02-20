@@ -14,7 +14,11 @@ namespace Investment
 
         public static Investment GetInvestment(string tag, int id)
         {
-            if (investments.ContainsKey(tag) && id < investments[tag].Count) return investments[tag][id];
+            if (investments.TryGetValue(tag, out Dictionary<int, Investment> tags))
+            {
+                if (tags.TryGetValue(id, out Investment investment))
+                    return investment;
+            }
             return null;
         }
 
