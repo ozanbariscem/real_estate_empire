@@ -1,8 +1,5 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using MoonSharp.Interpreter;
-using System.Linq;
 
 namespace Modifier
 {
@@ -27,7 +24,10 @@ namespace Modifier
         public static void LoadModifierDatas(List<ModifierData> modifiers)
         {
             if (Dictionary == null)
+            {
                 Dictionary = new Dictionary<string, ModifierData>();
+                Modifiers = new Dictionary<string, Dictionary<int, Dictionary<string, Modifier>>>();
+            }
 
             foreach (ModifierData modifier in modifiers)
             {
@@ -41,7 +41,7 @@ namespace Modifier
                 }
             }
         }
-    
+
         public static void AddModifier(string type, int id, Modifier modifier)
         {
             if (Modifiers == null)

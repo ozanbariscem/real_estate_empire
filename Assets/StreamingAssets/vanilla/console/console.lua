@@ -22,3 +22,18 @@ end
 function clear()
     UI.ClearLog()
 end
+
+function investment(...)
+    local params = {...}
+
+    local type = params[1]
+    local id = tonumber(params[2])
+    local investment = InvestmentDictionary.GetInvestment(type, id)
+    if (investment == nil) then
+        return
+    end
+
+    log(
+        "\nbase_value: "..investment.base_value..
+        "\nvalue: "..investment.value)
+end

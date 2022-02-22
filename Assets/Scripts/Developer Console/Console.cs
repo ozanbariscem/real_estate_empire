@@ -76,7 +76,7 @@ namespace Console
                 string[] args = new string[0];
                 if (command.Length > 1) args = command[1].Split(' ');
 
-                lua.Call(function, args);
+                lua.Call(function, args); 
             }
 
             if (text != "")
@@ -92,10 +92,8 @@ namespace Console
 
         private void LoadScript()
         {
-            string json = Utils.StreamingAssetsHandler.SafeGetString(scriptPath);
-            if (json == null) return;
-
-            lua = new Script();
+            lua = Utils.StreamingAssetsHandler.SafeGetScript(scriptPath);
+            if (lua == null) return;
 
             // Don't forget to register the classes you are going to expose
             // If you want to only expose certain functions of a class
@@ -108,8 +106,6 @@ namespace Console
             lua.Globals["Random"] = (Func<int, int, int>)UnityEngine.Random.Range;
             // Class example
             lua.Globals["UI"] = ui;
-
-            lua.DoString(json);
         }
     }
 }

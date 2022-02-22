@@ -32,6 +32,7 @@ namespace Investment
         public uint baseValue;
 
         [JsonIgnore]
+        [JsonProperty("baseValue")]
         public uint value;
 
         public uint CalculateValue()
@@ -39,26 +40,34 @@ namespace Investment
             float modifiers_effect = ModifiersEffectToValue();
 
             Script script = Type.script;
-            if (script.Globals["CalculateValue"] != null)
+            if (!script.Globals.Get("CalculateValue").IsNil())
             {
-                return (uint)Type.script.Call(
-                    script.Globals["CalculateValue"],
-                    id,
-                    baseValue,
-                    modifiers_effect
-                    ).Number;
+                value = (uint)Type.script.Call(
+                            script.Globals["CalculateValue"],
+                            id,
+                            baseValue,
+                            modifiers_effect
+                            ).Number;
             }
             else
             {
-                // Console.Console.Run($"log Hello my id is {id} and i'm worth {(uint)(baseValue * modifiers_effect)} but my base value was {baseValue}");
-                return (uint)(baseValue * modifiers_effect);
+                value = (uint)(baseValue * modifiers_effect);
             }
+            return value;
         }
 
         private float ModifiersEffectToValue()
         {
-            Dictionary<string, Modifier.Modifier>.ValueCollection modifiers
-                = Modifier.ModifierDictionary.Modifiers[type][id].Values;
+            Dictionary<string, Modifier.Modifier>.ValueCollection modifiers;
+
+            if (Modifier.ModifierDictionary.Modifiers.TryGetValue(type, out var types))
+            {
+                if (types.TryGetValue(id, out var ids))
+                {
+                    modifiers = ids.Values;
+                }
+                else return 1;
+            } else return 1;
 
             uint dummy = baseValue;
             foreach (Modifier.Modifier modifier in modifiers)

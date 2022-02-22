@@ -16,6 +16,7 @@ using SaveFile;
 using Loan;
 using District;
 using Modifier;
+using RandomEvent;
 
 namespace Utils
 {
@@ -53,6 +54,7 @@ namespace Utils
             script.Globals["LoanManager"] = LoanManager.Instance;
             script.Globals["DistrictManager"] = DistrictManager.Instance;
             script.Globals["ModifierManager"] = ModifierManager.Instance;
+            script.Globals["EventManager"] = EventManager.Instance;
 
             script.Globals["InvestmentDictionary"] = new InvestmentDictionary();
             script.Globals["OwnershipList"] = new OwnershipList();
@@ -60,6 +62,7 @@ namespace Utils
             script.Globals["DistrictDictionary"] = new DistrictDictionary();
             script.Globals["ModifierDictionary"] = new ModifierDictionary();
             script.Globals["EffectDictionary"] = new Effect.Effect();
+            script.Globals["EventDictionary"] = new EventDictionary();
 
             script.Globals["ConsoleRunCommand"] = (Action<string>)Console.Console.Run;
             script.DoString(json);

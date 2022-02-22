@@ -36,6 +36,8 @@ namespace UI
             LoadScript();
             LoadMainMenu();
             LoadElements();
+
+            RaiseOnRulesLoaded();
         }
 
         #region CONTENT LOADER
@@ -110,6 +112,9 @@ namespace UI
                     }
                     GameObject prefab = assetBundle.LoadAsset<GameObject>(name);
                     GameObject obj = Instantiate(prefab, gameMenu);
+
+                    if (name == "hover")
+                        obj.AddComponent<Hover>();
 
                     Element element = obj.AddComponent<Element>();
                     element.SetScript(LoadElementScript($"elements/{name}/{name}"));

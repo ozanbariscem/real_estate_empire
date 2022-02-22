@@ -1,9 +1,8 @@
 using System;
-using System.IO;
-using System.Linq;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using MoonSharp.Interpreter;
+using Investment;
 using UnityEngine;
 
 namespace Modifier
@@ -18,26 +17,12 @@ namespace Modifier
         public event EventHandler<Modifier> OnModifierAdded;
         public event EventHandler<Modifier> OnModifierRemoved;
 
+        private Time.Date date;
+
         private void Awake()
         {
             if (!Instance)
                 Instance = this;
-        }
-
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                int i = 0;
-                foreach (var investment in Investment.InvestmentDictionary.Investments["property"].Values.ToList())
-                {
-                    if (i++ == 1)
-                        break;
-                    AddModifier(
-                        "property", investment.id, "homeless",
-                        new Time.Date(0, (ushort)(1) , 0, 0));
-                }
-            }
         }
 
         [MoonSharpHidden]
@@ -51,18 +36,45 @@ namespace Modifier
             RaiseOnRulesLoaded();
         }
 
+        public void AddGlobalModifier(string type, string modifier_tag,
+            ushort hour = 0, ushort day = 0, ushort month = 0, ushort year = 0)
+        {
+            Time.Date date = null;
+            if (!(hour == day && day == month && month == year && year == 0))
+                date = new Time.Date(hour, day, month, year);
+            AddGlobalModifier(type, modifier_tag, date);
+        }
+
+        public void AddGlobalModifier(string type, string modifier_tag, Time.Date _date = null)
+        {
+            foreach (var id in InvestmentDictionary.Investments[type].Keys)
+            {
+                AddModifier(type, id, modifier_tag, _date);
+            }
+        }
+
+        public void AddModifier(string type, int id, string modifier_tag,
+            ushort hour = 0, ushort day = 0, ushort month = 0, ushort year = 0)
+        {
+            Time.Date date = null;
+            if (!(hour == day && day == month && month == year && year == 0))
+            {
+                date = new Time.Date(hour, day, month, year);
+            }
+            AddModifier(type, id, modifier_tag, date);
+        }
+
         public void AddModifier(string type, int id, string modifier_tag, Time.Date _date=null)
         {
-            Time.Date currentDate = Time.TimeManager.Instance.Date;
             Time.Date date = _date;
             if (_date == null)
                 date = ModifierDictionary.Dictionary[modifier_tag].effective;
 
             date = new Time.Date(
-                (ushort)(currentDate.hour + date.hour),
-                (ushort)(currentDate.day + date.day),
-                (ushort)(currentDate.month + date.month),
-                (ushort)(currentDate.year + date.year));
+                (ushort)(this.date.hour + date.hour),
+                (ushort)(this.date.day + date.day),
+                (ushort)(this.date.month + date.month),
+                (ushort)(this.date.year + date.year));
 
             Modifier modifier = new Modifier(type, id, modifier_tag, date);
             ModifierDictionary.AddModifier(type, id, modifier);
@@ -77,18 +89,24 @@ namespace Modifier
 
         private void HandleModifierAdded(object sender, Modifier modifier)
         {
-            Investment.Investment investment = Investment.InvestmentDictionary.GetInvestment(modifier.type, modifier.investment_id);
+            Investment.Investment investment = InvestmentDictionary.GetInvestment(modifier.investment_type, modifier.investment_id);
             investment.CalculateValue();
         }
 
         private void HandleModifierRemoved(object sender, Modifier modifier)
         {
-            Investment.Investment investment = Investment.InvestmentDictionary.GetInvestment(modifier.type, modifier.investment_id);
+            // There is a chance an overriden modifier was already removed and handled
+            // But not removed from the sorted list for performance reasons
+            // in that case we could just skip because the value is already recalculated for new values
+            if (modifier == null) return;
+            Investment.Investment investment = InvestmentDictionary.GetInvestment(modifier.investment_type, modifier.investment_id);
             investment.CalculateValue();
         }
 
         private void HandleDayPass(object sender, Time.Date date)
         {
+            if (ModifierDictionary.ModifiersSorted == null || ModifierDictionary.ModifiersSorted.Count == 0) return;
+
             int i;
             for (i = 0; i < ModifierDictionary.ModifiersSorted.Count; i++)
             {
@@ -103,8 +121,14 @@ namespace Modifier
             {
                 Modifier modifier = ModifierDictionary.ModifiersSorted[0];
                 ModifierDictionary.ModifiersSorted.RemoveAt(0);
-                RemoveModifier(modifier.type, modifier.investment_id, modifier.modifier_data_tag);
+
+                RemoveModifier(modifier.investment_type, modifier.investment_id, modifier.modifier_data_tag);
             }
+        }
+
+        private void HandleStartDateLoaded(object sender, Time.Date date)
+        {
+            this.date = date;
         }
 
         #region CONTENT LOADER
@@ -122,6 +146,7 @@ namespace Modifier
         protected override void Subscribe()
         {
             base.Subscribe();
+            Time.TimeManager.Instance.OnStartDateLoaded += HandleStartDateLoaded;
             Time.TimeManager.Instance.OnDayPass += HandleDayPass;
 
             OnModifierAdded += HandleModifierAdded;
@@ -131,6 +156,7 @@ namespace Modifier
         protected override void Unsubscribe()
         {
             base.Unsubscribe();
+            Time.TimeManager.Instance.OnStartDateLoaded -= HandleStartDateLoaded;
             Time.TimeManager.Instance.OnDayPass -= HandleDayPass;
 
             OnModifierAdded -= HandleModifierAdded;
@@ -139,4 +165,3 @@ namespace Modifier
         #endregion
     }
 }
-

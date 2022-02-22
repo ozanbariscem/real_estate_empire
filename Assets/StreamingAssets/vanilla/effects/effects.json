@@ -1,4 +1,10 @@
-[
+[   
+    // Effects/Modifiers only effect investments regardless of their types
+
+    // Unfortunately you can't add new functionality to effects for performance reasons (you can suggest me to add new ones!)
+    // But you can add new modifiers as long as they have the following values
+    // "tag": "value"
+    // "type": "percentage" | "direct"
     {
         "tag": "value",
         "type": "percentage"

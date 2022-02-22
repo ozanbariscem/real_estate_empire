@@ -13,7 +13,7 @@
             "tick_in_seconds":0.4
         },
         {
-            "tick_in_seconds":0.2
+            "tick_in_seconds":0.01
         }
     ]
 }

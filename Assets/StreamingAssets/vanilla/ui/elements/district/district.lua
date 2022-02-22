@@ -36,7 +36,12 @@ local properties = {
 }
 
 onClicks = {
-    {"Topbar/CloseButton", "HandleCloseButtonPressed"}
+    { "Topbar/CloseButton", "HandleCloseButtonPressed" }
+}
+
+onHovers = {
+    { "Summary/Properties/Properties", "HandlePropertiesHovered" },
+    { "Summary/Properties/Population", "HandlePopulationHovered" }
 }
 
 function OnScriptLoaded()
@@ -55,6 +60,9 @@ function OnScriptSet(_transform)
 end
 
 function OnClickEventsSet()
+end
+
+function OnHoverEventsSet()
 end
 
 function HandleCloseButtonPressed()
@@ -107,4 +115,18 @@ function GetPropertiesElements(parent)
     }
 
     properties.content = properties.transform.Find("Scroll View/Viewport/Content")
+end
+
+function HandlePropertiesHovered()
+    return {
+        header = "District Size",
+        description = "Max amount of properties this district can hold.",
+    }
+end
+
+function HandlePopulationHovered()
+    return {
+        header = "Population",
+        description = "Population of this district.",
+    }
 end

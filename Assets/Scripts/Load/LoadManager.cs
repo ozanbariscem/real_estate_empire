@@ -14,6 +14,8 @@ namespace Load
         public event EventHandler<Progress> OnLoadProgressed;
         public event EventHandler OnProgressStart;
         public event EventHandler OnProgressFinish;
+        public event EventHandler OnGameRulesLoaded;
+        public event EventHandler OnGameContentLoaded;
 
         public List<Manager.Manager> managers;
 
@@ -47,6 +49,7 @@ namespace Load
             }
 
             OnProgressFinish?.Invoke(this, EventArgs.Empty);
+            OnGameRulesLoaded?.Invoke(this, EventArgs.Empty);
             yield return RaiseLoadProgressed("Game ready, enjoy!");
         }
 
@@ -68,6 +71,7 @@ namespace Load
             }
 
             OnProgressFinish?.Invoke(this, EventArgs.Empty);
+            OnGameContentLoaded?.Invoke(this, EventArgs.Empty);
             yield return RaiseLoadProgressed("Game ready, enjoy!");
         }
 

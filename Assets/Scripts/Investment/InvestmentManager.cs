@@ -41,6 +41,18 @@ namespace Investment
             RaiseOnContentLoaded();
         }
 
+        private void HandleContentLoaded(object sender, EventArgs args)
+        {
+            foreach (var key in InvestmentDictionary.Investments.Keys)
+            {
+                foreach (var _key in InvestmentDictionary.Investments[key].Keys)
+                {
+                    Investment investment = InvestmentDictionary.Investments[key][_key];
+                    investment.CalculateValue();
+                }
+            }
+        }
+
         #region CONTENT LOADER
         private void LoadTypes()
         {
@@ -93,6 +105,21 @@ namespace Investment
         }
         #endregion
 
+        #region SUBSCRIPTIONS
+        protected override void Subscribe()
+        {
+            base.Subscribe();
+
+            OnContentLoaded += HandleContentLoaded;
+        }
+
+        protected override void Unsubscribe()
+        {
+            base.Unsubscribe();
+
+            OnContentLoaded -= HandleContentLoaded;
+        }
+        #endregion
         #region MISC
 #if UNITY_EDITOR
         [ContextMenu("Create Random Properties")]
