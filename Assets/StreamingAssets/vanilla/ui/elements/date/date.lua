@@ -1,69 +1,75 @@
 -- GameManager GameManager
 local transform -- Transform
 
-local dateText
-local hourText
-
-local speedIndicators = {} -- Transform[]
-local speedParent -- Transform
-local pauseText -- TextMeshProUGUI
-
-onClicks = {
-    { "PauseButton", "ToggleTime" },
-    { "GameSpeedButtons/Content/Increase", "IncreaseSpeed" },
-    { "GameSpeedButtons/Content/Decrease", "DecreaseSpeed" }
+local dateMenu = {
+    dateText = nil,
+    hourText = nil,
+    pauseButton = nil,
+    playButton = nil
 }
 
--- When script is loaded from disk
+local speedMenu = {
+    speed = { 
+        parent = nil,
+        indicators = { nil, nil, nil, nil, nil }
+    }
+}
+
+onClicks = {
+    { "", "ToggleTime" },
+    { "Date/Speeds/0", "SetSpeed0" },
+    { "Date/Speeds/1", "SetSpeed1" },
+    { "Date/Speeds/2", "SetSpeed2" },
+    { "Date/Speeds/3", "SetSpeed3" },
+    { "Date/Speeds/4", "SetSpeed4" },
+}
+
 function OnScriptLoaded()
 end
 
--- When script is assigned to gameobject
--- _transform : Transform
 function OnScriptSet(_transform)
     transform = _transform
 
-    dateText = transform.Find("DateMenu/Date/Date").GetComponent("TextMeshProUGUI")
-    hourText = transform.Find("DateMenu/Hour/Date").GetComponent("TextMeshProUGUI")
+    dateMenu = {
+        dateText = transform.Find("Date/Date/Date").GetComponent("TextMeshProUGUI"),
+        hourText = transform.Find("Date/Hour/Hour").GetComponent("TextMeshProUGUI"),
+        pauseButton = transform.Find("Buttons/PauseButton"),  -- Not actually button
+        playButton = transform.Find("Buttons/PlayButton")     -- Not actually button
+    }
 
-    pauseText = transform.Find("GameSpeedMenu/PauseText").GetComponent("TextMeshProUGUI")
-    pauseText.text = LanguageManager.Translate("PAUSED"):upper()
+    speedMenu = {
+        speed = { 
+            parent = transform.Find("Date/Speeds/"),
+            indicators = { 
+                transform.Find("Date/Speeds/0/Image").GetComponent("Image"), 
+                transform.Find("Date/Speeds/1/Image").GetComponent("Image"), 
+                transform.Find("Date/Speeds/2/Image").GetComponent("Image"), 
+                transform.Find("Date/Speeds/3/Image").GetComponent("Image"), 
+                transform.Find("Date/Speeds/4/Image").GetComponent("Image") 
+            }
+        }
+    }
 
-    GetSpeedIndicators()
-    SetHandlers()
-end
-
-function OnClickEventsSet()
-end
-
-function GetSpeedIndicators()
-    speedParent = transform.Find("GameSpeedMenu/Speed")
-    for i=1, speedParent.childCount do
-        speedIndicators[i] = speedParent.GetChild(i-1)
-    end
+   SetHandlers()
 end
 
 function SetHandlers()
-    TimeManager.onHourPass.add(HandleHourPass)
+    TimeManager.OnHourPass.add(HandleHourPass)
     TimeManager.OnIntervalChanged.add(HandleIntervalChange)
     TimeManager.OnPaused.add(HandlePause)
     TimeManager.OnResumed.add(HandleResume)
 end
 
--- sender : Not exposed don't use
--- date : Date
 function HandleHourPass(sender, date)
-    dateText.text = date.day.."."..date.month.."."..date.year
-    hourText.text = date.hour..":00"
+    dateMenu.dateText.text = date.ToMenuStringDate()
+    dateMenu.hourText.text = date.ToMenuStringHour()
 end
 
--- sender : Not exposed don't use
--- intervals : Intervals
 function HandleIntervalChange(sender, intervals)
-    for i=1, #speedIndicators do
-        speedIndicators[i].gameObject.SetActive(false)
+    for i=1, #speedMenu.speed.indicators do
+        speedMenu.speed.indicators[i].color = Color(120/255, 120/255, 120/255, 1)
         if i <= intervals.SelectedInterval + 1 then
-            speedIndicators[i].gameObject.SetActive(true)
+            speedMenu.speed.indicators[i].color = Color(1, 1, 1, 1)
         end
     end
 end
@@ -77,8 +83,8 @@ function HandleResume()
 end
 
 function HandleTimeStateChanged(paused)
-    speedParent.gameObject.SetActive(not paused)
-    pauseText.gameObject.SetActive(paused)
+    dateMenu.playButton.gameObject.SetActive(paused)
+    dateMenu.pauseButton.gameObject.SetActive(not paused)
 end
 
 function ToggleTime()
@@ -89,10 +95,27 @@ function ToggleTime()
     end
 end
 
-function IncreaseSpeed()
-    TimeManager.ChangeInterval(TimeManager.Intervals.SelectedInterval + 1)
+function SetSpeed4()
+    SetSpeed(4)
 end
 
-function DecreaseSpeed()
-    TimeManager.ChangeInterval(TimeManager.Intervals.SelectedInterval - 1)
+function SetSpeed3()
+    SetSpeed(3)
+end
+
+function SetSpeed2()
+    SetSpeed(2)
+end
+
+function SetSpeed1()
+    SetSpeed(1)
+end
+
+function SetSpeed0()
+    SetSpeed(0)
+end
+
+function SetSpeed(index)
+    -- TimeManager.ChangeInterval(TimeManager.Intervals.SelectedInterval + 1)
+    TimeManager.ChangeInterval(index)
 end

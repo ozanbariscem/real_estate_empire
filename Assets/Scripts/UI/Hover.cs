@@ -43,13 +43,6 @@ namespace UI
 
             StartCoroutine(UpdateContentCoroutine("", ""));
             Hide();
-
-            UIManager.Instance.OnRulesLoaded += HandleUIRulesLoaded;
-        }
-
-        private void OnDestroy()
-        {
-            UIManager.Instance.OnRulesLoaded -= HandleUIRulesLoaded;
         }
 
         private void Update()
@@ -60,6 +53,7 @@ namespace UI
         public void Show()
         {
             gameObject.SetActive(true);
+            transform.SetAsLastSibling();
         }
 
         public void Hide()
@@ -109,11 +103,6 @@ namespace UI
             }
 
             transform.position = Input.mousePosition + new Vector3(10,0,0);
-        }
-    
-        private void HandleUIRulesLoaded(object sender, EventArgs eventArgs)
-        {
-            transform.SetAsLastSibling();
         }
     }
 }

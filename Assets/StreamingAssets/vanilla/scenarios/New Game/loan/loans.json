@@ -1,8 +1,25 @@
 [
     {
-        "id": 0,
         "type_id": 0,
-        "investor_id": 0,
+        "company_tag": "PRIV",
+        "amountLeft": 1000000,
+        "paymentLeft": 120
+    },
+    {
+        "type_id": 0,
+        "company_tag": "PRIV",
+        "amountLeft": 1000000,
+        "paymentLeft": 120
+    },
+    {
+        "type_id": 0,
+        "company_tag": "PRIV",
+        "amountLeft": 1000000,
+        "paymentLeft": 120
+    },
+    {
+        "type_id": 0,
+        "company_tag": "PRIV",
         "amountLeft": 1000000,
         "paymentLeft": 120
     }

@@ -120,6 +120,7 @@ namespace Investment
             OnContentLoaded -= HandleContentLoaded;
         }
         #endregion
+
         #region MISC
 #if UNITY_EDITOR
         [ContextMenu("Create Random Properties")]

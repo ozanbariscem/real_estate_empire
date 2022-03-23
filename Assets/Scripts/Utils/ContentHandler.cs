@@ -7,7 +7,7 @@ using Load;
 using Investment;
 using Time;
 using Game;
-using Investor;
+using Company;
 using UI;
 using Language;
 using Map;
@@ -28,6 +28,9 @@ namespace Utils
             string json = SafeGetString(path);
             if (json == null) return null;
 
+            UserData.RegisterType<UnityEngine.Events.UnityAction>();
+            UserData.RegisterType<TMPro.TMP_InputField.OnChangeEvent>();
+
             UserData.RegisterType<TMPro.TextMeshProUGUI>();
             UserData.RegisterType<TMPro.TMP_InputField>();
             UserData.RegisterType<Transform>();
@@ -45,7 +48,7 @@ namespace Utils
             script.Globals["GameManager"] = GameManager.Instance;
             script.Globals["TimeManager"] = TimeManager.Instance;
             script.Globals["InvestmentManager"] = InvestmentManager.Instance;
-            script.Globals["InvestorManager"] = InvestorManager.Instance;
+            script.Globals["CompanyManager"] = CompanyManager.Instance;
             script.Globals["UIManager"] = UIManager.Instance;
             script.Globals["LanguageManager"] = LanguageManager.Instance;
             script.Globals["MapManager"] = MapManager.Instance;
@@ -57,14 +60,19 @@ namespace Utils
             script.Globals["EventManager"] = EventManager.Instance;
 
             script.Globals["InvestmentDictionary"] = new InvestmentDictionary();
-            script.Globals["OwnershipList"] = new OwnershipList();
-            script.Globals["InvestorList"] = new InvestorList();
+            script.Globals["OwnershipDictionary"] = new OwnershipDictionary();
+            script.Globals["CompanyDictionary"] = new CompanyDictionary();
             script.Globals["DistrictDictionary"] = new DistrictDictionary();
             script.Globals["ModifierDictionary"] = new ModifierDictionary();
             script.Globals["EffectDictionary"] = new Effect.Effect();
             script.Globals["EventDictionary"] = new EventDictionary();
 
             script.Globals["ConsoleRunCommand"] = (Action<string>)Console.Console.Run;
+            script.Globals["ToCashString"] = (Func<long, string>)StringConversions.ToCash;
+
+            script.Globals["OpenYoutube"] = (Action)Web.Youtube;
+            script.Globals["OpenTwitter"] = (Action)Web.Twitter;
+            script.Globals["OpenDiscord"] = (Action)Web.Discord;
             script.DoString(json);
 
             return script;

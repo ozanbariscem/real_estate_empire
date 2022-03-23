@@ -10,15 +10,31 @@ namespace UI
     {
         private Script script;
 
+        public void Activate(object param)
+        {
+            if (!script.Globals.Get("OnActivate").IsNil())
+                script.Call(script.Globals["OnActivate"], param);
+            transform.gameObject.SetActive(true);
+        }
+
+        public void Deactivate()
+        {
+            if (!script.Call(script.Globals["OnDeactivate"]).IsNil())
+                script.Call(script.Globals["OnDeactivate"], transform);
+            transform.gameObject.SetActive(false);
+        }
+
         [MoonSharpHidden]
         public void SetScript(Script script)
         {
             this.script = script;
 
-            this.script.Call(this.script.Globals["OnScriptSet"], transform);
+            if (!this.script.Globals.Get("OnScriptSet").IsNil())
+                this.script.Call(this.script.Globals["OnScriptSet"], transform);
 
             SetOnClicks();
             SetOnHovers();
+            SetOnValueChanges();
         }
 
         private void SetOnClicks()
@@ -30,11 +46,28 @@ namespace UI
             for (int i = 1; i <= table.Length; i++)
             {
                 Table pair = table[i] as Table;
-                string button = pair[1] as string;
+                string buttonPath = pair[1] as string;
                 string function = pair[2] as string;
 
-                transform.Find(button).GetComponent<Button>().onClick.AddListener(
-                    () => script.Call(script.Globals[function]));
+                Button button = transform.Find(buttonPath).GetComponent<Button>();
+
+                if (button != null)
+                {
+                    button.onClick.AddListener(
+                        () => script.Call(script.Globals[function]));
+                } else
+                {
+                    EventTrigger eventTrigger = transform.Find(buttonPath).gameObject.AddComponent<EventTrigger>();
+
+                    EventTrigger.Entry onClick = new EventTrigger.Entry();
+                    onClick.eventID = EventTriggerType.PointerClick;
+                    onClick.callback.AddListener((eventData) =>
+                    {
+                        script.Call(script.Globals[function]);
+                    });
+
+                    eventTrigger.triggers.Add(onClick);
+                }
             }
 
             if (!script.Globals.Get("OnClickEventsSet").IsNil())
@@ -80,6 +113,31 @@ namespace UI
 
             if (!script.Globals.Get("OnHoverEventsSet").IsNil())
                 script.Call(script.Globals["OnHoverEventsSet"]);
+        }
+    
+        private void SetOnValueChanges()
+        {
+            if (script.Globals.Get("onValueChanges").IsNil()) return;
+
+            Table table = script.Globals["onValueChanges"] as Table;
+
+            for (int i = 1; i <= table.Length; i++)
+            {
+                Table pair = table[i] as Table;
+                string inputPath = pair[1] as string;
+                string function = pair[2] as string;
+
+                TMPro.TMP_InputField field = transform.Find(inputPath).GetComponent<TMPro.TMP_InputField>();
+
+                if (field != null)
+                {
+                    field.onValueChanged.AddListener(
+                        (x) => script.Call(script.Globals[function], x));
+                }
+            }
+
+            if (!script.Globals.Get("OnValueChangeEventsSet").IsNil())
+                script.Call(script.Globals["OnValueChangeEventsSet"]);
         }
     }
 }

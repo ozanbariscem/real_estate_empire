@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Chess.Camera
@@ -6,6 +7,8 @@ namespace Chess.Camera
     {
         private static CameraController singleton;
         public static CameraController Singleton => singleton;
+
+        public event EventHandler<float> OnCameraZoomed;
 
         public Transform povTransform;
         public Transform cameraTransform;
@@ -254,7 +257,12 @@ namespace Chess.Camera
             if (cameraCanMove)
                 LerpMove(cameraMoveRig, newPos, UnityEngine.Time.fixedDeltaTime * lerpSpeed);
             if (cameraCanZoom)
+            {
                 LerpMove(cameraTransform, newZoom, UnityEngine.Time.fixedDeltaTime * lerpSpeed);
+
+                float zoom = (cameraTransform.position.y - minPosition.y) / (maxPosition.y - minPosition.y);
+                OnCameraZoomed?.Invoke(this, zoom);
+            }
         }
 
         private void LerpMove(Transform transform, Vector3 pos, float lerpValue)
@@ -286,25 +294,24 @@ namespace Chess.Camera
     
         public void HandleMapLoaded(object sender, Transform transform)
         {
-            GameObject terrain = transform.Find("Terrain").gameObject;
-            if (terrain == null) {
+            Transform bounds = transform.Find("Bounds");
+            if (bounds == null) {
                 Console.Console.Run("log Camera couldn't set bounds.\n      HandleMapLoaded returned early.");
                 return;
             }
 
-            MeshRenderer renderer = terrain.GetComponent<MeshRenderer>();
-            Vector3 size = renderer.bounds.size;
+            Vector3 size = bounds.localScale;
 
             minPosition = -size/2;
             maxPosition = size/2;
 
-            minPosition.y = size.x/10f;
-            maxPosition.y = size.x/2;
+            minPosition.y = size.y/20f;
+            maxPosition.y = size.y;
         }
 
         private void HandleDistrictDoubleClicked(object sender, Map.District district)
         {
-            MoveInput(district.transform.position - newPos);
+            MoveInput(district.Center - newPos);
         }
     }
 }

@@ -6,8 +6,9 @@ namespace Load
     public class Progress
     {
         public string message;
+        public float delta;
 
-        public Progress(string msg) { message = msg; }
+        public Progress(string msg, float delta) { message = msg; this.delta = delta; }
     }
 }
 

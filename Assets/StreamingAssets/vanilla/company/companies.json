@@ -1,0 +1,38 @@
+[
+    {
+        "tag": "PRIV",
+        "color": { "r": 0, "g": 1, "b": 0, "a": 1 },
+        "name": "Private Owner",
+        "cash": 1000000
+    },
+    {
+        "tag": "CITY",
+        "color": { "r": 1, "g": 0, "b": 0, "a": 1 },
+        "name": "the City",
+        "cash": 1000000
+    },
+    {
+        "tag": "BRAH",
+        "color": { "r": 1, "g": 0, "b": 0, "a": 1 },
+        "name": "Brandon Holdings",
+        "cash": 12534561
+    },
+    {
+        "tag": "SMITH",
+        "color": { "r": 1, "g": 0, "b": 0, "a": 1 },
+        "name": "Smith Family",
+        "cash": 14343623
+    },
+    {
+        "tag": "JBRE",
+        "color": { "r": 1, "g": 0, "b": 0, "a": 1 },
+        "name": "Jones & Brown Real Estate",
+        "cash": 12351238
+    },
+    {
+        "tag": "NCAM",
+        "color": { "r": 1, "g": 0, "b": 0, "a": 1 },
+        "name": "New City Asset Management",
+        "cash": 233451234
+    }
+]

@@ -72,7 +72,7 @@ namespace SaveFile
                 Data data = Data.FromFileInfo(new FileInfo(directory), status);
                 list.Add(data);
             }
-            return list.OrderBy(x => x.lastWriteTime.TimeOfDay).ToList();
+            return list.OrderByDescending(x => x.lastWriteTime.TimeOfDay).ToList();
         }
 
         private void GetScenarioFiles()
@@ -93,6 +93,7 @@ namespace SaveFile
             if (!File.Exists(Path.Combine(path, "ownership/ownerships.json"))) return "CORRUPTED";
             if (!File.Exists(Path.Combine(path, "loan/loans.json"))) return "CORRUPTED";
             if (!File.Exists(Path.Combine(path, "district/districts.json"))) return "CORRUPTED";
+            if (!File.Exists(Path.Combine(path, "company/company.txt"))) return "CORRUPTED";
             if (!Directory.Exists(Path.Combine(path, "investment"))) return "CORRUPTED";
 
             foreach (var type in Investment.Types.Dictionary.Keys)
@@ -119,6 +120,7 @@ namespace SaveFile
                 Directory.CreateDirectory(path + "/investment");
                 Directory.CreateDirectory(path + "/loan");
                 Directory.CreateDirectory(path + "/district");
+                Directory.CreateDirectory(path + "/company");
                 foreach (var type in Investment.Types.Dictionary.Keys)
                 {
                     Directory.CreateDirectory($"{path}/investment/{type}");
@@ -126,10 +128,12 @@ namespace SaveFile
             } 
             // Save start date
             Utils.ContentHandler.SafeSetString($"{path}/calendar/start_date.txt", JsonConvert.SerializeObject(date));
+            // Save player company
+            Utils.ContentHandler.SafeSetString($"{path}/company/company.txt", Company.CompanyManager.Instance.PlayerCompany.tag);
             // Save ownerships
-            Utils.ContentHandler.SafeSetString($"{path}/ownership/ownerships.json", JsonConvert.SerializeObject(Ownership.OwnershipList.List));
+            Utils.ContentHandler.SafeSetString($"{path}/ownership/ownerships.json", JsonConvert.SerializeObject(Ownership.OwnershipDictionary.ToList()));
             // Save loans
-            Utils.ContentHandler.SafeSetString($"{path}/loan/loans.json", JsonConvert.SerializeObject(Loan.LoanList.Loans.Values.ToList()));
+            Utils.ContentHandler.SafeSetString($"{path}/loan/loans.json", JsonConvert.SerializeObject(Loan.LoanDictionary.ToList()));
             // Save districts
             Utils.ContentHandler.SafeSetString($"{path}/district/districts.json", JsonConvert.SerializeObject(District.DistrictDictionary.Dictionary.Values.ToList()));
             // Save invesments
@@ -143,10 +147,17 @@ namespace SaveFile
             OnCurrentGameSaved?.Invoke(this, EventArgs.Empty);
         }
 
+        public void LoadLastSaveFile()
+        {
+            if (saveFiles != null && saveFiles.Count > 0)
+                LoadSaveFile(saveFiles[0]);
+        }
+
         public void LoadSaveFile(Data data)
         {
             if (data.Status == "OKAY")
             {
+                SetCurrentSaveFileName(data.name);
                 OnDataFileLoadRequested?.Invoke(this, data);
             }
         }

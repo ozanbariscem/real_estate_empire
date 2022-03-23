@@ -1,16 +1,26 @@
 [
     {
-        "id": 0,
-        "investor_id": 0,
-        "invesment_type": "property",
-        "invesment_id": 0,
+        "company_tag": "PRIV",
+        "investment_id": 0,
+        "investment_type": "property",
         "shares": 1
     },
     {
-        "id": 1,
-        "investor_id": 1,
-        "invesment_type": "property",
-        "invesment_id": 0,
+        "company_tag": "PRIV",
+        "investment_id": 1,
+        "investment_type": "property",
         "shares": 1
+    },
+    {
+        "company_tag": "PRIV",
+        "investment_id": 2,
+        "investment_type": "property",
+        "shares": 1
+    },
+    {
+        "company_tag": "PRIV",
+        "investment_id": 3,
+        "investment_type": "property",
+        "shares": 3
     }
 ]

@@ -5,11 +5,10 @@ namespace Ownership
     [MoonSharpUserData]
     public class Ownership
     {
-        public int id;
+        public string company_tag;
 
-        public int investor_id;
-        public int invesment_id;
-        public string invesment_type;
+        public int investment_id;
+        public string investment_type;
 
         public int shares;
     }

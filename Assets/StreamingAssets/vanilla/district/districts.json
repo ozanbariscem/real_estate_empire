@@ -1,277 +1,287 @@
 [
-    {
-        "tag": "BPC",
-        "name": "Battery Park City",
-        "size": 30 
-    },
-    {
-        "tag": "FIND",
-        "name": "Financial District",
-        "size": 90 
-    },
-    {
-        "tag": "SSS",
-        "name": "South Street Seaport",
-        "size": 6
-    },
-    {
-        "tag": "CC",
-        "name": "Civic Center",
-        "size": 30 
-    },
-    {
-        "tag": "TBC",
-        "name": "TriBeCa",
-        "size": 40 
-    },
-    {
-        "tag": "CHIT",
-        "name": "Chinatown",
-        "size": 40 
-    },
-    {
-        "tag": "TWOB",
-        "name": "Two Bridges",
-        "size": 40 
-    },
-    {
-        "tag": "LES",
-        "name": "Lower East Side",
-        "size": 80
-    },
-    {
-        "tag": "BOW",
-        "name": "Bowery",
-        "size": 40 
-    },
-    {
-        "tag": "LI",
-        "name": "Little Italy",
-        "size": 30 
-    },
-    {
-        "tag": "SOHO",
-        "name": "SoHo",
-        "size": 50 
-    },
-    {
-        "tag": "HUDS",
-        "name": "Hudson Square",
-        "size": 30 
-    },
-    {
-        "tag": "WESV",
-        "name": "West Village",
-        "size": 60 
-    },
-    {
-        "tag": "GREV",
-        "name": "Greenwich VIllage",
-        "size": 40 
-    },
-    {
-        "tag": "NOHO",
-        "name": "NoHo",
-        "size": 10 
-    },
-    {
-        "tag": "EASV",
-        "name": "East Village",
-        "size": 40 
-    },
-    {
-        "tag": "ALPC",
-        "name": "Aphabet City",
-        "size": 50 
-    },
-    {
-        "tag": "STUT",
-        "name": "Stuyvesant Town",
-        "size": 20 
-    },
-    {
-        "tag": "GRA",
-        "name": "Gramercy",
-        "size": 40 
-    },
-    {
-        "tag": "FLA",
-        "name": "Flatiron",
-        "size": 30 
-    },
-    {
-        "tag": "MEATD",
-        "name": "Meatpacking District",
-        "size": 5 
-    },
-    {
-        "tag": "CHE",
-        "name": "Chelsea",
-        "size": 80 
-    },
-    {
-        "tag": "NOMAD",
-        "name": "NoMad",
-        "size": 20 
-    },
-    {
-        "tag": "ROSH",
-        "name": "Rose Hill",
-        "size": 30 
-    },
-    {
-        "tag": "KIPB",
-        "name": "Kips Bay",
-        "size": 40 
-    },
-    {
-        "tag": "MURH",
-        "name": "Murray Hill",
-        "size": 50 
-    },
-    {
-        "tag": "GARD",
-        "name": "Garment District",
-        "size": 40 
-    },
-    {
-        "tag": "MIDS",
-        "name": "Midtown South",
-        "size": 40 
-    },
-    {
-        "tag": "HUDY",
-        "name": "Hudson Yards",
-        "size": 20 
-    },
-    {
-        "tag": "HELLK",
-        "name": "Hell's Kitchen",
-        "size": 30 
-    },
-    {
-        "tag": "THEAD",
-        "name": "Theater District",
-        "size": 20 
-    },
-    {
-        "tag": "MID",
-        "name": "Midtown",
-        "size": 30 
-    },
-    {
-        "tag": "MIDE",
-        "name": "Midtown East",
-        "size": 30 
-    },
-    {
-        "tag": "TURB",
-        "name": "Turtle Bay",
-        "size": 30 
-    },
-    {
-        "tag": "SUTP",
-        "name": "Sutton Place",
-        "size": 20 
-    },
-    {
-        "tag": "LENH",
-        "name": "Lenox Hill",
-        "size": 30 
-    },
-    {
-        "tag": "UES",
-        "name": "Upper East Side",
-        "size": 40 
-    },
-    {
-        "tag": "METH",
-        "name": "Metropolitan Hill",
-        "size": 20 
-    },
-    {
-        "tag": "YOR",
-        "name": "Yorkville",
-        "size": 40 
-    },
-    {
-        "tag": "CARH",
-        "name": "Carnegie Hill",
-        "size": 20 
-    },
-    {
-        "tag": "SPAH",
-        "name": "Spanish Harlem",
-        "size": 50 
-    },
-    {
-        "tag": "EASH",
-        "name": "East Harlem",
-        "size": 40 
-    },
-    {
-        "tag": "HAR",
-        "name": "Harlem",
-        "size": 160 
-    },
-    {
-        "tag": "LINS",
-        "name": "Lincoln Square",
-        "size": 40 
-    },
-    {
-        "tag": "UWS",
-        "name": "Upper West Side",
-        "size": 60 
-    },
-    {
-        "tag": "BLOD",
-        "name": "Bloomingdale District",
-        "size": 20 
-    },
-    {
-        "tag": "MANV",
-        "name": "Manhattan Valley",
-        "size": 40 
-    },
-    {
-        "tag": "MORH",
-        "name": "Morningside Heights",
-        "size": 40 
-    },
-    {
-        "tag": "MAN",
-        "name": "Manhattanville",
-        "size": 40 
-    },
-    {
-        "tag": "HAMH",
-        "name": "Hamilton Heights",
-        "size": 50 
-    },
-    {
-        "tag": "SUGH",
-        "name": "Sugar Hill",
-        "size": 20 
-    },
-    {
-        "tag": "WASH",
-        "name": "Washington Heights",
-        "size": 80 
-    },
-    {
-        "tag": "HUDH",
-        "name": "Hudson Heights",
-        "size": 60 
-    },
-    {
-        "tag": "FORG",
-        "name": "Fort George",
-        "size": 60 
-    },
-    {
-        "tag": "INW",
-        "name": "INWOOD",
-        "size": 60 
-    }
+  {
+    "tag": "ALPC",
+    "name": "Aphabet City",
+    "size": 21
+  },
+  {
+    "tag": "BLOD",
+    "name": "Bloomingdale District",
+    "size": 8
+  },
+  {
+    "tag": "BOW",
+    "name": "Bowery",
+    "size": 10
+  },
+  {
+    "tag": "BPC",
+    "name": "Battery Park City",
+    "size": 8
+  },
+  {
+    "tag": "CARH",
+    "name": "Carnegie Hill",
+    "size": 8
+  },
+  {
+    "tag": "CC",
+    "name": "Civic Center",
+    "size": 11
+  },
+  {
+    "tag": "CHE",
+    "name": "Chelsea",
+    "size": 25
+  },
+  {
+    "tag": "CHIT",
+    "name": "Chinatown",
+    "size": 11
+  },
+  {
+    "tag": "CP",
+    "name": "Central Park",
+    "size": 0
+  },
+  {
+    "tag": "EASH",
+    "name": "East Harlem",
+    "size": 37
+  },
+  {
+    "tag": "EASV",
+    "name": "East Village",
+    "size": 16
+  },
+  {
+    "tag": "FIND",
+    "name": "Financial District",
+    "size": 15
+  },
+  {
+    "tag": "FLA",
+    "name": "Flatiron",
+    "size": 10
+  },
+  {
+    "tag": "FORG",
+    "name": "Fort George",
+    "size": 27
+  },
+  {
+    "tag": "GARD",
+    "name": "Garment District",
+    "size": 14
+  },
+  {
+    "tag": "GRA",
+    "name": "Gramercy",
+    "size": 13
+  },
+  {
+    "tag": "GREV",
+    "name": "Greenwich VIllage",
+    "size": 21
+  },
+  {
+    "tag": "HAMH",
+    "name": "Hamilton Heights",
+    "size": 30
+  },
+  {
+    "tag": "HELLK",
+    "name": "Hell's Kitchen",
+    "size": 28
+  },
+  {
+    "tag": "HUDH",
+    "name": "Hudson Heights",
+    "size": 21
+  },
+  {
+    "tag": "HUDS",
+    "name": "Hudson Square",
+    "size": 5
+  },
+  {
+    "tag": "HUDY",
+    "name": "Hudson Yards",
+    "size": 16
+  },
+  {
+    "tag": "INW",
+    "name": "INWOOD",
+    "size": 17
+  },
+  {
+    "tag": "KIPB",
+    "name": "Kips Bay",
+    "size": 11
+  },
+  {
+    "tag": "LENH",
+    "name": "Lenox Hill",
+    "size": 15
+  },
+  {
+    "tag": "LES",
+    "name": "Lower East Side",
+    "size": 26
+  },
+  {
+    "tag": "LI",
+    "name": "Little Italy",
+    "size": 6
+  },
+  {
+    "tag": "LINS",
+    "name": "Lincoln Square",
+    "size": 19
+  },
+  {
+    "tag": "MAN",
+    "name": "Manhattanville",
+    "size": 15
+  },
+  {
+    "tag": "MANV",
+    "name": "Manhattan Valley",
+    "size": 14
+  },
+  {
+    "tag": "MEATD",
+    "name": "Meatpacking District",
+    "size": 4
+  },
+  {
+    "tag": "METH",
+    "name": "Metropolitan Hill",
+    "size": 10
+  },
+  {
+    "tag": "MID",
+    "name": "Midtown",
+    "size": 20
+  },
+  {
+    "tag": "MIDE",
+    "name": "Midtown East",
+    "size": 12
+  },
+  {
+    "tag": "MIDS",
+    "name": "Midtown South",
+    "size": 13
+  },
+  {
+    "tag": "MORH",
+    "name": "Morningside Heights",
+    "size": 18
+  },
+  {
+    "tag": "MURH",
+    "name": "Murray Hill",
+    "size": 13
+  },
+  {
+    "tag": "NHAR",
+    "name": "North Harlem",
+    "size": 29
+  },
+  {
+    "tag": "NOHO",
+    "name": "NoHo",
+    "size": 8
+  },
+  {
+    "tag": "NOMAD",
+    "name": "NoMad",
+    "size": 16
+  },
+  {
+    "tag": "ROSH",
+    "name": "Rose Hill",
+    "size": 12
+  },
+  {
+    "tag": "SHAR",
+    "name": "South Harlem",
+    "size": 36
+  },
+  {
+    "tag": "SOHO",
+    "name": "SoHo",
+    "size": 7
+  },
+  {
+    "tag": "SPAH",
+    "name": "Spanish Harlem",
+    "size": 31
+  },
+  {
+    "tag": "SSS",
+    "name": "South Street Seaport",
+    "size": 2
+  },
+  {
+    "tag": "STUT",
+    "name": "Stuyvesant Town",
+    "size": 7
+  },
+  {
+    "tag": "SUGH",
+    "name": "Sugar Hill",
+    "size": 12
+  },
+  {
+    "tag": "SUTP",
+    "name": "Sutton Place",
+    "size": 5
+  },
+  {
+    "tag": "TBC",
+    "name": "TriBeCa",
+    "size": 11
+  },
+  {
+    "tag": "THEAD",
+    "name": "Theater District",
+    "size": 10
+  },
+  {
+    "tag": "TURB",
+    "name": "Turtle Bay",
+    "size": 9
+  },
+  {
+    "tag": "TWOB",
+    "name": "Two Bridges",
+    "size": 12
+  },
+  {
+    "tag": "UES",
+    "name": "Upper East Side",
+    "size": 27
+  },
+  {
+    "tag": "UWS",
+    "name": "Upper West Side",
+    "size": 36
+  },
+  {
+    "tag": "WASH",
+    "name": "Washington Heights",
+    "size": 51
+  },
+  {
+    "tag": "WESV",
+    "name": "West Village",
+    "size": 16
+  },
+  {
+    "tag": "YOR",
+    "name": "Yorkville",
+    "size": 18
+  }
 ]

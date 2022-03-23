@@ -11,9 +11,8 @@ namespace Loan
         [JsonIgnore]
         public Type Type => Types.GetType(type_id);
 
-        public int id;
         public int type_id;
-        public int investor_id;
+        public string company_tag;
 
         public uint amountLeft;
         public byte paymentLeft;

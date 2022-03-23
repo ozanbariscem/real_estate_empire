@@ -1,10 +1,9 @@
 using TMPro;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using MoonSharp.Interpreter;
+using UnityEngine.EventSystems;
+using System.Collections.Generic;
 
 namespace Map 
 {
@@ -15,36 +14,42 @@ namespace Map
 
         public event EventHandler<District> OnClicked;
         public event EventHandler<District> OnDoubleClicked;
+        public event EventHandler<Property> OnMouseOverProperty;
+        public event EventHandler<Property> OnPropertySelected;
+        public event EventHandler<Property> OnPropertyDeselected;
 
         public string district_tag;
 
-        private Texture2D meshTexture;
+        public Vector3 Center => hitboxes[0].position;
 
-        private Transform mesh;
-        private Transform model;
-        private Transform border;
+        private LineRenderer border;
         private Transform canvas;
 
-        #region UI ELEMENTS
+        private Transform LOD0;
+        private Transform LOD1;
+        private List<Transform> hitboxes;
+
         private TextMeshProUGUI nameText;
-        #endregion
 
-        private State state;
-
+        private float zoom;
         private float transitionSpeed = 2f;
 
         private float doubleClickRegisterTime;
         private float lastClickTime;
 
+        public Material borderMaterial;
+
         private void Start()
         {
+            transitionSpeed = 5f;
             doubleClickRegisterTime = 0.2f;
-            transitionSpeed = 4f;
 
             district_tag = name;
 
             Subscribe();
             GetComponents();
+
+            Chess.Camera.CameraController.Singleton.OnCameraZoomed += HandleCameraZoomed;
         }
 
         private void OnDestroy()
@@ -54,48 +59,46 @@ namespace Map
 
         private void Update()
         {
-            if (IsClicked()) OnClicked?.Invoke(this, this);
-
-            switch (state)
+            if (IsClicked())
             {
-                case State.CLOSING:
-                    Transition(-1);
-                    if (model.localScale.y <= 0.000001f)
-                    {
-                        model.localScale = new Vector3(model.localScale.x, 0.001f, model.localScale.z);
-                        state = State.CLOSED;
-                    }
-                    break;
-                case State.CLOSED:
-                    break;
-                case State.OPENING:
-                    Transition(1);
-                    if (model.localScale.y >= 1)
-                    {
-                        model.localScale = new Vector3(model.localScale.x, 1, model.localScale.z);
-                        state = State.OPEN;
-                    }
-                    break;
-                case State.OPEN:
-                    break;
+                OnClicked?.Invoke(this, this);
+            }
+
+            Zoom();
+        }
+
+        private void Zoom()
+        {
+            if (Mathf.Abs(LOD1.localScale.y - zoom) > .01f)
+            {
+                float zoom = this.zoom;
+                if (zoom > .95f)
+                    zoom = 1f;
+                LOD1.localScale = Vector3.Lerp(LOD1.localScale, new Vector3(1, Mathf.Max(0.01f, 1-zoom), 1), UnityEngine.Time.deltaTime * transitionSpeed);
             }
         }
 
         private bool IsClicked()
         {
+            if (EventSystem.current.IsPointerOverGameObject()) return false;
+
             if (Input.GetMouseButtonDown(0))
             {
                 RaycastHit[] hits = Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition), 1000f);
                 
                 foreach (var hit in hits)
                 {
-                    if (hit.transform == mesh)
+                    if (hit.transform.CompareTag("BUILDING"))
                     {
-                        int x = (int)(hit.textureCoord.x * meshTexture.width);
-                        int y = (int)(hit.textureCoord.y * meshTexture.height);
-                        Color pixel = meshTexture.GetPixel(x, y);
-                        
-                        if (pixel.a > 0) return true;
+                        Debug.Log("Im a buildinggg HANDLE MEEEEEE");
+                    }
+
+                    foreach (Transform hitbox in hitboxes)
+                    {
+                        if (hit.transform == hitbox)
+                        {
+                            return true;
+                        }
                     }
                 }
             }
@@ -104,13 +107,35 @@ namespace Map
 
         private void GetComponents()
         {
-            mesh = transform.Find("Mesh");
-            model = transform.Find("Model");
-            border = transform.Find("Border");
-            canvas = transform.Find("Canvas");
+            border = transform.Find("Border").GetComponent<LineRenderer>();
+            border.sortingOrder = 99;
 
+            canvas = transform.Find("Canvas");
             nameText = canvas.Find("Text").GetComponent<TextMeshProUGUI>();
-            meshTexture = mesh.GetComponent<MeshRenderer>().sharedMaterial.mainTexture as Texture2D;
+
+            borderMaterial = border.material;
+            borderMaterial.SetFloat("_MinPulseVal", 1f);
+
+            hitboxes = new List<Transform>();
+
+            LOD0 = transform.Find("Buildings/LOD0");
+            LOD1 = transform.Find("Buildings/LOD1");
+            foreach (Transform hitbox in transform.Find("Hitbox"))
+            {
+                hitboxes.Add(hitbox);
+            }
+
+            foreach (Transform building in LOD0)
+            {
+                if (int.TryParse(building.name, out int id))
+                {
+                    Property property = building.gameObject.AddComponent<Property>();
+                    property.Set(id, district_tag);
+                    property.OnMouseOverProperty += HandleMouseOverProperty;
+                    property.OnPropertySelected += HandlePropertySelected;
+                    property.OnPropertyDeselected += HandlePropertyDeselected;
+                }
+            }
         }
 
         public void UpdateName(string name)
@@ -118,17 +143,36 @@ namespace Map
             nameText.text = name;
         }
 
-        private void UpdateCanvas()
+        private void HandleCameraZoomed(object sender, float zoom)
         {
+            this.zoom = zoom;
+
+            border.startWidth = Mathf.Max(.2f, zoom);
+            border.endWidth = Mathf.Max(.2f, zoom);
             
+            Vector3 borderPosition = border.transform.position;
+            borderPosition.y = Mathf.Max(hitboxes[0].position.y, zoom / 2f);
+            border.transform.position = borderPosition;
+
+            if (zoom > .5f)
+                zoom = 1;
+            nameText.color = new Color(nameText.color.r, nameText.color.g, nameText.color.b, zoom);
+            nameText.gameObject.SetActive(zoom > .3f);
         }
 
-        private void Transition(int direction)
+        private void HandleMouseOverProperty(object sender, Property property)
         {
-            if (direction == 0) return;
-            direction = Mathf.Clamp(direction, -1, 1);
+            OnMouseOverProperty?.Invoke(sender, property);
+        }
 
-            model.localScale += new Vector3(0, direction * transitionSpeed * UnityEngine.Time.deltaTime, 0);
+        private void HandlePropertySelected(object sender, Property property)
+        {
+            OnPropertySelected?.Invoke(sender, property);
+        }
+
+        private void HandlePropertyDeselected(object sender, Property property)
+        {
+            OnPropertyDeselected?.Invoke(sender, property);
         }
 
         private void HandleOnClicked(object sender, District district)
@@ -139,7 +183,6 @@ namespace Map
             }
 
             lastClickTime = UnityEngine.Time.time;
-
             Show();
         }
 
@@ -150,18 +193,32 @@ namespace Map
 
         public void Show()
         {
-            switch (state)
+            LOD0.gameObject.SetActive(true);
+            LOD1.gameObject.SetActive(false);
+
+            nameText.gameObject.SetActive(false);
+
+            foreach (Transform hitbox in hitboxes)
             {
-                case State.CLOSED:
-                case State.CLOSING:
-                    state = State.OPENING;
-                    break;
+                hitbox.gameObject.GetComponent<MeshRenderer>().enabled = false;
             }
+
+            borderMaterial.SetFloat("_MinPulseVal", .5f);
         }
 
         public void Hide()
         {
-            state = State.CLOSING;
+            LOD0.gameObject.SetActive(false);
+            LOD1.gameObject.SetActive(true);
+
+            nameText.gameObject.SetActive(true);
+
+            foreach (Transform hitbox in hitboxes)
+            {
+                hitbox.gameObject.GetComponent<MeshRenderer>().enabled = true;
+            }
+
+            borderMaterial.SetFloat("_MinPulseVal", 1f);
         }
 
         private void Subscribe()

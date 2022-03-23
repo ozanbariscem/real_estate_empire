@@ -40,8 +40,7 @@ namespace Ownership
 
             List<Ownership> ownerships = JsonConvert.DeserializeObject<List<Ownership>>(json);
 
-            OwnershipList list = new OwnershipList(ownerships);
-
+            OwnershipDictionary.AddOwnerships(ownerships);
             OnOwnershipsLoaded?.Invoke(this, ownerships);
         }
         #endregion

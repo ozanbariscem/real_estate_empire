@@ -39,18 +39,20 @@ namespace Load
         private IEnumerator LoadManagerRulesCoroutine()
         {
             OnProgressStart?.Invoke(this, EventArgs.Empty);
-            yield return RaiseLoadProgressed("Loading game logic...");
+            yield return RaiseLoadProgressed("LOGIC_START", 0f);
 
+            float delta;
             foreach (var manager in managers)
             {
-                yield return RaiseLoadProgressed($"Loading rules of {manager.GetType()}");
+                delta = UnityEngine.Time.deltaTime;
+                yield return RaiseLoadProgressed($"{manager.GetType().Name.ToUpper()}_LOGIC", delta);
                 // yield return new WaitForSeconds(0.1f);
                 manager.LoadRules();
             }
 
             OnProgressFinish?.Invoke(this, EventArgs.Empty);
             OnGameRulesLoaded?.Invoke(this, EventArgs.Empty);
-            yield return RaiseLoadProgressed("Game ready, enjoy!");
+            yield return RaiseLoadProgressed("LOGIC_READY", UnityEngine.Time.deltaTime);
         }
 
         private void LoadManagerContent(string path)
@@ -61,18 +63,20 @@ namespace Load
         private IEnumerator LoadManagerContentCoroutine(string path)
         {
             OnProgressStart?.Invoke(this, EventArgs.Empty);
-            yield return RaiseLoadProgressed("Loading game content...");
+            yield return RaiseLoadProgressed("CONTENT_START", 0f);
 
+            float delta;
             foreach (var manager in managers)
             {
-                yield return RaiseLoadProgressed($"Loading content of {manager.GetType()}");
+                delta = UnityEngine.Time.deltaTime;
+                yield return RaiseLoadProgressed($"{manager.GetType().Name.ToUpper()}_CONTENT", delta);
                 // yield return new WaitForSeconds(0.1f);
                 manager.LoadContent(path);
             }
 
             OnProgressFinish?.Invoke(this, EventArgs.Empty);
             OnGameContentLoaded?.Invoke(this, EventArgs.Empty);
-            yield return RaiseLoadProgressed("Game ready, enjoy!");
+            yield return RaiseLoadProgressed("CONTENT_READY", UnityEngine.Time.deltaTime);
         }
 
         private void HandleSaveFileLoadRequest(object sender, SaveFile.Data data)
@@ -80,12 +84,23 @@ namespace Load
             LoadManagerContent(data.path);
         }
 
+        private void HandleScenarioDatasLoaded(object sender, List<SaveFile.Data> datas)
+        {
+            if (datas == null || datas.Count == 0)
+            {
+                Console.Console.Run("log_error Scenario files is empty, please check game file integrity through Steam.");
+                return;
+            }
+
+            LoadManagerContent(datas[0].path);
+        }
+
         [MoonSharpHidden]
         public override void LoadRules() { }
 
-        private bool RaiseLoadProgressed(string msg)
+        private bool RaiseLoadProgressed(string msg, float delta)
         {
-            OnLoadProgressed?.Invoke(this, new Progress(msg));
+            OnLoadProgressed?.Invoke(this, new Progress(msg, delta));
             return true;
         }
 
@@ -93,12 +108,14 @@ namespace Load
         {
             base.Subscribe();
             SaveFile.SaveFileManager.Instance.OnDataFileLoadRequested += HandleSaveFileLoadRequest;
+            SaveFile.SaveFileManager.Instance.OnScenarioDatasLoaded += HandleScenarioDatasLoaded;
         }
 
         protected override void Unsubscribe()
         {
             base.Subscribe();
             SaveFile.SaveFileManager.Instance.OnDataFileLoadRequested -= HandleSaveFileLoadRequest;
+            SaveFile.SaveFileManager.Instance.OnScenarioDatasLoaded -= HandleScenarioDatasLoaded;
         }
     }
 }

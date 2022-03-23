@@ -28,6 +28,16 @@ namespace Time
             return $"{hour}:00/{day}.{month}.{year}";
         }
 
+        public string ToMenuStringHour()
+        {
+            return $"{hour}:{DateTime.Now.Minute}";
+        }
+
+        public string ToMenuStringDate()
+        {
+            return $"{day} {Calendar.Calendar.Rules.months[month-1].name.Substring(0, 3)} {year}";
+        }
+
         /// <summary>
         /// Passes time according to given calendar
         /// </summary>

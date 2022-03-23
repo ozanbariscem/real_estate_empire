@@ -11,8 +11,8 @@ namespace Loan
     {
         public static LoanManager Instance { get; private set; }
 
+        public event EventHandler<List<Loan>> OnLoansLoaded;
         public event EventHandler<Dictionary<int, Type>> OnTypesLoaded;
-        public event EventHandler<Dictionary<int, Loan>> OnLoansLoaded;
 
         private void Awake()
         {
@@ -54,8 +54,8 @@ namespace Loan
             if (json == null) return;
 
             List<Loan> loans = JsonConvert.DeserializeObject<List<Loan>>(json);
-            LoanList.Set(loans);
-            OnLoansLoaded?.Invoke(this, LoanList.Loans);
+            LoanDictionary.LoadLoans(loans);
+            OnLoansLoaded?.Invoke(this, loans);
         }
     }
 }

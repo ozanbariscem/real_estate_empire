@@ -4,7 +4,7 @@ using MoonSharp.Interpreter;
 using Investment;
 using Time;
 using Game;
-using Investor;
+using Company;
 using UI;
 using Language;
 using Map;

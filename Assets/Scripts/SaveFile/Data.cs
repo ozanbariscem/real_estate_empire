@@ -19,12 +19,13 @@ namespace SaveFile
 
         public static Data FromFileInfo(FileInfo fileInfo, string status)
         {
+            FileInfo writeInfo = new FileInfo($"{fileInfo.FullName}/calendar/start_date.txt");
             return new Data()
             {
                 path = fileInfo.FullName,
                 name = Path.GetFileNameWithoutExtension(fileInfo.Name),
-                lastWriteTime = fileInfo.LastWriteTime,
-                date = fileInfo.LastWriteTime.ToString(),
+                lastWriteTime = writeInfo.LastWriteTime,
+                date = writeInfo.LastWriteTime.ToString(),
                 status = status
             };
         }

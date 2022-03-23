@@ -3,6 +3,8 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 using MoonSharp.Interpreter;
+using UnityEngine.EventSystems;
+using System.Collections.Generic;
 
 namespace UI
 {
@@ -16,6 +18,8 @@ namespace UI
         public Transform loadMenu;
         public Transform gameMenu;
 
+        private List<Element> openMenus;
+
         private void Awake()
         {
             if (!Instance)
@@ -26,6 +30,65 @@ namespace UI
         {
             base.Start();
             LoadLoadMenu();
+        }
+
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                PopLastMenu();
+            }
+        }
+
+        public Transform OpenMenu(string path, object param)
+        {
+            Transform target = transform.Find(path);
+
+            if (target != null)
+            {
+                Element element = target.GetComponent<Element>();
+
+                if (element != null)
+                {
+                    target.SetSiblingIndex(target.parent.childCount - 1);
+                    element.Activate(param);
+
+                    if (openMenus == null)
+                        openMenus = new List<Element>();
+                    openMenus.Add(element);
+                }
+            }
+
+            return target;
+        }
+
+        public void BringToFront(Element element)
+        {
+            for (int i = openMenus.Count -1; i >= 0; i--)
+            {
+                if (openMenus[i] == element)
+                {
+                    openMenus.RemoveAt(i);
+                    openMenus.Add(element);
+                    element.transform.SetAsLastSibling();
+                    break;
+                }
+            }
+        }
+
+        private void PopLastMenu()
+        {
+            for (int i = openMenus.Count - 1; i >= 0; i--)
+            {
+                Element menu = openMenus[i];
+                openMenus.RemoveAt(i);
+
+                if (menu.gameObject.activeInHierarchy)
+                {
+                    menu.Deactivate();
+                    break;
+                }
+            }
         }
 
         [MoonSharpHidden]
@@ -112,6 +175,7 @@ namespace UI
                     }
                     GameObject prefab = assetBundle.LoadAsset<GameObject>(name);
                     GameObject obj = Instantiate(prefab, gameMenu);
+                    obj.name = name;
 
                     if (name == "hover")
                         obj.AddComponent<Hover>();
@@ -129,13 +193,30 @@ namespace UI
 
             script.Globals["AddFunctionality"] = (Action<Transform, string, object>)((transform, function, args) =>
             {
-                transform.GetComponent<Button>().onClick.AddListener(() =>
+                Button button = transform.GetComponent<Button>();
+
+                if (button != null)
                 {
-                    script.Call(script.Globals[function], args);
-                });
+                    button.onClick.AddListener(
+                        () => script.Call(script.Globals[function], args));
+                }
+                else
+                {
+                    EventTrigger eventTrigger = transform.gameObject.AddComponent<EventTrigger>();
+
+                    EventTrigger.Entry onClick = new EventTrigger.Entry();
+                    onClick.eventID = EventTriggerType.PointerClick;
+                    onClick.callback.AddListener((eventData) =>
+                    {
+                        script.Call(script.Globals[function], args);
+                    });
+
+                    eventTrigger.triggers.Add(onClick);
+                }
             });
             script.Globals["Instantiate"] = (Func<UnityEngine.Object, Transform, UnityEngine.Object>)Instantiate;
             script.Globals["Color"] = (Func<float, float, float, float, Color>)((r, g, b, a) => { return new Color(r, g, b, a); });
+            script.Globals["Log"] = (Action<string>)Debug.Log;
 
             script.Globals["Quit"] = (Action)Application.Quit;
 

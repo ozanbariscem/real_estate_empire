@@ -12,6 +12,8 @@ namespace Investment
     {
         [JsonIgnore]
         public Data Data => Types.Dictionary[type].subTypes[sub_type];
+
+        [JsonIgnore]
         public Type Type => Types.Dictionary[type];
 
         public int id;

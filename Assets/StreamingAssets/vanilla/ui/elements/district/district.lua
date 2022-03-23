@@ -1,4 +1,5 @@
 local transform
+local element
 
 local topbar = {
     transform = nil,
@@ -32,10 +33,14 @@ local properties = {
         shares = nil,
         value = nil
     },
-    content = nil
+    content = nil,
+    elements = {}
 }
 
+local property_element_amount = 30
+
 onClicks = {
+    { "", "HandleMenuClicked" },
     { "Topbar/CloseButton", "HandleCloseButtonPressed" }
 }
 
@@ -49,12 +54,14 @@ end
 
 function OnScriptSet(_transform)
     transform = _transform
+    element = transform.GetComponent("Element")
 
     GetTopbarElements(transform)
     GetSummaryElements(transform)
     GetPropertiesElements(transform)
 
     SetHandlers()
+    CreatePropertyElements(property_element_amount)
 
     transform.gameObject.SetActive(false)
 end
@@ -65,8 +72,20 @@ end
 function OnHoverEventsSet()
 end
 
+function OnActivate(param)
+end
+
+function OnDeactivate(param)
+    MapManager.HideActiveDistrict()
+end
+
+function HandleMenuClicked()
+    UIManager.BringToFront(element)
+end
+
 function HandleCloseButtonPressed()
     transform.gameObject.SetActive(false)
+    OnDeactivate()
 end
 
 function HandleDistrictClicked(sender, district)
@@ -78,11 +97,52 @@ function HandleDistrictClicked(sender, district)
     summary.properties.properties.text.text = district.Data.size
     summary.properties.population.text.text = ""..district.population
 
-    transform.gameObject.SetActive(true)
+    UpdatePropertyElements(district.properties)
+    UIManager.OpenMenu("GameMenu/district/")
 end
 
 function SetHandlers()
     MapManager.OnDistrictClicked.add(HandleDistrictClicked)
+end
+
+function UpdatePropertyElements(propertyList)
+    if #properties.elements < #propertyList then
+        CreatePropertyElements(#propertyList - #properties.elements)
+    end
+
+    for i=1, #properties.elements do
+        local el = properties.elements[i]
+        if i <= #propertyList then
+            local investment = InvestmentDictionary.GetInvestment("property", propertyList[i])
+
+            el.name.text = investment.name
+            el.type.text = investment.sub_type
+            el.condition.text = "100"
+            el.age.text = investment.age
+            el.shares.text = investment.shares
+            el.value.text = ToCashString(investment.value)
+
+            el.transform.gameObject.SetActive(true)
+        else
+            el.transform.gameObject.SetActive(false)
+        end
+    end
+end
+
+function CreatePropertyElements(amount)
+    for i=1, amount do
+        local object = Instantiate(properties.property_prefab, properties.content)
+        object.gameObject.SetActive(true)
+        properties.elements[#properties.elements + 1] = {
+            transform = object.transform,
+            name = object.transform.Find("Properties/Name").GetComponent("TextMeshProUGUI"),
+            type = object.transform.Find("Properties/Type").GetComponent("TextMeshProUGUI"),
+            condition = object.transform.Find("Properties/Condition").GetComponent("TextMeshProUGUI"),
+            age = object.transform.Find("Properties/Age").GetComponent("TextMeshProUGUI"),
+            shares = object.transform.Find("Properties/Shares").GetComponent("TextMeshProUGUI"),
+            value = object.transform.Find("Properties/Value").GetComponent("TextMeshProUGUI")
+        }
+    end
 end
 
 function GetTopbarElements(parent)
