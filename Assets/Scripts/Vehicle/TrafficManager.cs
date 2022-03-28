@@ -191,7 +191,7 @@ namespace Traffic
                 nodeList.AddRange(value);
             }
 
-            OnNodesLoaded?.Invoke(this, EventArgs.Empty);
+            OnNodesDataLoaded?.Invoke(this, EventArgs.Empty);
         }
 
         private List<Transform> LoadVehicles(Transform map, string type)
@@ -229,6 +229,8 @@ namespace Traffic
                     }
                 }
             }
+
+            OnNodesLoaded?.Invoke(this, EventArgs.Empty);
             return transforms;
         }
 
@@ -236,7 +238,7 @@ namespace Traffic
         {
             base.Subscribe();
             Map.MapManager.Instance.OnMapLoaded += HandleMapLoaded;
-            Chess.Camera.CameraController.Singleton.OnCameraZoomed += HandleCameraZoom;
+            REE.Camera.Camera.Singleton.OnCameraZoomed += HandleCameraZoom;
             Time.TimeManager.Instance.OnResumed += (sender, date) => { pause = false; };
             Time.TimeManager.Instance.OnPaused += (sender, date) => { pause = true; };
         }
@@ -245,7 +247,7 @@ namespace Traffic
         {
             base.Unsubscribe();
             Map.MapManager.Instance.OnMapLoaded -= HandleMapLoaded;
-            Chess.Camera.CameraController.Singleton.OnCameraZoomed -= HandleCameraZoom;
+            REE.Camera.Camera.Singleton.OnCameraZoomed -= HandleCameraZoom;
         }
     }
 }

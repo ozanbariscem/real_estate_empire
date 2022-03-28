@@ -1,7 +1,7 @@
 vehicle_amounts = {
     { "Air", "0" },
     { "Sea", "0" },
-    { "Land", "20" }  
+    { "Land", "5" }  
 }
 
 modelSize = {

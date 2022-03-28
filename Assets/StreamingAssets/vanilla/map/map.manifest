@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 2325153001
+CRC: 3087577865
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: bba1d6027e745471309f540529f7c7b1
+    Hash: 2a6363bd3e14131c039e43162c0a5a33
   TypeTreeHash:
     serializedVersion: 2
-    Hash: b98570dd20df5c0dcf605f2b24844e85
+    Hash: 0de0c82009f94f82239cee2e798c972e
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -31,10 +31,7 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 120
   Script: {instanceID: 0}
-- Class: 205
-  Script: {instanceID: 0}
 SerializeReferenceClassIdentifiers: []
 Assets:
 - Assets/Prefabs/Map.prefab
-- Assets/Prefabs/OLD_Map.prefab
 Dependencies: []

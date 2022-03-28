@@ -5,18 +5,28 @@ namespace Map
 {
     public class Property : MonoBehaviour
     {
-        public event EventHandler<Property> OnMouseOverProperty;
-        public event EventHandler<Property> OnPropertySelected;
-        public event EventHandler<Property> OnPropertyDeselected;
+        public static event EventHandler<Property> OnMouseOver;
+        public static event EventHandler<Property> OnMouseExited;
+        public static event EventHandler<Property> OnSelected;
+        public static event EventHandler<Property> OnDeselected;
+        public static event EventHandler<Property> OnDoubleClicked;
 
         public int ID { get; private set; }
         public string District { get; private set; }
 
         public Texture Texture { get; private set; }
         public MeshRenderer MeshRenderer { get; private set; }
-        public Material Material { get; private set; }
+        public Material OriginalMaterial { get; private set; }
 
         public bool Selected { get; private set; }
+
+        private float doubleClickRegisterTime = 0.2f;
+        private float lastSelectionTime;
+
+        public void TrySetMaterial(Material material)
+        {
+            MeshRenderer.sharedMaterial = material;
+        }
 
         public void Set(int id, string district)
         {
@@ -24,13 +34,8 @@ namespace Map
             District = district;
 
             MeshRenderer = GetComponent<MeshRenderer>();
-            Texture = MeshRenderer.material.mainTexture;
-            Material = MeshRenderer.sharedMaterial;
-        }
-
-        public void Deoutline()
-        {
-            MeshRenderer.sharedMaterial = Material;
+            Texture = MeshRenderer.sharedMaterial.mainTexture;
+            OriginalMaterial = MeshRenderer.sharedMaterial;
         }
 
         public void Outline(Material material)
@@ -38,15 +43,20 @@ namespace Map
             MeshRenderer.sharedMaterial = material;
         }
 
+        public void Deoutline(Material material)
+        {
+            MeshRenderer.sharedMaterial = material;
+        }
+
         private void OnMouseEnter()
         {
-            OnMouseOverProperty?.Invoke(this, this);
+            OnMouseOver?.Invoke(this, this);
         }
 
         private void OnMouseExit()
         {
             if (!Selected)
-                Deoutline();
+                OnMouseExited?.Invoke(this, this);
         }
 
         private void OnMouseDown()
@@ -60,13 +70,20 @@ namespace Map
         public void Select()
         {
             Selected = true;
-            OnPropertySelected?.Invoke(this, this);
+
+            if (UnityEngine.Time.time <= lastSelectionTime + doubleClickRegisterTime)
+            { 
+                OnDoubleClicked?.Invoke(this, this);
+            }
+            lastSelectionTime = UnityEngine.Time.time;
+
+            OnSelected?.Invoke(this, this);
         }
 
         public void Deselect()
         {
             Selected = false;
-            OnPropertyDeselected?.Invoke(this, this);
+            OnDeselected?.Invoke(this, this);
         }
     }
 }

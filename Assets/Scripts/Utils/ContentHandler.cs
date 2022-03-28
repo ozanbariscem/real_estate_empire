@@ -67,6 +67,8 @@ namespace Utils
             script.Globals["EffectDictionary"] = new Effect.Effect();
             script.Globals["EventDictionary"] = new EventDictionary();
 
+            script.Globals["MapDistrict"] = typeof(Map.District);
+
             script.Globals["ConsoleRunCommand"] = (Action<string>)Console.Console.Run;
             script.Globals["ToCashString"] = (Func<long, string>)StringConversions.ToCash;
 

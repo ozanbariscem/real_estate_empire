@@ -90,19 +90,19 @@ end
 
 function HandleDistrictClicked(sender, district)
     -- Converting Map.District to District.District
-    local district = DistrictDictionary.SafeGet(district.district_tag)
-
-    topbar.districtNameText.text = district.Data.name
-
-    summary.properties.properties.text.text = district.Data.size
-    summary.properties.population.text.text = ""..district.population
-
-    UpdatePropertyElements(district.properties)
+    -- local district = DistrictDictionary.SafeGet(district.district_tag)
+-- 
+    -- topbar.districtNameText.text = district.Data.name
+-- 
+    -- summary.properties.properties.text.text = district.Data.size
+    -- summary.properties.population.text.text = ""..district.population
+-- 
+    -- UpdatePropertyElements(district.properties)
     UIManager.OpenMenu("GameMenu/district/")
 end
 
 function SetHandlers()
-    MapManager.OnDistrictClicked.add(HandleDistrictClicked)
+    MapDistrict.OnClicked.add(HandleDistrictClicked)
 end
 
 function UpdatePropertyElements(propertyList)

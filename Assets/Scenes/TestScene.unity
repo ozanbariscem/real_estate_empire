@@ -1108,7 +1108,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb854332fa0eb9540875f409aafbce03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buildingOutlineMaterial: {fileID: 2100000, guid: 9ff54dfe65945f04e8d01b428047b6f6, type: 2}
+  mapSettings: {fileID: 11400000, guid: 98f80d1bd297a3c42b3392d453e4c501, type: 2}
 --- !u!4 &1178992397
 Transform:
   m_ObjectHideFlags: 0
@@ -1544,7 +1544,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1684002840}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -45, y: 0, z: 90}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1816243852}
@@ -1746,6 +1746,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1816243852}
   - component: {fileID: 1816243853}
+  - component: {fileID: 1816243854}
   m_Layer: 0
   m_Name: Camera Rotate Rig
   m_TagString: Untagged
@@ -1780,15 +1781,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbe9355d4493d8e4b803944eaaeaeeaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  povTransform: {fileID: 0}
   cameraTransform: {fileID: 46228219}
   cameraMoveRig: {fileID: 1684002841}
   cameraCloseCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 0
-      value: 0.32
+      time: 0.00030517578
+      value: 0.10092956
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -1797,12 +1797,12 @@ MonoBehaviour:
       outWeight: 0
     - serializedVersion: 3
       time: 1
-      value: 1
-      inSlope: 1.43117
-      outSlope: 1.43117
+      value: 0.9972534
+      inSlope: 1.8848557
+      outSlope: 1.8848557
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0
+      inWeight: 0.062431842
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -1834,6 +1834,18 @@ MonoBehaviour:
   verticalRotationResetOnButtonRelease: 0
   horizontalRotationResetOnButtonRelease: 0
   ignoreAllInput: 0
+--- !u!114 &1816243854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1816243851}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 881e63cf18092754e98fd27295d40984, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1865290483
 GameObject:
   m_ObjectHideFlags: 0

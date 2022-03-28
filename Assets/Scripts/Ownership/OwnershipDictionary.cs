@@ -67,6 +67,23 @@ namespace Ownership
             return list;
         }
     
+        public static bool CompanyOwns(string company, string type, int id, out Ownership ownership)
+        {
+            if (Dictionary.TryGetValue(company, out var _company))
+            {
+                if (_company.TryGetValue(type, out var types))
+                {
+                    if (types.TryGetValue(id, out var _ownership))
+                    {
+                        ownership = _ownership;
+                        return true;
+                    }
+                }
+            }
+            ownership = null;
+            return false;
+        }
+
         public static int GetTotalAssetsOfCompany(string tag)
         {
             if (Dictionary.TryGetValue(tag, out var company))

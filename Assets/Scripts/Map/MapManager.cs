@@ -15,11 +15,10 @@ namespace Map
 
         public event EventHandler<Transform> OnMapLoaded;
         public event EventHandler<Dictionary<string, District>> OnDistrictsLoaded;
+        public event EventHandler<Mode> OnMapModeChanged;
 
-        public event EventHandler<District> OnDistrictClicked;
-        public event EventHandler<District> OnDistrictDoubleClicked;
-
-        public Material buildingOutlineMaterial;
+        public Settings mapSettings;
+        public Mode Mode { get; private set; }
 
         private Dictionary<string, District> districts;
 
@@ -35,6 +34,13 @@ namespace Map
                 Instance = this;
         }
 
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha1)) SetMapMode(Mode.Texture);
+            if (Input.GetKeyDown(KeyCode.Alpha2)) SetMapMode(Mode.Ownership);
+        }
+
+        #region MANAGER
         /// <summary>
         /// Handled by the Game.Manager
         /// </summary>
@@ -49,7 +55,15 @@ namespace Map
 
             RaiseOnRulesLoaded();
         }
+        #endregion
 
+        #region UTILS
+        public void SetMapMode(Mode mode)
+        {
+            Mode = mode;
+            OnMapModeChanged?.Invoke(this, Mode);
+        }
+        
         public void HideActiveDistrict()
         {
             if (lastOpenDistrict != null)
@@ -58,18 +72,39 @@ namespace Map
                 lastOpenDistrict = null;
             }
         }
+        #endregion
 
         #region HANDLERS
         private void HandleCameraZoomed(object sender, float zoom)
         {
-            buildingOutlineMaterial.SetFloat("_FirstOutlineWidth", Mathf.Max(0.3f, zoom*2));
+            mapSettings.UpdateBorderWidths(zoom);
         }
 
         private void HandleMouseOverProperty(object sender, Property property)
         {
-            
-            buildingOutlineMaterial.SetTexture("_MainTex", property.Texture);
-            property.Outline(buildingOutlineMaterial);
+            if (property != lastSelectedProperty)
+            {
+                switch (Mode)
+                {
+                    case Mode.Texture:
+                        mapSettings.SetHoveringTexture(property.Texture);
+                        mapSettings.SetHoveringColor(Color.white);
+                        break;
+                    case Mode.Ownership:
+                        mapSettings.SetHoveringTexture(null);
+                        mapSettings.SetHoveringColor(property.MeshRenderer.sharedMaterial.GetColor("_Color"));
+                        break;
+                }
+                property.Outline(mapSettings.HoverMaterial);
+            }
+        }
+
+        private void HandleMouseExitedProperty(object sender, Property property)
+        {
+            if (!property.Selected)
+            {
+                property.Deoutline(mapSettings.GetMaterialForProperty(Mode, property));
+            }
         }
 
         private void HandlePropertySelected(object sender, Property property)
@@ -78,30 +113,38 @@ namespace Map
             {
                 lastSelectedProperty.Deselect();
             }
-            property.Outline(buildingOutlineMaterial);
+
+            switch (Mode)
+            {
+                case Mode.Texture:
+                    mapSettings.SetSelectionTexture(property.Texture);
+                    mapSettings.SetSelectionColor(Color.white);
+                    break;
+                case Mode.Ownership:
+                    mapSettings.SetSelectionTexture(null);
+                    mapSettings.SetSelectionColor(property.MeshRenderer.sharedMaterial.GetColor("_Color"));
+                    break;
+            }
+
+            property.Outline(mapSettings.SelectionMaterial);
             lastSelectedProperty = property;
         }
 
         private void HandlePropertyDeselected(object sender, Property property)
         {
-            property.Deoutline();
+            property.Deoutline(mapSettings.GetMaterialForProperty(Mode, property));
         }
 
         private void HandleDistrictClick(object sender, District district)
         {
-            OnDistrictClicked?.Invoke(this, district);
-
             if (lastOpenDistrict != district)
             {
                 HideActiveDistrict();
             }
             lastOpenDistrict = district;
-        }
 
-        private void HandleDistrictDoubleClick(object sender, District district)
-        {
-            OnDistrictDoubleClicked?.Invoke(this, district);
-
+            if (lastOpenDistrict.MapMode != Mode)
+                mapSettings.SetDistrictMaterials(lastOpenDistrict, Mode);
         }
         
         private void HandleDistrictDataLoaded(object sender, Dictionary<string, _District.Data> datas)
@@ -110,6 +153,12 @@ namespace Map
             {
                 districts[key].UpdateName(datas[key].name);
             }
+        }
+
+        private void HandleMapModeChanged(object sender, Mode mode)
+        {
+            if (lastOpenDistrict != null)
+                mapSettings.SetDistrictMaterials(lastOpenDistrict, Mode);
         }
         #endregion
 
@@ -151,11 +200,6 @@ namespace Map
                     CreateDistrictUI(prefab, district);
 
                     District districtClass = district.gameObject.AddComponent<District>();
-                    districtClass.OnClicked += HandleDistrictClick;
-                    districtClass.OnDoubleClicked += HandleDistrictDoubleClick;
-                    districtClass.OnMouseOverProperty += HandleMouseOverProperty;
-                    districtClass.OnPropertySelected += HandlePropertySelected;
-                    districtClass.OnPropertyDeselected += HandlePropertyDeselected;
                     districts.Add(district.name, districtClass);
                 }
             }
@@ -195,7 +239,15 @@ namespace Map
             base.Subscribe();
 
             _District.DistrictManager.Instance.OnDistrictDataLoaded += HandleDistrictDataLoaded;
-            Chess.Camera.CameraController.Singleton.OnCameraZoomed += HandleCameraZoomed;
+            REE.Camera.Camera.Singleton.OnCameraZoomed += HandleCameraZoomed;
+
+            District.OnClicked += HandleDistrictClick;
+            Property.OnMouseOver += HandleMouseOverProperty;
+            Property.OnMouseExited += HandleMouseExitedProperty;
+            Property.OnSelected += HandlePropertySelected;
+            Property.OnDeselected += HandlePropertyDeselected;
+
+            OnMapModeChanged += HandleMapModeChanged;
         }
 
         protected override void Unsubscribe()
@@ -203,7 +255,15 @@ namespace Map
             base.Unsubscribe();
 
             _District.DistrictManager.Instance.OnDistrictDataLoaded -= HandleDistrictDataLoaded;
-            Chess.Camera.CameraController.Singleton.OnCameraZoomed -= HandleCameraZoomed;
+            REE.Camera.Camera.Singleton.OnCameraZoomed -= HandleCameraZoomed;
+
+            District.OnClicked -= HandleDistrictClick;
+            Property.OnMouseOver -= HandleMouseOverProperty;
+            Property.OnMouseExited -= HandleMouseExitedProperty;
+            Property.OnSelected -= HandlePropertySelected;
+            Property.OnDeselected -= HandlePropertyDeselected;
+
+            OnMapModeChanged -= HandleMapModeChanged;
         }
         #endregion
 

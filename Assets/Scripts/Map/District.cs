@@ -10,46 +10,39 @@ namespace Map
     [MoonSharpUserData]
     public class District : MonoBehaviour
     {
-        public enum State { CLOSING, CLOSED, OPENING, OPEN }
-
-        public event EventHandler<District> OnClicked;
-        public event EventHandler<District> OnDoubleClicked;
-        public event EventHandler<Property> OnMouseOverProperty;
-        public event EventHandler<Property> OnPropertySelected;
-        public event EventHandler<Property> OnPropertyDeselected;
+        public static event EventHandler<District> OnClicked;
+        public static event EventHandler<District> OnDoubleClicked;
 
         public string district_tag;
 
         public Vector3 Center => hitboxes[0].position;
+        public Mode MapMode;
+
+        public List<Property> properties;
 
         private LineRenderer border;
         private Transform canvas;
 
-        private Transform LOD0;
-        private Transform LOD1;
+        private Transform[] roadLODs;
+        private Transform[] buildingLODs;
+
+        private Transform hitbox;
         private List<Transform> hitboxes;
 
         private TextMeshProUGUI nameText;
 
-        private float zoom;
-        private float transitionSpeed = 2f;
-
-        private float doubleClickRegisterTime;
+        private float doubleClickRegisterTime = 0.2f;
         private float lastClickTime;
 
-        public Material borderMaterial;
+        private Material borderMaterial;
 
         private void Start()
         {
-            transitionSpeed = 5f;
-            doubleClickRegisterTime = 0.2f;
-
             district_tag = name;
 
             Subscribe();
-            GetComponents();
-
-            Chess.Camera.CameraController.Singleton.OnCameraZoomed += HandleCameraZoomed;
+            SetComponents();
+            SetProperties();
         }
 
         private void OnDestroy()
@@ -63,19 +56,26 @@ namespace Map
             {
                 OnClicked?.Invoke(this, this);
             }
-
-            Zoom();
         }
 
-        private void Zoom()
+        public void Show() => Toggle(true);
+
+        public void Hide() => Toggle(false);
+
+        public void Toggle(bool visible)
         {
-            if (Mathf.Abs(LOD1.localScale.y - zoom) > .01f)
-            {
-                float zoom = this.zoom;
-                if (zoom > .95f)
-                    zoom = 1f;
-                LOD1.localScale = Vector3.Lerp(LOD1.localScale, new Vector3(1, Mathf.Max(0.01f, 1-zoom), 1), UnityEngine.Time.deltaTime * transitionSpeed);
-            }
+            buildingLODs[0].gameObject.SetActive(visible);
+            buildingLODs[1].gameObject.SetActive(!visible);
+
+            nameText.gameObject.SetActive(!visible);
+            hitbox.gameObject.SetActive(!visible);
+
+            borderMaterial.SetFloat("_MinPulseVal", visible ? .5f : 1f);
+        }
+
+        public void UpdateName(string name)
+        {
+            nameText.text = name;
         }
 
         private bool IsClicked()
@@ -90,7 +90,7 @@ namespace Map
                 {
                     if (hit.transform.CompareTag("BUILDING"))
                     {
-                        Debug.Log("Im a buildinggg HANDLE MEEEEEE");
+                        return hit.transform.parent.parent.parent == transform;
                     }
 
                     foreach (Transform hitbox in hitboxes)
@@ -105,54 +105,33 @@ namespace Map
             return false;
         }
 
-        private void GetComponents()
-        {
-            border = transform.Find("Border").GetComponent<LineRenderer>();
-            border.sortingOrder = 99;
-
-            canvas = transform.Find("Canvas");
-            nameText = canvas.Find("Text").GetComponent<TextMeshProUGUI>();
-
-            borderMaterial = border.material;
-            borderMaterial.SetFloat("_MinPulseVal", 1f);
-
-            hitboxes = new List<Transform>();
-
-            LOD0 = transform.Find("Buildings/LOD0");
-            LOD1 = transform.Find("Buildings/LOD1");
-            foreach (Transform hitbox in transform.Find("Hitbox"))
-            {
-                hitboxes.Add(hitbox);
-            }
-
-            foreach (Transform building in LOD0)
-            {
-                if (int.TryParse(building.name, out int id))
-                {
-                    Property property = building.gameObject.AddComponent<Property>();
-                    property.Set(id, district_tag);
-                    property.OnMouseOverProperty += HandleMouseOverProperty;
-                    property.OnPropertySelected += HandlePropertySelected;
-                    property.OnPropertyDeselected += HandlePropertyDeselected;
-                }
-            }
-        }
-
-        public void UpdateName(string name)
-        {
-            nameText.text = name;
-        }
-
+        #region HANDLERS
         private void HandleCameraZoomed(object sender, float zoom)
         {
-            this.zoom = zoom;
+            if (zoom > .5f)
+            {
+                roadLODs[0].gameObject.SetActive(false);
+                roadLODs[1].gameObject.SetActive(true);
+            } else
+            {
+                Vector3 cameraPosition = REE.Camera.Camera.Singleton.cameraTransform.position;
+                if (Vector3.Distance(cameraPosition, Center) < 300f)
+                {
+                    roadLODs[0].gameObject.SetActive(true);
+                    roadLODs[1].gameObject.SetActive(false);
+                } else
+                {
+                    roadLODs[0].gameObject.SetActive(false);
+                    roadLODs[1].gameObject.SetActive(true);
+                }
+            }
 
-            border.startWidth = Mathf.Max(.2f, zoom);
-            border.endWidth = Mathf.Max(.2f, zoom);
-            
-            Vector3 borderPosition = border.transform.position;
-            borderPosition.y = Mathf.Max(hitboxes[0].position.y, zoom / 2f);
-            border.transform.position = borderPosition;
+            // border.startWidth = Mathf.Max(.2f, zoom);
+            // border.endWidth = Mathf.Max(.2f, zoom);
+            // 
+            // Vector3 borderPosition = border.transform.position;
+            // borderPosition.y = Mathf.Max(hitboxes[0].position.y, zoom / 2f);
+            // border.transform.position = borderPosition;
 
             if (zoom > .5f)
                 zoom = 1;
@@ -160,23 +139,10 @@ namespace Map
             nameText.gameObject.SetActive(zoom > .3f);
         }
 
-        private void HandleMouseOverProperty(object sender, Property property)
-        {
-            OnMouseOverProperty?.Invoke(sender, property);
-        }
-
-        private void HandlePropertySelected(object sender, Property property)
-        {
-            OnPropertySelected?.Invoke(sender, property);
-        }
-
-        private void HandlePropertyDeselected(object sender, Property property)
-        {
-            OnPropertyDeselected?.Invoke(sender, property);
-        }
-
         private void HandleOnClicked(object sender, District district)
         {
+            if (district != this) return;
+
             if (UnityEngine.Time.time - lastClickTime <= doubleClickRegisterTime)
             { 
                 OnDoubleClicked?.Invoke(this, district);
@@ -188,50 +154,95 @@ namespace Map
 
         private void HandleOnDoubleClicked(object sender, District district)
         {
-            
+            if (district != this) return;
         }
+        #endregion
 
-        public void Show()
+        #region SETUP
+        private void SetComponents()
         {
-            LOD0.gameObject.SetActive(true);
-            LOD1.gameObject.SetActive(false);
-
-            nameText.gameObject.SetActive(false);
-
-            foreach (Transform hitbox in hitboxes)
-            {
-                hitbox.gameObject.GetComponent<MeshRenderer>().enabled = false;
-            }
-
-            borderMaterial.SetFloat("_MinPulseVal", .5f);
+            SetBorder();
+            SetUI();
+            SetHitboxes();
+            SetLODs();
         }
-
-        public void Hide()
+        
+        private LineRenderer SetBorder()
         {
-            LOD0.gameObject.SetActive(false);
-            LOD1.gameObject.SetActive(true);
+            border = transform.Find("Border").GetComponent<LineRenderer>();
+            border.sortingOrder = 99;
 
-            nameText.gameObject.SetActive(true);
-
-            foreach (Transform hitbox in hitboxes)
-            {
-                hitbox.gameObject.GetComponent<MeshRenderer>().enabled = true;
-            }
-
+            borderMaterial = border.sharedMaterial;
             borderMaterial.SetFloat("_MinPulseVal", 1f);
+
+            return border;
         }
 
+        private Transform SetUI()
+        {
+            canvas = transform.Find("Canvas");
+            nameText = canvas.Find("Text").GetComponent<TextMeshProUGUI>();
+            return canvas;
+        }
+        
+        private List<Transform> SetHitboxes()
+        {
+            hitbox = transform.Find("Hitbox");
+            hitboxes = new List<Transform>();
+            foreach (Transform hitbox in hitbox)
+            {
+                hitboxes.Add(hitbox);
+            }
+            return hitboxes;
+        }
+        
+        private void SetLODs()
+        {
+            roadLODs = new Transform[2];
+            roadLODs[0] = transform.Find("Roads/LOD0");
+            roadLODs[1] = transform.Find("Roads/LOD1");
+
+            buildingLODs = new Transform[2];
+            buildingLODs[0] = transform.Find("Buildings/LOD0");
+            buildingLODs[1] = transform.Find("Buildings/LOD1");
+        }
+        
+        private void SetProperties()
+        {
+            if (buildingLODs == null || buildingLODs.Length < 1)
+            {
+                Debug.LogError($"Couldn't set properties in district {district_tag}!");
+                return;
+            }
+
+            properties = new List<Property>();
+            foreach (Transform building in buildingLODs[0])
+            {
+                if (int.TryParse(building.name, out int id))
+                {
+                    Property property = building.gameObject.AddComponent<Property>();
+                    property.Set(id, district_tag);
+                    properties.Add(property);
+                }
+            }
+        }
+        #endregion
+
+        #region SUBSCRIPTION
         private void Subscribe()
         {
             OnClicked += HandleOnClicked;
             OnDoubleClicked += HandleOnDoubleClicked;
+            REE.Camera.Camera.Singleton.OnCameraZoomed += HandleCameraZoomed;
         }
 
         private void Unsubscribe()
         {
             OnClicked -= HandleOnClicked;
             OnDoubleClicked -= HandleOnDoubleClicked;
+            REE.Camera.Camera.Singleton.OnCameraZoomed -= HandleCameraZoomed;
         }
+        #endregion
     }
 }
 

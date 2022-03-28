@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66c694c18a46d3e4f9f357a84f2a5778, type: 3}
+  m_Name: MapSettings
+  m_EditorClassIdentifier: 
+  SelectionMaterial: {fileID: 2100000, guid: d63e3f6d264e18d44882b2d2ca5a43d9, type: 2}
+  HoverMaterial: {fileID: 2100000, guid: 9ff54dfe65945f04e8d01b428047b6f6, type: 2}
+  OwnershipMaterials:
+  - {fileID: 2100000, guid: 4154e93aebb1b83429724d7c1b067a10, type: 2}
+  - {fileID: 2100000, guid: d7770c85596202a479d1d5be8aa2d76d, type: 2}
+  - {fileID: 2100000, guid: c0ae34cabd3fa0b4699dbd63e4e3bc0d, type: 2}
+  - {fileID: 2100000, guid: 3a0bcc52afff0e044865b7ab0d30ad73, type: 2}
+  - {fileID: 2100000, guid: c7fe967a94de641409b393aa211e0f10, type: 2}
+  - {fileID: 2100000, guid: 4915795572988ab448079feedff58960, type: 2}
+  - {fileID: 2100000, guid: 39458c546d3cd0248a8347164181eab2, type: 2}
+  - {fileID: 2100000, guid: 2ff76d69e24c7fd46994bc080262b031, type: 2}
+  - {fileID: 2100000, guid: 7e4764a06ce8c014f923df51ba4f3715, type: 2}
+  - {fileID: 2100000, guid: cbb40e2f730a5674b9ab870097a4f276, type: 2}
+  - {fileID: 2100000, guid: 9c888d9390c144841b706919ec6b3fda, type: 2}

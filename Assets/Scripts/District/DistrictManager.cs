@@ -58,7 +58,19 @@ namespace District
         }
 
         #region MISC
-        [ContextMenu("PopulateDistricts")]
+        [ContextMenu("Resize District")]
+        public void ResizeDistricts()
+        {
+            // foreach(Transform mDistrict in Map.MapManager.Instance.mapObject.transform.Find("Districts"))
+            // {
+            //     int size = mDistrict.Find("Buildings/LOD0").childCount;
+            //     Data.Datas[mDistrict.name].size = size;
+            // }
+            // string json = Newtonsoft.Json.JsonConvert.SerializeObject(Data.Datas.Values.OrderBy(x => x.tag).ToList(), Newtonsoft.Json.Formatting.Indented);
+            // Utils.StreamingAssetsHandler.SafeSetString($"vanilla/district/districts.json", json);
+        }
+
+        [ContextMenu("Populate Districts")]
         public void PopulateDistricts()
         {
             int id = 0;

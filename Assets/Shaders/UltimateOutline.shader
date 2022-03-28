@@ -123,7 +123,7 @@ Shader "Outlined/UltimateOutline"
 		Tags{ "Queue" = "Transparent" }
 
 		CGPROGRAM
-		#pragma surface surf Lambert noshadow
+		#pragma surface surf Lambert addshadow
 
 		struct Input {
 			float2 uv_MainTex;
