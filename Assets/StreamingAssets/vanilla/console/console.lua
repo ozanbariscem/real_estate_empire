@@ -37,3 +37,25 @@ function investment(...)
         "\nbase_value: "..investment.base_value..
         "\nvalue: "..investment.value)
 end
+
+function debug(...)
+    local params = {...}
+
+    if (params[1] == "true" or params[1] == "false") then
+        local bool = params[1]
+        Debug.Set(bool == "true")
+        return
+    end
+
+    if (not Debug.State.IsActive) then
+        log_error("Please activate debug mode 'debug true' before trying to debug.")
+        return
+    end
+    
+    if (params[1] == "investment") then
+        -- params[2] => type of investment
+        -- params[3] => page of investment list 
+        -- (We use pagination we can't list 100s of investments because memory allocation goes crazy)
+        Debug.ListInvestments(params[2], tonumber(params[3]))
+    end
+end

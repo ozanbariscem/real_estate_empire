@@ -218,7 +218,7 @@ namespace REE.Camera
         {
             if (axis != Vector3.up && axis != Vector3.right)
             {
-                Debug.LogError("Expected axis to be Vector3.up or Vector3.right but it was: " + axis);
+                UnityEngine.Debug.LogError("Expected axis to be Vector3.up or Vector3.right but it was: " + axis);
                 return;
             }
 

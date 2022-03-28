@@ -18,6 +18,8 @@ namespace UI
         public Transform loadMenu;
         public Transform gameMenu;
 
+        public Transform debugMenu;
+
         private List<Element> openMenus;
 
         private void Awake()
@@ -101,6 +103,11 @@ namespace UI
             LoadElements();
 
             RaiseOnRulesLoaded();
+        }
+
+        private void HandleDebugMenuToggled(object sender, REE.Debug.State state)
+        {
+            debugMenu.gameObject.SetActive(state.IsActive);
         }
 
         #region CONTENT LOADER
@@ -224,6 +231,18 @@ namespace UI
             return script;
         }
         #endregion
+
+        protected override void Subscribe()
+        {
+            base.Subscribe();
+            REE.Debug.Debug.OnToggled += HandleDebugMenuToggled;
+        }
+
+        protected override void Unsubscribe()
+        {
+            base.Unsubscribe();
+            REE.Debug.Debug.OnToggled -= HandleDebugMenuToggled;
+        }
     }
 }
 

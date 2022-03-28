@@ -68,6 +68,7 @@ namespace Utils
             script.Globals["EventDictionary"] = new EventDictionary();
 
             script.Globals["MapDistrict"] = typeof(Map.District);
+            script.Globals["Debug"] = REE.Debug.Debug.Instance;
 
             script.Globals["ConsoleRunCommand"] = (Action<string>)Console.Console.Run;
             script.Globals["ToCashString"] = (Func<long, string>)StringConversions.ToCash;

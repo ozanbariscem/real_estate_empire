@@ -96,7 +96,8 @@ namespace Investment
 
         public override string ToString()
         {
-            return $"{type}-{sub_type} {name} {age} {shares} {baseValue}";
+            return 
+            $"{type}-{id} | {sub_type} {name} {age} {shares} {baseValue}";
         }
 
         public static Investment FromJson(string json)
