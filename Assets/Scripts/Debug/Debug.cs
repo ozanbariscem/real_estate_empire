@@ -42,15 +42,91 @@ namespace REE.Debug
             OnToggled?.Invoke(this, State);
         }
 
-        public void ListInvestments(string type, int page)
+        public void ListEmployees(string company, int page)
         {
             if (!State.IsActive) return;
 
-            List<Investment.Investment> investments = 
-                Investment.InvestmentDictionary.Investments[type].Values.
-                Where(x => x.id >= page * 100 && x.id < 100 + page*100).ToList();
+            List<Employment.Employment> employments =
+                Employment.EmploymentDictionary.Employments[company].Values
+                .Skip(page * 100).Take(100).ToList();
 
-            List(investments);
+            List<Person.Employee.Employee> employees =
+                Person.Employee.EmployeeDictionary.SafeGetEmployees(employments.Select(x => x.employee_id).ToList());
+
+            List(employees);
+            headerText.text += $" - {company} - Page {page} of {Mathf.CeilToInt(Employment.EmploymentDictionary.Employments[company].Values.Count / 100)}";
+        }
+
+        public void ListApartments(int page)
+        {
+            if (!State.IsActive) return;
+
+            List<Investment.Property.Apartment> apartments = 
+                Investment.Property.ApartmentDictionary.Apartments.Values.
+                Skip(page * 100).Take(100).ToList();
+
+            List(apartments);
+            headerText.text += $" - Page {page} of {Mathf.CeilToInt(Investment.Property.ApartmentDictionary.Apartments.Count / 100)}";
+        }
+
+        public void ListBuildings(int page)
+        {
+            if (!State.IsActive) return;
+
+            List<Investment.Property.Building> buildings =
+                Investment.Property.BuildingDictionary.Buildings.Values.SelectMany(x => x.Values).
+                Skip(page * 100).Take(100).ToList();
+
+            List(buildings);
+            headerText.text += $" - Page {page}";
+        }
+
+        public void ListJobs(int page)
+        {
+            if (!State.IsActive) return;
+
+            List<Job.Job> jobs =
+                Job.JobDictionary.Jobs.Values.
+                Skip(page * 100).Take(100).ToList();
+
+            List(jobs);
+            headerText.text += $" - Page {page} of {Mathf.CeilToInt(Job.JobDictionary.Jobs.Count / 100)}";
+        }
+
+        public void ListEmployments(int page)
+        {
+            if (!State.IsActive) return;
+
+            List<Employment.Employment> employments =
+                Employment.EmploymentDictionary.Employments.Values.SelectMany(x => x.Values).
+                Skip(page * 100).Take(100).ToList();
+
+            List(employments);
+            headerText.text += $" - Page {page}";
+        }
+
+        public void ListNames(int page)
+        {
+            if (!State.IsActive) return;
+
+            List<string> names =
+                Person.Constants.Values.names.
+                Skip(page * 100).Take(100).ToList();
+
+            List(names);
+            headerText.text += $" - Page {page} of {Mathf.CeilToInt(Person.Constants.Values.names.Count / 100)}";
+        }
+
+        public void ListSurnames(int page)
+        {
+            if (!State.IsActive) return;
+
+            List<string> names =
+                Person.Constants.Values.surnames.
+                Skip(page * 100).Take(100).ToList();
+
+            List(names);
+            headerText.text += $" - Page {page} of {Mathf.CeilToInt(Person.Constants.Values.surnames.Count / 100)}";
         }
 
         public void List<T>(List<T> list) where T : class

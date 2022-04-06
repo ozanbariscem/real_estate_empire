@@ -94,9 +94,12 @@ namespace SaveFile
             if (!File.Exists(Path.Combine(path, "loan/loans.json"))) return "CORRUPTED";
             if (!File.Exists(Path.Combine(path, "district/districts.json"))) return "CORRUPTED";
             if (!File.Exists(Path.Combine(path, "company/company.txt"))) return "CORRUPTED";
+            if (!File.Exists(Path.Combine(path, "modifiers/modifiers.json"))) return "CORRUPTED";
+            if (!File.Exists(Path.Combine(path, "employment/employments.json"))) return "CORRUPTED";
+            if (!File.Exists(Path.Combine(path, "person/employee/employees.json"))) return "CORRUPTED";
             if (!Directory.Exists(Path.Combine(path, "investment"))) return "CORRUPTED";
 
-            foreach (var type in Investment.Types.Dictionary.Keys)
+            foreach (var type in Enum.GetValues(typeof(Investment.Type)))
             {
                 if (!Directory.Exists($"{path}/investment/{type}")) return "CORRUPTED";
             }
@@ -106,7 +109,7 @@ namespace SaveFile
 
         private void HandleDayPass(object sender, Time.Date date)
         {
-            SaveCurrentFile(date);
+            // SaveCurrentFile(date);
         }
 
         private void SaveCurrentFile(Time.Date date)
@@ -121,7 +124,10 @@ namespace SaveFile
                 Directory.CreateDirectory(path + "/loan");
                 Directory.CreateDirectory(path + "/district");
                 Directory.CreateDirectory(path + "/company");
-                foreach (var type in Investment.Types.Dictionary.Keys)
+                Directory.CreateDirectory(path + "/modifiers");
+                Directory.CreateDirectory(path + "/employment");
+                Directory.CreateDirectory(path + "/person/employee");
+                foreach (var type in Enum.GetValues(typeof(Investment.Type)))
                 {
                     Directory.CreateDirectory($"{path}/investment/{type}");
                 }
@@ -136,13 +142,17 @@ namespace SaveFile
             Utils.ContentHandler.SafeSetString($"{path}/loan/loans.json", JsonConvert.SerializeObject(Loan.LoanDictionary.ToList()));
             // Save districts
             Utils.ContentHandler.SafeSetString($"{path}/district/districts.json", JsonConvert.SerializeObject(District.DistrictDictionary.Dictionary.Values.ToList()));
-            // Save invesments
-            foreach (var type in Investment.Types.Dictionary.Keys)
-            {
-                Utils.ContentHandler.SafeSetString(
-                $"{path}/investment/{type}/investments.json",
-                JsonConvert.SerializeObject(Investment.InvestmentDictionary.Investments[type].Values.ToList()));
-            }
+            // Save modifiers
+            Utils.ContentHandler.SafeSetString($"{path}/modifiers/modifiers.json", JsonConvert.SerializeObject(Modifier.ModifierDictionary.Modifiers));
+            // Save Employments
+            Utils.ContentHandler.SafeSetString($"{path}/employment/employments.json", JsonConvert.SerializeObject(Employment.EmploymentDictionary.Employments.Values.ToList()));
+            // Save Employees
+            Utils.ContentHandler.SafeSetString($"{path}/person/employee/employees.json", JsonConvert.SerializeObject(Person.Employee.EmployeeDictionary.Employees.Values.ToList()));
+            
+            // Save apartments
+            Utils.ContentHandler.SafeSetString(
+                $"{path}/investment/apartments.json",
+                JsonConvert.SerializeObject(Investment.Property.ApartmentDictionary.Apartments.Values.ToList()));
 
             OnCurrentGameSaved?.Invoke(this, EventArgs.Empty);
         }

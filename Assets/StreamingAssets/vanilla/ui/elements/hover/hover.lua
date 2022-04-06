@@ -3,3 +3,6 @@ end
 
 function OnScriptLoaded()
 end
+
+function OnActivate(param)
+end

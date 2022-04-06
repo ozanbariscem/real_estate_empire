@@ -1,0 +1,42 @@
+[
+    {
+        "id": 0,
+        "tag": "manager",
+        "title": "MANAGER",
+        "description": "Company Manager",
+        "script": "manager.lua",
+        
+        "levels": [
+            {
+                "popularity": 0.03,
+                "salary": 60000,
+                "effects": [
+                    {
+                        "name": "MANAGER_EFFECT_0",
+                        "amount": 10
+                    }
+                ]
+            },
+            {
+                "popularity": 0.02,
+                "salary": 120000,
+                "effects": [
+                    {
+                        "name": "MANAGER_EFFECT_0",
+                        "amount": 20
+                    }
+                ]
+            },
+            {
+                "popularity": 0.01,
+                "salary": 180000,
+                "effects": [
+                    {
+                        "name": "MANAGER_EFFECT_0",
+                        "amount": 50
+                    }
+                ]
+            }
+        ]
+    }
+]

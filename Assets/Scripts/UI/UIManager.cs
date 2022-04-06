@@ -52,7 +52,7 @@ namespace UI
 
                 if (element != null)
                 {
-                    target.SetSiblingIndex(target.parent.childCount - 1);
+                    target.SetSiblingIndex(target.parent.childCount - 2);
                     element.Activate(param);
 
                     if (openMenus == null)
@@ -80,6 +80,8 @@ namespace UI
 
         private void PopLastMenu()
         {
+            if (openMenus == null) return;
+
             for (int i = openMenus.Count - 1; i >= 0; i--)
             {
                 Element menu = openMenus[i];
@@ -198,6 +200,20 @@ namespace UI
             Script script = Utils.StreamingAssetsHandler.SafeGetScript($"vanilla/ui/{path}.lua");
             if (script == null) return null;
 
+            script.Globals["ResetFunctionality"] = (Action<Transform>)((transform) => {
+                Button button = transform.GetComponent<Button>();
+
+                if (button != null)
+                {
+                    button.onClick.RemoveAllListeners();
+                }
+                else
+                {
+                    EventTrigger eventTrigger = transform.gameObject.GetComponent<EventTrigger>();
+                    if (eventTrigger != null)
+                        eventTrigger.triggers.Clear();
+                }
+            });
             script.Globals["AddFunctionality"] = (Action<Transform, string, object>)((transform, function, args) =>
             {
                 Button button = transform.GetComponent<Button>();
@@ -209,7 +225,9 @@ namespace UI
                 }
                 else
                 {
-                    EventTrigger eventTrigger = transform.gameObject.AddComponent<EventTrigger>();
+                    EventTrigger eventTrigger = transform.gameObject.GetComponent<EventTrigger>();
+                    if (eventTrigger == null)
+                        eventTrigger = transform.gameObject.AddComponent<EventTrigger>();
 
                     EventTrigger.Entry onClick = new EventTrigger.Entry();
                     onClick.eventID = EventTriggerType.PointerClick;
@@ -222,6 +240,10 @@ namespace UI
                 }
             });
             script.Globals["Instantiate"] = (Func<UnityEngine.Object, Transform, UnityEngine.Object>)Instantiate;
+            script.Globals["SetParent"] = (Action<Transform, Transform>)((a, b) => { 
+                a.SetParent(b);
+            });
+            script.Globals["Vector3"] = (Func<float, float, float, Vector3>)((x, y, z) => { return new Vector3(x, y, z); });
             script.Globals["Color"] = (Func<float, float, float, float, Color>)((r, g, b, a) => { return new Color(r, g, b, a); });
             script.Globals["Log"] = (Action<string>)Debug.Log;
 

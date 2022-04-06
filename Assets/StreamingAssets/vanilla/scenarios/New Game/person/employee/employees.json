@@ -1,0 +1,16 @@
+[
+    {
+        "id": 0,
+        "name": "Ozan Baris",
+        "surname": "CEM",
+        "job": "manager",
+        "level": 1
+    },
+    {
+        "id": 1,
+        "name": "Arda Tuna",
+        "surname": "CEM",
+        "job": "manager",
+        "level": 0
+    }
+]

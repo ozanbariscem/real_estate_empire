@@ -15,7 +15,7 @@ namespace Map
 
         public event EventHandler<Transform> OnMapLoaded;
         public event EventHandler<Dictionary<string, District>> OnDistrictsLoaded;
-        public event EventHandler<Mode> OnMapModeChanged;
+        public event EventHandler<OnMapModeChangedData> OnMapModeChanged;
 
         public Settings mapSettings;
         public Mode Mode { get; private set; }
@@ -28,6 +28,8 @@ namespace Map
         private Property lastSelectedProperty;
         private District lastOpenDistrict;
 
+        private bool ignore_input;
+
         private void Awake()
         {
             if (!Instance)
@@ -36,6 +38,8 @@ namespace Map
 
         private void Update()
         {
+            if (ignore_input) return;
+
             if (Input.GetKeyDown(KeyCode.Alpha1)) SetMapMode(Mode.Texture);
             if (Input.GetKeyDown(KeyCode.Alpha2)) SetMapMode(Mode.Ownership);
         }
@@ -61,7 +65,7 @@ namespace Map
         public void SetMapMode(Mode mode)
         {
             Mode = mode;
-            OnMapModeChanged?.Invoke(this, Mode);
+            OnMapModeChanged?.Invoke(this, new OnMapModeChangedData(mode));
         }
         
         public void HideActiveDistrict()
@@ -155,10 +159,10 @@ namespace Map
             }
         }
 
-        private void HandleMapModeChanged(object sender, Mode mode)
+        private void HandleMapModeChanged(object sender, OnMapModeChangedData data)
         {
             if (lastOpenDistrict != null)
-                mapSettings.SetDistrictMaterials(lastOpenDistrict, Mode);
+                mapSettings.SetDistrictMaterials(lastOpenDistrict, (Mode)data.Mode);
         }
         #endregion
 
@@ -248,6 +252,9 @@ namespace Map
             Property.OnDeselected += HandlePropertyDeselected;
 
             OnMapModeChanged += HandleMapModeChanged;
+
+            Console.UI.OnConsoleFocused += (sender, args) => { ignore_input = true; };
+            Console.UI.OnConsoleDefocused += (sender, args) => { ignore_input = false; };
         }
 
         protected override void Unsubscribe()

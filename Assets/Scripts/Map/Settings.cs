@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using Investment.Property;
 
 namespace Map
 {
@@ -57,11 +58,14 @@ namespace Map
                     string company_tag = Company.CompanyManager.Instance.PlayerCompany.tag;
 
                     float ratio = 0;
-                    if (Ownership.OwnershipDictionary.CompanyOwns(company_tag, "property", property.ID, out var ownership))
-                    {
-                        Investment.Investment investment = Investment.InvestmentDictionary.GetInvestment("property", property.ID);
-                        ratio = ownership.shares / investment.shares;
-                    }
+
+                    Debug.LogError($"GetMaterialForProperty is NOT implemented!");
+                    // if (Ownership.OwnershipDictionary.CompanyOwns(Investment.Type.Apartment, property.ID, out var ownership))
+                    // {
+                    //     Apartment apartment = ApartmentDictionary.Apartments[property.ID];
+                    //     ratio = ownership.shares / investment.shares;
+                    // }
+
                     return OwnershipMaterials[(int)ratio * 10];
             }
             return null;

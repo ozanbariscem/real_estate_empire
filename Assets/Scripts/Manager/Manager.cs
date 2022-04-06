@@ -39,7 +39,6 @@ namespace Manager
         public virtual void LoadRules()
         {
             LoadScript();
-
             RaiseOnRulesLoaded();
         }
 
@@ -55,18 +54,21 @@ namespace Manager
         protected virtual void RaiseOnScriptLoaded()
         {
             OnScriptLoaded?.Invoke(this, EventArgs.Empty);
-            script.Call(script.Globals[nameof(OnScriptLoaded)]);
+            if (!script.Globals.Get(nameof(OnScriptLoaded)).IsNil())
+                script.Call(script.Globals[nameof(OnScriptLoaded)]);
         }
 
         protected virtual void RaiseOnRulesLoaded()
         {
             OnRulesLoaded?.Invoke(this, EventArgs.Empty);
-            script.Call(script.Globals[nameof(OnRulesLoaded)]);
+            if (!script.Globals.Get(nameof(OnRulesLoaded)).IsNil())
+                script.Call(script.Globals[nameof(OnRulesLoaded)]);
         }
         protected virtual void RaiseOnContentLoaded()
         {
             OnContentLoaded?.Invoke(this, EventArgs.Empty);
-            script.Call(script.Globals[nameof(OnContentLoaded)]);
+            if (!script.Globals.Get(nameof(OnContentLoaded)).IsNil())
+                script.Call(script.Globals[nameof(OnContentLoaded)]);
         }
 
         #region CONTENT LOADING

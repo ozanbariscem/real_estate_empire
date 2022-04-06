@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace REE.Camera
 {
@@ -106,6 +107,9 @@ namespace REE.Camera
             Map.MapManager.Instance.OnMapLoaded += HandleMapLoaded;
             Map.District.OnDoubleClicked += HandleDistrictDoubleClicked;
             Map.Property.OnDoubleClicked += HandlePropertyDoubleClicked;
+
+            Console.UI.OnConsoleFocused += (sender, args) => { ignoreAllInput = true; };
+            Console.UI.OnConsoleDefocused += (sender, args) => { ignoreAllInput = false; };
         }
 
         private void OnDestroy()
@@ -133,6 +137,8 @@ namespace REE.Camera
 
         public void MouseInput()
         {
+            if (EventSystem.current.IsPointerOverGameObject()) return;
+
             if (cameraCanZoom && Input.mouseScrollDelta.y != 0)
                 ZoomInput(Input.mouseScrollDelta.y * zoomVector * mouseZoomMultiplier * CameraCloseMultiplier * UnityEngine.Time.deltaTime);
 

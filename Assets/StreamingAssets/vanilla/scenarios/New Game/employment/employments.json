@@ -1,0 +1,12 @@
+[
+    {
+        "id": 0,
+        "company_tag": "PRIV",
+        "employee_id": 0
+    },
+    {
+        "id": 1,
+        "company_tag": "CITY",
+        "employee_id": 1
+    }
+]

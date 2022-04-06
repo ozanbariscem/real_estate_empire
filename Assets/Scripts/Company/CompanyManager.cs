@@ -13,6 +13,7 @@ namespace Company
 
         public event EventHandler<Company> OnPlayerCompanyLoaded;
         public event EventHandler<List<Company>> OnCompaniesLoaded;
+        public event EventHandler<Constants> OnConstantsLoaded;
 
         public event EventHandler<Company> OnPlayerCompanyChanged;
 
@@ -52,6 +53,7 @@ namespace Company
         {
             scriptPath = "company/manager.lua";
             LoadScript();
+            LoadConstants();
             LoadCompanies();
 
             RaiseOnRulesLoaded();
@@ -75,6 +77,15 @@ namespace Company
             
             CompanyDictionary.AddCompanies(companies);
             OnCompaniesLoaded?.Invoke(this, companies);
+        }
+
+        private void LoadConstants()
+        {
+            string json = Utils.StreamingAssetsHandler.SafeGetString("vanilla/company/constants.json");
+            if (json == null) return;
+
+            Constants constants = JsonConvert.DeserializeObject<Constants>(json);
+            OnConstantsLoaded?.Invoke(this, constants);
         }
 
         private void LoadPlayerCompany(string path)

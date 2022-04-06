@@ -11,18 +11,30 @@ namespace Loan
 
         public static Dictionary<string, List<Loan>> Dictionary { get; private set; }
 
-        public static void LoadLoans(List<Loan> loans)
+        public static List<Loan> SafeGet(string tag)
         {
-            if (Dictionary == null)
+            if (Dictionary != null && Dictionary.TryGetValue(tag, out var loans))
+                return loans;
+            return new List<Loan>();
+        }
+
+        public static void AddLoan(Loan loan)
+        {
+            if (Dictionary == null) 
                 Dictionary = new Dictionary<string, List<Loan>>();
 
+            if (Dictionary.TryGetValue(loan.company_tag, out var _loans))
+                _loans.Add(loan);
+            else
+                Dictionary.Add(loan.company_tag, new List<Loan>() { loan });
+            OnLoanAdded?.Invoke(null, loan);
+        }
+
+        public static void LoadLoans(List<Loan> loans)
+        {
             foreach (var loan in loans)
             {
-                if (!Dictionary.TryGetValue(loan.company_tag, out var _loans))
-                {
-                    Dictionary.Add(loan.company_tag, new List<Loan>() { loan });
-                    OnLoanAdded?.Invoke(null, loan);
-                }
+                AddLoan(loan);
             }
         }
 

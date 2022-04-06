@@ -434,6 +434,49 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &184630440
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 184630441}
+  - component: {fileID: 184630442}
+  m_Layer: 0
+  m_Name: PersonManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &184630441
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 184630440}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 690858357}
+  m_RootOrder: 17
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &184630442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 184630440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f4a00532af5adf4893af1f59347f500, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &241522854
 GameObject:
   m_ObjectHideFlags: 0
@@ -869,6 +912,303 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1 &600996501
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 600996502}
+  - component: {fileID: 600996503}
+  m_Layer: 0
+  m_Name: RandomGenerator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &600996502
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 600996501}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &600996503
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 600996501}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0404b67af85c1b3499ccaa4508cb7bbe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  note: "Don't forget to feed RNG for each session.\nIf you want it to be consistent.
+    \nCall every function in one with FeedRng() first."
+  buildingNames:
+  - Houseonus
+  - 'Propel House '
+  - Measured
+  - 'Vanity House '
+  - Emporium
+  - Society
+  - 'Momentum '
+  - Link
+  - Enterprise
+  - Key
+  - Rate
+  - Housefluent
+  - 'Headway House '
+  - Houselytical
+  - 'Fuse House '
+  - Margin
+  - Elevate
+  - Linen
+  - Housequipo
+  - Acknowledged
+  - Prospect
+  - 'Consulting House '
+  - Survey
+  - Motivate
+  - Houseorama
+  - Spire
+  - Seed House
+  - Housevio
+  - 'Consult House '
+  - 'Kas House '
+  - Acuity
+  - 'Blue Ocean '
+  - 'Managed House '
+  - Expand
+  - 'Ally House '
+  - Housearo
+  - Houseoont
+  - Housery
+  - Hunt
+  - CEO
+  - 'Turn Key House '
+  - Synergist
+  - Pursue
+  - Stride House
+  - Mind House
+  - Advantage House
+  - Hunt House
+  - House
+  - Post
+  - Proof
+  - Segment
+  - 'Masses House '
+  - 'Intelligence House '
+  - Sofa
+  - 'Cycle House '
+  - 'Arrowhead House '
+  - Metrics
+  - Trend
+  - 'Climax House '
+  - 'Virtuoso House '
+  - Persona
+  - Houseology
+  - 'Spread House '
+  - 'Tested House '
+  - 'Round House '
+  - Propel
+  - 'Bastion House '
+  - Central
+  - 'Major House '
+  - Housedo
+  - Den
+  - Deliver
+  - Unison
+  - 'Guide House '
+  - Drive
+  - Aprt
+  - 'Acquire House '
+  - Glimmer
+  - Househut
+  - 'Trend House '
+  - Pillar
+  - Houseopolis
+  - Wire
+  - 'Momentum House '
+  - 'Determined House '
+  - 'Reflection House '
+  - Action
+  - Versatile
+  - Housenest
+  - Pulse
+  - Partners
+  - 'Pursue House '
+  - 'Up House '
+  - 'Chair House '
+  - Houseopedia
+  - International
+  - 'Backyard House '
+  - 'Conversion House '
+  - Smash
+  - Vice
+  - Expand House
+  - Multiply House
+  - Unite House
+  - Shower House
+  - Altitude
+  - Comman
+  - 'Pillar House '
+  - Mojo
+  - 'Drip House '
+  - 'Network House '
+  - Value
+  - 'Beacon House '
+  - 'Yoke House '
+  - 'Strategy House '
+  - 'Absolute House '
+  - 'Grid House '
+  - 'Service House '
+  - 'Enhanced '
+  - Engineered
+  - Push
+  - Share
+  - 'Funnel House '
+  - 'Disrupter House '
+  - 'Partners House '
+  - 'Check House '
+  - 'Seek House '
+  - 'Key House '
+  - 'Traffic '
+  - 'Reflection '
+  - 'More House '
+  - Wreaths
+  - 'Comman House '
+  - Ally
+  - Analytics
+  - Found
+  - Indicator
+  - 'Review House '
+  - 'Executive House '
+  - 'Immense House '
+  - 'Immersive '
+  - Flow
+  - 'Foam House '
+  - Primer
+  - Allied
+  - 'Brillant House '
+  - Houselux
+  - 'Action House '
+  - Housegenics
+  - Vanity
+  - Cornerstone
+  - 'Antiques House '
+  - Review
+  - Vital
+  - 'Eagle House '
+  - 'Scout House '
+  - 'Intellect House '
+  - Agent
+  - Mebel
+  - Force
+  - Advance
+  - Social
+  - Housejet
+  - Check
+  - Ability
+  - Influence
+  - Motion
+  - 'Chase House '
+  - 'Motion House '
+  - Pursuit
+  - Dynamic
+  - Intellect
+  - 'Franchise House '
+  - 'Vice House '
+  - Eagle
+  - Infinite
+  - 'Wreaths House '
+  - Arrow
+  - Convert
+  - 'Ware House '
+  - Arrange
+  - 'Dash House '
+  - Housely
+  - 'Trained House '
+  - Complete
+  - 'Segment House '
+  - 'Engaged House '
+  - Forge
+  - Promo
+  - Passage
+  - 'Pulse House '
+  - 'Impulse House '
+  - Advantage
+  - Disrupter
+  - Houselia
+  - 'Liquid House '
+  - Follow
+  - 'Generate House '
+  - 'Impression House '
+  - Outlook
+  - 'Click '
+  - Asset
+  - Bastion
+  - Hack
+  - 'Bin House '
+  - Point
+  - Stack
+  - Velocity
+  - 'Transition House '
+  - 'Think '
+  - Zen
+  - Yoke
+  - 'Ability House '
+  - Casa
+  - Buzz
+  - Cohort
+  - Network
+  - Houseado
+  - 'Strive House '
+  - Identity
+  - 'Exteriors House '
+  - Houseistic
+  - 'Deco House '
+  - 'Traction House '
+  - 'Zip House '
+  - Guide
+  - Signature
+  - 'Consumer House '
+  - 'Synergy House '
+  - Crusader
+  - Pacific
+  - 'Split House '
+  - Detect
+  - 'Powerhouse House '
+  - 'Source House '
+  - 'Willow House '
+  - Housebea
+  - Ware
+  - Magnetic
+  - Structure
+  - 'Adapt House '
+  - 'Immersive House '
+  - Houseprism
+  - Citadel
+  - Acquisition
+  - 'Summit House '
+  - 'Decision House '
+  - 'Model House '
+  - 'Globe House '
+  - 'Push House '
+  - Beacon
+  seed: -1
 --- !u!1 &650698998
 GameObject:
   m_ObjectHideFlags: 0
@@ -946,9 +1286,9 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 399.64343, y: 25}
-  m_SizeDelta: {x: 799.2869, y: 50}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 25}
+  m_SizeDelta: {x: 0, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &671674519
 MonoBehaviour:
@@ -1224,6 +1564,10 @@ Transform:
   - {fileID: 335025379}
   - {fileID: 1579751528}
   - {fileID: 1865290484}
+  - {fileID: 1947647223}
+  - {fileID: 2053653199}
+  - {fileID: 184630441}
+  - {fileID: 1171912822}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1242,14 +1586,18 @@ MonoBehaviour:
   managers:
   - {fileID: 1578892225}
   - {fileID: 859752611}
-  - {fileID: 1068991001}
   - {fileID: 1404448949}
+  - {fileID: 934450703}
+  - {fileID: 1412970816}
+  - {fileID: 184630442}
+  - {fileID: 1068991001}
+  - {fileID: 1947647224}
+  - {fileID: 1171912823}
+  - {fileID: 2053653200}
   - {fileID: 335025380}
   - {fileID: 1780460059}
   - {fileID: 1178992396}
   - {fileID: 1709521670}
-  - {fileID: 934450703}
-  - {fileID: 1412970816}
   - {fileID: 241522856}
   - {fileID: 1579751529}
   - {fileID: 2079026646}
@@ -1464,7 +1812,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 57.2375}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &839733527
 MonoBehaviour:
@@ -1911,8 +2259,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -35, y: 35}
-  m_SizeDelta: {x: 70, y: 70}
+  m_AnchoredPosition: {x: -25, y: 25}
+  m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &935029264
 MonoBehaviour:
@@ -2187,6 +2535,49 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 4
   m_TargetDisplay: 0
+--- !u!1 &1171912821
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1171912822}
+  - component: {fileID: 1171912823}
+  m_Layer: 0
+  m_Name: EmployeeManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1171912822
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1171912821}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 690858357}
+  m_RootOrder: 18
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1171912823
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1171912821}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 837ff1279c7614b458e4d2358c231898, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1178992395
 GameObject:
   m_ObjectHideFlags: 0
@@ -2341,7 +2732,7 @@ GameObject:
   - component: {fileID: 1404448950}
   - component: {fileID: 1404448949}
   m_Layer: 0
-  m_Name: InvestmentManager
+  m_Name: BuildingManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2356,7 +2747,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1404448948}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 651857b3eefb8e842bebd7f964f41f81, type: 3}
+  m_Script: {fileID: 11500000, guid: 2624945f503ee9f408b086126b74973a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &1404448950
@@ -2523,6 +2914,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8572475543851372032, guid: e2020f4b07cbbd14b84b9055c56cb979, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0.00000011920929
+      objectReference: {fileID: 0}
     - target: {fileID: 8572475543876133214, guid: e2020f4b07cbbd14b84b9055c56cb979, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -2534,6 +2929,14 @@ PrefabInstance:
     - target: {fileID: 8572475544305425898, guid: e2020f4b07cbbd14b84b9055c56cb979, type: 3}
       propertyPath: m_fontSizeBase
       value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 8572475545390567515, guid: e2020f4b07cbbd14b84b9055c56cb979, type: 3}
+      propertyPath: m_ResetOnDeActivation
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8572475545390567515, guid: e2020f4b07cbbd14b84b9055c56cb979, type: 3}
+      propertyPath: m_RestoreOriginalTextOnEscape
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e2020f4b07cbbd14b84b9055c56cb979, type: 3}
@@ -3032,8 +3435,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -400, y: -200}
+  m_AnchoredPosition: {x: 0, y: -50}
+  m_SizeDelta: {x: -400, y: -300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1945808594
 GameObject:
@@ -3071,6 +3474,49 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -20, y: -20}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1947647222
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1947647223}
+  - component: {fileID: 1947647224}
+  m_Layer: 0
+  m_Name: JobManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1947647223
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1947647222}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 690858357}
+  m_RootOrder: 15
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1947647224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1947647222}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56ebfde16cacc124fb4147cddf4b675e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1972474003
 GameObject:
   m_ObjectHideFlags: 0
@@ -3161,6 +3607,49 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1972474003}
   m_CullTransparentMesh: 1
+--- !u!1 &2053653198
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2053653199}
+  - component: {fileID: 2053653200}
+  m_Layer: 0
+  m_Name: EmploymentManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2053653199
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2053653198}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 690858357}
+  m_RootOrder: 16
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2053653200
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2053653198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df3ca6913a765834ca62c36dface5a45, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2079026644
 GameObject:
   m_ObjectHideFlags: 0

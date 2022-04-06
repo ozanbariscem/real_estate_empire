@@ -1,4 +1,5 @@
 using TMPro;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,6 +7,9 @@ namespace Console
 {
     public class UI : MonoBehaviour
     {
+        public static EventHandler OnConsoleFocused;
+        public static EventHandler OnConsoleDefocused;
+
         [SerializeField] private TMP_InputField input;
         [SerializeField] private Scrollbar scrollbar;
         [SerializeField] private TextMeshProUGUI log;
@@ -31,14 +35,22 @@ namespace Console
 
         private void Update()
         {
+            if (Input.GetMouseButtonDown(0))
+            {
+                input.DeactivateInputField();
+            }
             if (Input.GetKeyDown(toggleKey))
             {
                 content.SetActive(!content.activeInHierarchy);
 
                 if (content.activeInHierarchy)
-                    HandleInputSelect("");
+                {
+                    HandleInputSelect(""); 
+                }
                 else
+                {
                     HandleInputDeselect("");
+                }
             }
         }
 
@@ -85,12 +97,14 @@ namespace Console
         {
             input.ActivateInputField();
 
+            OnConsoleFocused?.Invoke(this, EventArgs.Empty);
             // You need to deactivate the input of other GameObjects here.
             //CameraController.Singleton.ignoreAllInput = true; // This is just an example that was suitable for my case
         }
 
         public void HandleInputDeselect(string text)
         {
+            OnConsoleDefocused?.Invoke(this, EventArgs.Empty);
             // You need to reactivate the input of other GameObjects here.
             //CameraController.Singleton.ignoreAllInput = false; // This is just an example that was suitable for my case
         }

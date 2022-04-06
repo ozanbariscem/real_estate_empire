@@ -1,5 +1,6 @@
 {
-    "PAUSED": "paused",
+    "PAUSED": "Paused",
+    "PLAYING": "Playing",
 
     "BUILDING": "building",
     "HOUSE": "house",
@@ -72,6 +73,62 @@
     "INVESTMENTS": "Investments",
     "PROPERTY": "Property",
 
+    "RENT": "Rent",
+    "LOANS": "Loans",
+    "EMPLOYEES": "Employees",
+    "TOTAL": "Total",
+
+    "NAME": "Name",
+    "AMOUNT": "Amount",
+    "PAYMENTS_LEFT": "Payments Left",
+    "PAY": "Pay",
+    "EACH": "each",
+
+    "AVAILABLE": "Available",
+    "HIRE": "Hire",
+
+    "MANAGER_EFFECT_0": "Employee limit",
+
+    "MANAGER_TITLE": "Manager",
+    "MANAGER_TITLE_PLURAL": "Managers",
+
+    "SECRETARY_TITLE": "Secretary",
+    "SECRETARY_TITLE_PLURAL": "Secretaries",
+
+    "NO_EMPLOYEE_OF_TYPE_START": "You don't have any",
+    "NO_EMPLOYEE_OF_TYPE_END": "yet.",
+
     "FILE_EXISTS": "A file with this name already exists!",
-    "FILE_EXISTS_DESCRIPTION": "If you proceed with this name older file will be overwritten."
+    "FILE_EXISTS_DESCRIPTION": "If you proceed with this name older file will be overwritten.",
+
+    "DATE_HOVER_TITLE": "Current Date and Time",
+    "DATE_HOVER_DESCRIPTION": "",
+    "STATE_HOVER_TITLE": "Game Time State",
+    "STATE_HOVER_DESCRIPTION": "",
+    "SPEEDS_HOVER_TITLE": "Game Time Speed",
+    "SPEEDS_HOVER_DESCRIPTION": "Currently at speed ",
+
+    "TEXTURE_MODE_HOVER_TITLE": "Map Mode",
+    "TEXTURE_MODE_HOVER_DESCRIPTION": "Texture",
+    "OWNERSHIP_MODE_HOVER_TITLE": "Map Mode",
+    "OWNERSHIP_MODE_HOVER_DESCRIPTION": "Ownership",
+
+    "FINANCE_HOVER_TITLE": "Finance",
+    "FINANCE_HOVER_DESCRIPTION": "Details of our finances.",
+
+    "EMPLOYEE_HOVER_TITLE": "Employee",
+    "EMPLOYEE_HOVER_DESCRIPTION": "Your loyal employees.\nEmployee limit is determined by company type and further modified by employees and events.",
+
+    "PROPERTY_HOVER_TITLE": "Property",
+    "PROPERTY_HOVER_DESCRIPTION": "Properties owned by your company.\nProperty limit is determined by company type and further modified by employees and events.",
+
+    "COMPANY_HOVER_TITLE": "Your Company",
+    "COMPANY_HOVER_DESCRIPTION": "",
+
+    "LOAN_NAME_TITLE": "Loan Name",
+    "LOAN_NAME_DESCRIPTION": "",
+    "LOAN_AMOUNT_TITLE": "Loan Amount Left",
+    "LOAN_AMOUNT_DESCRIPTION": "",
+    "LOAN_PAYMENTS_LEFT_TITLE": "Loan Payments Left",
+    "LOAN_PAYMENTS_LEFT_DESCRIPTION": "Loan payments are proccesed every month until they are completely payed off."
 }

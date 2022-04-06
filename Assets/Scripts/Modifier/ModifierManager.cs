@@ -12,6 +12,7 @@ namespace Modifier
     {
         public static ModifierManager Instance { get; private set; }
 
+        public event EventHandler<Dictionary<string, ModifierData>> OnModifierDatasLoaded;
         public event EventHandler<Dictionary<string, ModifierData>> OnModifiersLoaded;
 
         public event EventHandler<Modifier> OnModifierAdded;
@@ -36,6 +37,13 @@ namespace Modifier
             RaiseOnRulesLoaded();
         }
 
+        [MoonSharpHidden]
+        public override void LoadContent(string path)
+        {
+            LoadActiveModifiers(path);
+            RaiseOnContentLoaded();
+        }
+
         public void AddGlobalModifier(string type, string modifier_tag,
             ushort hour = 0, ushort day = 0, ushort month = 0, ushort year = 0)
         {
@@ -47,10 +55,12 @@ namespace Modifier
 
         public void AddGlobalModifier(string type, string modifier_tag, Time.Date _date = null)
         {
-            foreach (var id in InvestmentDictionary.Investments[type].Keys)
-            {
-                AddModifier(type, id, modifier_tag, _date);
-            }
+            Console.Console.Run("log_error HELLO ADD GLOBAL MODIFIER IS NOT IMPLEMENTED!!");
+            Debug.LogError("HELLO ADD GLOBAL MODIFIER IS NOT IMPLEMENTED!!");
+            // foreach (var id in InvestmentDictionary.Investments[type].Keys)
+            // {
+            //     AddModifier(type, id, modifier_tag, _date);
+            // }
         }
 
         public void AddModifier(string type, int id, string modifier_tag,
@@ -89,8 +99,10 @@ namespace Modifier
 
         private void HandleModifierAdded(object sender, Modifier modifier)
         {
-            Investment.Investment investment = InvestmentDictionary.GetInvestment(modifier.investment_type, modifier.investment_id);
-            investment.CalculateValue();
+            Console.Console.Run("log_error HELLO HandleModifierAdded IS NOT IMPLEMENTED!!");
+            Debug.LogError("HELLO HandleModifierAdded IS NOT IMPLEMENTED!!");
+            //Investment.Investment investment = InvestmentDictionary.GetInvestment(modifier.investment_type, modifier.investment_id);
+            //investment.CalculateValue();
         }
 
         private void HandleModifierRemoved(object sender, Modifier modifier)
@@ -99,8 +111,11 @@ namespace Modifier
             // But not removed from the sorted list for performance reasons
             // in that case we could just skip because the value is already recalculated for new values
             if (modifier == null) return;
-            Investment.Investment investment = InvestmentDictionary.GetInvestment(modifier.investment_type, modifier.investment_id);
-            investment.CalculateValue();
+
+            Console.Console.Run("log_error HELLO HandleModifierRemoved IS NOT IMPLEMENTED!!");
+            Debug.LogError("HELLO HandleModifierRemoved IS NOT IMPLEMENTED!!");
+            //Investment.Investment investment = InvestmentDictionary.GetInvestment(modifier.investment_type, modifier.investment_id);
+            //investment.CalculateValue();
         }
 
         private void HandleDayPass(object sender, Time.Date date)
@@ -138,6 +153,16 @@ namespace Modifier
             if (json == null) return;
 
             ModifierDictionary.LoadModifierDatas(JsonConvert.DeserializeObject<List<ModifierData>>(json));
+            OnModifierDatasLoaded?.Invoke(this, ModifierDictionary.Dictionary);
+        }
+
+        private void LoadActiveModifiers(string path)
+        {
+            string json = Utils.ContentHandler.SafeGetString($"{path}/modifiers/modifiers.json");
+            if (json == null) return;
+
+            ModifierDictionary.LoadModifiers(JsonConvert.DeserializeObject<
+                Dictionary<string, Dictionary<int, Dictionary<string, Modifier>>>>(json));
             OnModifiersLoaded?.Invoke(this, ModifierDictionary.Dictionary);
         }
         #endregion

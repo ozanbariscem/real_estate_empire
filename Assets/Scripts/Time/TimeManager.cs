@@ -37,6 +37,8 @@ namespace Time
         private float lastDifference;
         private float lastCheckTime;
 
+        private bool ignore_input;
+
         private void Awake()
         {
             if (!instance)
@@ -116,6 +118,7 @@ namespace Time
         #region HANDLERS
         private void HandleInput()
         {
+            if (ignore_input) return;
             if (Input.GetKeyDown(KeyCode.Equals) || Input.GetKeyDown(KeyCode.KeypadPlus))
             {
                 ChangeInterval(Intervals.SelectedInterval + 1);
@@ -174,6 +177,9 @@ namespace Time
             OnIntervalsLoaded += HandleIntervalsLoaded;
             OnStartDateLoaded += HandleStartDateLoaded;
             OnIntervalLooped += HandleIntervalLooped;
+
+            Console.UI.OnConsoleFocused += (sender, args) => { ignore_input = true; };
+            Console.UI.OnConsoleDefocused += (sender, args) => { ignore_input = false; };
         }
 
         protected override void Unsubscribe()

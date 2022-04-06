@@ -147,7 +147,7 @@ function HandleOwnershipsLoaded(sender, companies)
             el.finance.debt.text = ToCashString(companies[i].debt)
             el.finance.networth.text = ToCashString(companies[i].Networth)
 
-            el.investments.property.text = OwnershipDictionary.GetTotalAssetsOfCompany(companies[i].tag, "property")
+            el.investments.property.text = companies[i].PropertyCount;
 
             el.transform.gameObject.SetActive(true)
         else
@@ -242,7 +242,7 @@ function HandleCompanyChanged(sender, company)
     menu.load_game.company.card.debt.text = ToCashString(company.debt)
     menu.load_game.company.card.networth.text = ToCashString(company.Networth)
 
-    menu.load_game.company.card.property.text = OwnershipDictionary.GetTotalAssetsOfCompany(company.tag, "property") 
+    menu.load_game.company.card.property.text = company.PropertyCount; 
 end
 
 function NewGame()

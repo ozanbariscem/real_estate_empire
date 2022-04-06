@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using MoonSharp.Interpreter;
 using Load;
 using Investment;
+using Investment.Property;
 using Time;
 using Game;
 using Company;
@@ -17,6 +18,10 @@ using Loan;
 using District;
 using Modifier;
 using RandomEvent;
+using Job;
+using Employment;
+using Person;
+using Person.Employee;
 
 namespace Utils
 {
@@ -30,16 +35,20 @@ namespace Utils
 
             UserData.RegisterType<UnityEngine.Events.UnityAction>();
             UserData.RegisterType<TMPro.TMP_InputField.OnChangeEvent>();
-
+            
             UserData.RegisterType<TMPro.TextMeshProUGUI>();
             UserData.RegisterType<TMPro.TMP_InputField>();
             UserData.RegisterType<Transform>();
             UserData.RegisterType<GameObject>();
             UserData.RegisterType<Image>();
             UserData.RegisterType<RawImage>();
+            UserData.RegisterType<RectTransform>();
+            UserData.RegisterType<Vector2>();
+            UserData.RegisterType<Vector3>();
             UserData.RegisterType<Color>();
             UserData.RegisterType<Texture2D>();
-            
+            UserData.RegisterType<Outline>();
+
             UserData.RegisterType<EventArgs>();
             
             UserData.RegisterAssembly();
@@ -47,7 +56,6 @@ namespace Utils
             script.Globals["LoadManager"] = LoadManager.Instance;
             script.Globals["GameManager"] = GameManager.Instance;
             script.Globals["TimeManager"] = TimeManager.Instance;
-            script.Globals["InvestmentManager"] = InvestmentManager.Instance;
             script.Globals["CompanyManager"] = CompanyManager.Instance;
             script.Globals["UIManager"] = UIManager.Instance;
             script.Globals["LanguageManager"] = LanguageManager.Instance;
@@ -58,20 +66,34 @@ namespace Utils
             script.Globals["DistrictManager"] = DistrictManager.Instance;
             script.Globals["ModifierManager"] = ModifierManager.Instance;
             script.Globals["EventManager"] = EventManager.Instance;
+            script.Globals["JobManager"] = JobManager.Instance;
+            script.Globals["EmploymentManager"] = EmploymentManager.Instance;
+            script.Globals["PersonManager"] = PersonManager.Instance;
+            script.Globals["EmployeeManager"] = EmployeeManager.Instance;
+            script.Globals[nameof(BuildingManager)] = BuildingManager.Instance;
 
-            script.Globals["InvestmentDictionary"] = new InvestmentDictionary();
+            script.Globals[nameof(BuildingDictionary)] = typeof(BuildingDictionary);
+            script.Globals[nameof(ApartmentDictionary)] = typeof(ApartmentDictionary);
+
             script.Globals["OwnershipDictionary"] = new OwnershipDictionary();
             script.Globals["CompanyDictionary"] = new CompanyDictionary();
+            script.Globals["LoanDictionary"] = new LoanDictionary();
             script.Globals["DistrictDictionary"] = new DistrictDictionary();
             script.Globals["ModifierDictionary"] = new ModifierDictionary();
             script.Globals["EffectDictionary"] = new Effect.Effect();
             script.Globals["EventDictionary"] = new EventDictionary();
+            script.Globals["JobDictionary"] = new JobDictionary();
+            script.Globals["EmploymentDictionary"] = new EmploymentDictionary();
+            script.Globals["EmployeeDictionary"] = new EmployeeDictionary();
 
+            script.Globals["Company"] = typeof(Company.Company);
             script.Globals["MapDistrict"] = typeof(Map.District);
             script.Globals["Debug"] = REE.Debug.Debug.Instance;
 
             script.Globals["ConsoleRunCommand"] = (Action<string>)Console.Console.Run;
+
             script.Globals["ToCashString"] = (Func<long, string>)StringConversions.ToCash;
+            script.Globals["ToShortCashString"] = (Func<long, string>)StringConversions.ToShortCash;
 
             script.Globals["OpenYoutube"] = (Action)Web.Youtube;
             script.Globals["OpenTwitter"] = (Action)Web.Twitter;

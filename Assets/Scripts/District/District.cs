@@ -14,6 +14,6 @@ namespace District
         public string tag;
         public int population;
 
-        public List<int> properties;
+        public List<int> buildings;
     }
 }

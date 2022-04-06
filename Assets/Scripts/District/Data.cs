@@ -15,6 +15,8 @@ namespace District
         public string name;
         public int size;
 
+        public List<int> buildings;
+
         public static Data SafeGetData(string tag)
         {
             Datas.TryGetValue(tag, out Data data);
@@ -31,15 +33,10 @@ namespace District
             foreach (Data data in dataList)
             {
                 if (Datas.TryGetValue(data.tag, out Data oldData))
-                {
                     oldData = data;
-                }
                 else
-                {
                     Datas.Add(data.tag, data);
-                }
             }
-
             return Datas;
         }
     }

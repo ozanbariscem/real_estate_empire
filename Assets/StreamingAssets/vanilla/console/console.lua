@@ -52,10 +52,66 @@ function debug(...)
         return
     end
     
-    if (params[1] == "investment") then
-        -- params[2] => type of investment
-        -- params[3] => page of investment list 
+    if (params[1] == "apartments") then
+        -- params[2] => page of investment list 
         -- (We use pagination we can't list 100s of investments because memory allocation goes crazy)
-        Debug.ListInvestments(params[2], tonumber(params[3]))
+        Debug.ListApartments(tonumber(params[2]))
+        return
     end
+
+    if (params[1] == "buildings") then
+        -- params[2] => page of investment list 
+        -- (We use pagination we can't list 100s of investments because memory allocation goes crazy)
+        Debug.ListBuildings(tonumber(params[2]))
+        return
+    end
+
+    if (params[1] == "jobs") then
+        -- params[2] => page of job
+        Debug.ListJobs(tonumber(params[2]))
+        return
+    end
+
+    if (params[1] == "employees") then
+        -- params[2] => tag of company
+        -- params[3] => page of employees
+        Debug.ListEmployees(params[2], tonumber(params[3]))
+        return
+    end
+
+    if (params[1] == "employment") then
+        -- params[2] => page of employment
+        Debug.ListEmployments(tonumber(params[2]))
+        return
+    end
+
+    if (params[1] == "names") then
+        -- params[2] => page of names
+        Debug.ListNames(tonumber(params[2]))
+        return
+    end
+
+    if (params[1] == "surnames") then
+        -- params[2] => page of names
+        Debug.ListSurnames(tonumber(params[2]))
+        return
+    end
+end
+
+function hire(...)
+    local params = {...}
+
+    local company = params[1] -- company tag
+    local employee = tonumber(params[2]) -- employee id
+
+    EmploymentManager.Hire(company, employee)
+end
+
+function fire(...)
+    local params = {...}
+
+    local company = params[1] -- company tag
+    local employee = tonumber(params[2]) -- employee id
+
+    EmploymentManager.Fire(company, employee)
 end

@@ -42,6 +42,11 @@ namespace Modifier
             }
         }
 
+        public static void LoadModifiers(Dictionary<string, Dictionary<int, Dictionary<string, Modifier>>> modifiers)
+        {
+            Modifiers = modifiers;
+        }
+
         public static void AddModifier(string type, int id, Modifier modifier)
         {
             if (Modifiers == null)
